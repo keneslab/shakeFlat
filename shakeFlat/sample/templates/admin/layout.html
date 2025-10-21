@@ -297,11 +297,11 @@ $currentTheme = $sfThemeCookie["theme"] ?? "light";
                 <div class="shakeflat-copyright-box rounded p-2">
                     <div class="row align-items-end">
                         <div class="col-auto ms-1">
-                            Faikerz Admin Tool<br>
-                            Go to <a href="http://desk.faikerz.com/" target="_blank">desk.faikerz.com</a>
+                            <?=SHAKEFLAT_ENV["app"]["name"] ?? "Project Name";?><br>
+                            Copyright © <a href="<?=SHAKEFLAT_ENV["app"]["company_link"] ?? "https://github.com/umuusf/shakeFlat";?>" target="_blank"><?=SHAKEFLAT_ENV["app"]["company"] ?? "shakeFlat";?></a>. All rights reserved.
                         </div>
                         <div class="shakeflat-copyright-me ms-auto me-2 col-auto text-end">
-                            Develop by <a href="mailto:birdryoo@gmail.com">Keneslab</a>
+                            Design & Develop by <a href="https://github.com/umuusf/shakeFlat" target="_blank">shakeFlat</a>
                         </div>
                     </div>
                 </div>
