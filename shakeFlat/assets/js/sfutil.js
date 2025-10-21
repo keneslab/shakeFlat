@@ -413,7 +413,7 @@ String.prototype.stringWidth = function(font, fontSize) {
 
     let fs = "1.2rem";
     if (fontSize) fs = fontSize;
-    let f = font || fs + " 'Nanum Gothic'",
+    let f = font || fs + " 'Pretendard GOV Variable'",
         o = $('<div></div>')
             .text(max_tt)
             .css({'position': 'absolute', 'float': 'left', 'white-space': 'nowrap', 'visibility': 'hidden', 'font': f})
