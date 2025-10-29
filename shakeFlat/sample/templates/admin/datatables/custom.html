@@ -73,10 +73,10 @@
 
 
 <script>
-$.fn.dataTable.ext.errMode = 'throw';
+DataTable.ext.errMode = 'throw';
 let sfdt = {};  // DataTables Object
 
-$(document).ready(function() {
+document.addEventListener('DOMContentLoaded', function() {
     sfdt['example'] = new DataTable('#example', {
         "pageLength": 20,
         "lengthMenu": [
@@ -101,11 +101,15 @@ $(document).ready(function() {
         },
         "ajax":
             function(data, callback, settings) {
-                $.ajax({
-                    url: '/datatables/custom-data',
-                    type: 'POST',
-                    data: data,
-                }).done(function (json, textStatus, jqXHR) {
+                fetch('/datatables/custom-data', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => response.json())
+                .then(json => {
                     try {
                         if (typeof json !== 'object') throw "json is not object";
                         if (!('error' in json) || !('errCode' in json.error) || !('errMsg' in json.error)) throw "error object is not exist";
@@ -115,7 +119,6 @@ $(document).ready(function() {
                             } else {
                                 alert(json.error.errMsg);
                             }
-                            //console.log(json);
                             callback({ draw: data.draw, recordsTotal: 0, recordsFiltered: 0, data: [] });
                             return;
                         }
@@ -125,16 +128,12 @@ $(document).ready(function() {
                         alert("서버가 잘못된 응답을 하였습니다. 잠시 후 다시 시도해보세요.");
                         console.log("ajax page returns data in wrong:", e);
                         console.log("json:", json);
-                        console.log("textStatus:", textStatus)
-                        console.log("jqXHR:", jqXHR);
                         callback({ draw: data.draw, recordsTotal: 0, recordsFiltered: 0, data: [] });
                     }
-                }).fail(function(jqXHR, textStatus, errorThrown) {
+                })
+                .catch(error => {
                     alert("서버와의 통신이 원활하지 않습니다. 잠시 후 다시 시도해보세요.");
-                    console.log("ajax fail");
-                    console.log("textStatus:", textStatus);
-                    console.log("jqXHR:", jqXHR);
-                    console.log("errorThrown:", errorThrown);
+                    console.log("fetch fail:", error);
                     callback({ draw: data.draw, recordsTotal: 0, recordsFiltered: 0, data: [] });
                 });
             },
@@ -150,11 +149,19 @@ $(document).ready(function() {
                             exportOptions: { columns: ':visible:not(.sfdt-no-export)' },
                             customize:
                                 function (win) {
-                                    $(win.document.body).find('h1').each(function() {
-                                        $(this).replaceWith('<h3 class="text-center mb-3">' + $(this).html() + '</h3>');
+                                    win.document.body.querySelectorAll('h1').forEach(function(h1) {
+                                        const h3 = win.document.createElement('h3');
+                                        h3.className = 'text-center mb-3';
+                                        h3.innerHTML = h1.innerHTML;
+                                        h1.replaceWith(h3);
                                     });
-                                    $(win.document.body).find('table').addClass('compact').css('font-size', '9pt').css('text-align', 'center');
-                                    $(win.document.body).find('table').find('thead').find('th').css('text-align', 'center');
+                                    const table = win.document.body.querySelector('table');
+                                    table.classList.add('compact');
+                                    table.style.fontSize = '9pt';
+                                    table.style.textAlign = 'center';
+                                    table.querySelectorAll('thead th').forEach(function(th) {
+                                        th.style.textAlign = 'center';
+                                    });
                                 }
                         }, {
                             extend: 'pdf',
@@ -173,7 +180,7 @@ $(document).ready(function() {
                                     for(let i=0;i<doc.content.length;i++) {
                                         if (doc.content[i].table) { tblIdx = i; break; }
                                     }
-                                    if ($(doc.content[tblIdx].table.body[0]).length > 7) doc.pageOrientation = 'landscape';
+                                    if (doc.content[tblIdx].table.body[0].length > 7) doc.pageOrientation = 'landscape';
                                     let mr = doc.content[tblIdx].table.body.length-1; if (mr > 20) mr = 20;
                                     let colSum = {}, colCnt = {};
                                     for(let j=0;j<doc.content[tblIdx].table.body[0].length;j++) { colSum[j] = 0; colCnt[j] = 0; }
@@ -364,16 +371,50 @@ $(document).ready(function() {
 
             let state = sfdt['example'].state();
             state.columns.forEach(function(col, index) {
-                if (col.search.search) sfdtSetDefaultValue($("#sfdt-example-custom-search-" + sfdt['example'].column(index).dataSrc()), col.search.search);
+                if (col.search.search) {
+                    const elem = document.getElementById("sfdt-example-custom-search-" + sfdt['example'].column(index).dataSrc());
+                    if (elem) sfdtSetDefaultValue(elem, col.search.search);
+                }
             });
 
-            $('#btn-extra-add').data("bs-toggle", "tooltip").attr("title", "회원을 신규 추가합니다.").tooltip();
-            $('#btn-extra-order').data("bs-toggle", "tooltip").attr("title", "주문서를 작성합니다.").tooltip();
-            $('#btn-extra-refund').data("bs-toggle", "tooltip").attr("title", "환불요청을 합니다.").tooltip();
+            const btnAdd = document.getElementById('btn-extra-add');
+            if (btnAdd) {
+                btnAdd.setAttribute('data-bs-toggle', 'tooltip');
+                btnAdd.setAttribute('title', '회원을 신규 추가합니다.');
+                new bootstrap.Tooltip(btnAdd);
+            }
 
-            $(".btn-sfdt-search-reset").data("bs-toggle", "tooltip").attr("title", "검색 조건 초기화").tooltip();
-            $(".sfdt-btn-open-column-config").data("bs-toggle", "tooltip").attr("title", "열 순서 및 표시 설정 변경").tooltip();
-            $(".sfdt-btn-pagejump").data("bs-toggle", "tooltip").attr("title", "입력한 페이지 번호로 바로 이동").tooltip();
+            const btnOrder = document.getElementById('btn-extra-order');
+            if (btnOrder) {
+                btnOrder.setAttribute('data-bs-toggle', 'tooltip');
+                btnOrder.setAttribute('title', '주문서를 작성합니다.');
+                new bootstrap.Tooltip(btnOrder);
+            }
+
+            const btnRefund = document.getElementById('btn-extra-refund');
+            if (btnRefund) {
+                btnRefund.setAttribute('data-bs-toggle', 'tooltip');
+                btnRefund.setAttribute('title', '환불요청을 합니다.');
+                new bootstrap.Tooltip(btnRefund);
+            }
+
+            document.querySelectorAll('.btn-sfdt-search-reset').forEach(function(btn) {
+                btn.setAttribute('data-bs-toggle', 'tooltip');
+                btn.setAttribute('title', '검색 조건 초기화');
+                new bootstrap.Tooltip(btn);
+            });
+
+            document.querySelectorAll('.sfdt-btn-open-column-config').forEach(function(btn) {
+                btn.setAttribute('data-bs-toggle', 'tooltip');
+                btn.setAttribute('title', '열 순서 및 표시 설정 변경');
+                new bootstrap.Tooltip(btn);
+            });
+
+            document.querySelectorAll('.sfdt-btn-pagejump').forEach(function(btn) {
+                btn.setAttribute('data-bs-toggle', 'tooltip');
+                btn.setAttribute('title', '입력한 페이지 번호로 바로 이동');
+                new bootstrap.Tooltip(btn);
+            });
 
         }
     });
@@ -382,7 +423,8 @@ $(document).ready(function() {
     if (csStorage) {
         let csEx = JSON.parse(csStorage);
         for (let key in csEx) {
-            sfdtSetDefaultValue($("#sfdt-example-custom-search-"+key), csEx[key]);
+            const elem = document.getElementById("sfdt-example-custom-search-"+key);
+            if (elem) sfdtSetDefaultValue(elem, csEx[key]);
         }
     }
 });

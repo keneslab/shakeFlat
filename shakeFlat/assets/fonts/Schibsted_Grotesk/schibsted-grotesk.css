@@ -1,0 +1,37 @@
+/* Schibsted_Grotesk_Regular - latin */
+@font-face {
+  font-family: 'Schibsted Grotesk';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local(''),
+       url('../../fonts/Schibsted_Grotesk/static/SchibstedGrotesk-Regular.ttf') format('truetype'); /* Safari, Android, iOS */
+}
+
+@font-face {
+  font-family: 'Schibsted Grotesk Medium';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: local(''),
+       url('../../fonts/Schibsted_Grotesk/static/SchibstedGrotesk-Medium.ttf') format('truetype'); /* Safari, Android, iOS */
+}
+
+@font-face {
+  font-family: 'Schibsted Grotesk Bold';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local(''),
+       url('../../fonts/Schibsted_Grotesk/static/SchibstedGrotesk-Bold.ttf') format('truetype'); /* Safari, Android, iOS */
+}
+
+/* Schibsted_Grotesk_Regular - latin */
+@font-face {
+  font-family: 'Schibsted Grotesk Bold Italic';
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  src: local(''),
+       url('../../fonts/Schibsted_Grotesk/static/SchibstedGrotesk-BoldItalic.ttf') format('truetype'); /* Safari, Android, iOS */
+}

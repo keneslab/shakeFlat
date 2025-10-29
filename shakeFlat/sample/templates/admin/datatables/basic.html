@@ -3,8 +3,10 @@
 </div>
 
 <script>
-$(document).ready(function () {
-    $('#example').addClass( 'nowrap' ).dataTable({
+document.addEventListener('DOMContentLoaded', function () {
+    const table = document.getElementById('example');
+    table.classList.add('nowrap');
+    new DataTable(table, {
         responsive: true,
         columnDefs: [
             {

@@ -1,317 +1,228 @@
 <?php
-$leftMenu = [
+// Menu Structure Configuration
+$menuStructure = [
     [
-        "title"     => "welcome",
-        "icon"      => '<i class="bi bi-chat-dots"></i>',
-        "link"      => null,
+        "title" => "welcome",
+        "icon" => "bi-chat-dots",
+        "link" => null,
         "subopened" => false,
-        "sub"       => [
-            [ "title" => "main", "link"  => "/welcome/main" ],
-            [ "title" => "sample", "link"  => "/welcome/sample" ],
-        ],
+        "sub" => [
+            ["title" => "main", "link" => "/welcome/main"],
+            ["title" => "sample", "link" => "/welcome/sample"]
+        ]
     ],
     [
-        "title"     => "JS Library Sample",
-        "icon"      => '<i class="bi bi-archive"></i>',
-        "link"      => null,
+        "title" => "JS Library Example",
+        "icon" => "bi-archive",
+        "link" => null,
         "subopened" => true,
-        "sub"   => [
-            [ "title" => "sfAlert", "link"  => "/jslib/sfAlert" ],
-            [ "title" => "inputmask 5.0.10", "link"  => "/jslib/inputmask" ],
-            [ "title" => "daterangepicker 3.1", "link"  => "/jslib/daterangepicker" ],
-            [ "title" => "datetimepicker 2.5.4", "link"  => "/jslib/datetimepicker" ],
-        ],
+        "sub" => [
+            ["title" => "sfUI 1.0.0", "link" => "/jslib/sfui"],
+            ["title" => "sfUI WebFont Injection", "link" => "/jslib/webfont"],
+            ["title" => "inputmask 5.0.10", "link" => "/jslib/inputmask"],
+            ["title" => "bootstrap-icon 1.31.1", "link" => "/jslib/bootstrap-icon"],
+            ["title" => "flatpickr 4.6.13", "link" => "/jslib/flatpickr"],
+            ["title" => "choices.js 11.1.0", "link" => "/jslib/choices"]
+        ]
     ],
     [
-        "title"     => "Colors",
-        "icon"      => '<i class="bi bi-bag-x"></i>',
-        "link"      => "/colors/main",
-        "sub"       => null,
+        "title" => "Colors",
+        "icon" => "bi-bag-x",
+        "link" => "/colors/main",
+        "sub" => null
     ],
     [
-        "title"     => "DataTables",
-        "icon"      => '<i class="bi bi-table"></i>',
-        "link"      => null,
+        "title" => "DataTables",
+        "icon" => "bi-table",
+        "link" => null,
         "subopened" => false,
-        "sub"       => [
-            [ "title" => "basic sample", "link"  => "/datatables/basic" ],
-            [ "title" => "custom - KR", "link"  => "/datatables/custom" ],
-            [ "title" => "shakeFlat DataTables", "link"  => "/datatables/use-libs" ],
-            [ "title" => "Processing in one page", "link"  => "/datatables/onepage" ],
-        ],
-    ],
+        "sub" => [
+            ["title" => "basic sample", "link" => "/datatables/basic"],
+            ["title" => "custom - KR", "link" => "/datatables/custom"],
+            ["title" => "shakeFlat DataTables", "link" => "/datatables/use-libs"],
+            ["title" => "Processing in one page", "link" => "/datatables/onepage"]
+        ]
+    ]
 ];
 
-$sfThemeCookie = json_decode($_COOKIE["sfTheme"] ?? "{ theme: 'light', select: 'auto' }", true);
-if (array_key_exists("select", $sfThemeCookie ?? []) && ($sfThemeCookie["select"] == "light" || $sfThemeCookie["select"] == "dark")) $sfThemeSelect = $sfThemeCookie["select"]; else $sfThemeSelect = "auto";
-$currentTheme = $sfThemeCookie["theme"] ?? "light";
+// Get current path for active menu detection
+$currentPath = '/' . ($router->module() ?? '') . '/' . ($router->fnc() ?? '');
 ?>
 <!DOCTYPE html>
-<html lang="ko" data-sf-theme="<?php echo $currentTheme; ?>" data-bs-theme="<?php echo $currentTheme; ?>" data-theme="<?php echo $currentTheme; ?>">
+<html lang="ko" data-bs-theme="light">
 <head>
-<title><?=SHAKEFLAT_ENV["app"]["name"] ?? "Project Name";?></title>
+    <title><?= SHAKEFLAT_ENV["app"]["name"] ?? "Project Name"; ?></title>
 
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<script src="/assets/libs/jquery-3.7.1/jquery.min.js"></script>
-<script src="/assets/libs/jquery-ui-1.14.0/jquery-ui.min.js"></script>
-<script src="/assets/libs/bootstrap-5.3.3/js/bootstrap.bundle.min.js"></script>
-<script src="/assets/libs/moment-2.30.1/moment.min.js"></script>
-<script src="/assets/libs/daterangepicker-3.1/daterangepicker.js"></script>
-<script src="/assets/libs/datetimepicker-2.5.4/jquery.datetimepicker.full.min.js"></script>
-<script src="/assets/libs/inputmask-5.0.10-beta.11/jquery.inputmask.min.js"></script>
-<script src="/assets/libs/select2-4.1.0-rc.0/js/select2.full.min.js"></script>
-<script src="/assets/libs/fontawesome-free-7.1.0-web/js/all.min.js"></script>
-<script src="/assets/libs/simplebar-6.2.7/simplebar.min.js"></script>
-<script src="/assets/libs/bootstrap5-toggle-5.0.6/js/bootstrap5-toggle.jquery.min.js"></script>
-<script src="/assets/libs/js-cookie-3.0.5/js.cookie.min.js"></script>
-<script src="/assets/libs/datatables-2.2.1/datatables.min.js"></script>
-<script src="/assets/libs/datatables-2.2.1/i18n/pdf-ko.js"></script>
-<script src="/assets/libs/sfrangeslide-0.1/sfrangeslide.js"></script>
-<script src="/assets/libs/sflightbox-0.0.1/sflightbox.js"></script>
-<link rel="stylesheet" href="/assets/libs/jquery-ui-1.14.0/jquery-ui.min.css" />
-<link rel="stylesheet" href="/assets/libs/bootstrap-5.3.3/css/bootstrap.min.css" />
-<link rel="stylesheet" href="/assets/libs/bootstrap-icons-1.11.0/font/bootstrap-icons.css">
-<link rel="stylesheet" href="/assets/libs/daterangepicker-3.1/daterangepicker.css" />
-<link rel="stylesheet" href="/assets/libs/datetimepicker-2.5.4/jquery.datetimepicker.min.css" />
-<link rel="stylesheet" href="/assets/libs/select2-4.1.0-rc.0/css/select2.min.css" />
-<link rel="stylesheet" href="/assets/libs/select2-bootstrap5-theme/select2-bootstrap5.min.css" />
-<link rel="stylesheet" href="/assets/libs/select2-bootstrap5-theme/select2-bootstrap5-dark.min.css" />
-<link rel="stylesheet" href="/assets/libs/fontawesome-free-7.1.0-web/css/all.min.css" />
-<link rel="stylesheet" href="/assets/libs/simplebar-6.2.7/simplebar.min.css" />
-<link rel="stylesheet" href="/assets/libs/bootstrap5-toggle-5.0.6/css/bootstrap5-toggle.min.css" />
-<link rel="stylesheet" href="/assets/libs/datatables-2.2.1/datatables.min.css" />
-<link rel="stylesheet" href="/assets/libs/sfrangeslide-0.1/sfrangeslide.css" />
+    <?php
+    $webFontLoader = shakeFlat\WebFontLoader::getInstance();
+    echo $webFontLoader->generatePreload();
+    echo $webFontLoader->generateStyle();
+    ?>
 
-<script src="/assets/js/sfalert.js?<?=sfCSSJSVer();?>"></script>
-<script src="/assets/js/sfmodal.js?<?=sfCSSJSVer();?>"></script>
-<script src="/assets/js/sfutil.js?<?=sfCSSJSVer();?>"></script>
-<script src="/assets/js/sfdatatables.js?<?=sfCSSJSVer();?>"></script>
-<script src="/assets/js/template-admin.js?<?=sfCSSJSVer();?>"></script>
+    <!-- Core JavaScript Libraries -->
+    <script src="/assets/libs/bootstrap-5.3.3/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/libs/js-cookie-3.0.5/js.cookie.min.js"></script>
 
-<link rel="stylesheet" href="/assets/css/fonts.css?<?=sfCSSJSVer();?>" />
-<link rel="stylesheet" href="/assets/css/colors.css?<?=sfCSSJSVer();?>" />
-<link rel="stylesheet" href="/assets/css/sfdatatables.css?<?=sfCSSJSVer();?>" />
-<link rel="stylesheet" href="/assets/css/template-admin.css?<?=sfCSSJSVer();?>" />
+    <!-- Core CSS Libraries -->
+    <link rel="stylesheet" href="/assets/libs/bootstrap-5.3.3/css/bootstrap.min.css">
+
+    <!-- sfUI - Unified UI Component Library -->
+    <link rel="stylesheet" href="/assets/libs/sfUI-1.0.0/dist/sfui.css">
+    <script src="/assets/libs/sfUI-1.0.0/dist/sfui.js"></script>
+
+    <!-- Custom JavaScript & CSS -->
+    <script src="/assets/js/sfutil.js?<?= sfCSSJSVer(); ?>"></script>
+    <script src="/assets/js/template-admin.js?<?= sfCSSJSVer(); ?>"></script>
+    <link rel="stylesheet" href="/assets/css/colors.css?<?= sfCSSJSVer(); ?>">
+    <link rel="stylesheet" href="/assets/css/template-admin.css?<?= sfCSSJSVer(); ?>">
 
 </head>
 
 <body>
-<div class="shakeflat-wrapper">
-    <header id="shakeflat-header" class="fixed-top">
-        <div class="shakeflat-topbar d-flex">
-            <div class="shakeflat-logo-box d-flex">
-                <a href="/">
-                <div class="shakeflat-logo">
-                    <div class="shakeflat-logo-character text-center"><?=SHAKEFLAT_ENV["app"]["initial"] ?? "S";?></div>
+    <div class="shakeflat-wrapper">
+        <!-- Header -->
+        <header id="shakeflat-header" class="fixed-top">
+            <div class="shakeflat-topbar d-flex">
+                <!-- Logo Section -->
+                <div class="shakeflat-logo-box d-flex">
+                    <a href="/">
+                        <div class="shakeflat-logo">
+                            <div class="shakeflat-logo-character text-center"><?= SHAKEFLAT_ENV["app"]["initial"] ?? "S"; ?></div>
+                        </div>
+                    </a>
+                    <div class="shakeflat-logo-text">
+                        <a href="/"><?= SHAKEFLAT_ENV["app"]["name"] ?? "Project Name"; ?></a>
+                    </div>
                 </div>
-                </a>
-                <div class="shakeflat-logo-text">
-                    <a href="/"><?=SHAKEFLAT_ENV["app"]["name"] ?? "Project Name";?></a>
-                </div>
-            </div>
-            <div class="shakeflat-topbar-content d-flex justify-content-between">
-                <div class="d-flex align-items-center">
+
+                <!-- Topbar Content -->
+                <div class="shakeflat-topbar-content d-flex justify-content-between">
+                    <!-- Left Section: Menu Button & Server Name -->
                     <div class="d-flex align-items-center">
                         <button type="button" class="btn btn-sm ms-1" id="shakeflat-btn-left-menu">
                             <i class="fa fa-fw fa-bars"></i>
                         </button>
-                        <div class="shakeflat-server-comment"><?php if (IS_DEBUG) echo SHAKEFLAT_ENV["config"]["server_name"]; ?></div>
-                    </div>
-                </div>
-
-                <div class="d-flex align-items-center">
-                    <div class="d-flex align-items-center me-2">
-                        <div class="shakeflat-account-dropdown dropdown">
-                            <button class="btn dropdown-toggle d-flex align-items-center" type="button" data-bs-toggle="dropdown" data-bs-display="static">
-                                Admin
-                            </button>
-                            <ul class="shakeflat-account-dropdown-menu dropdown-menu">
-                                <div class="row text-nowrap my-1 mx-3">Tel : 010-0000-1111</div>
-                                <div class="row text-nowrap my-1 mx-3">email : shakeflat@domain.com</div>
-                                <div class="row text-nowrap my-1 mx-3">Last Login : 2023-01-01 12:00:00</div>
-                                <div class="dropdown-divider"></div>
-                                <li><a class="dropdown-item" href="/auth/logout"><i class="bi bi-power me-1"></i> LOGOUT</a></li>
-                            </ul>
+                        <div class="shakeflat-server-comment">
+                            <?php if (IS_DEBUG) echo SHAKEFLAT_ENV["config"]["server_name"]; ?>
                         </div>
                     </div>
 
-                    <div class="d-flex align-items-center me-3">
-                        <div class="shakeflat-theme-dropdown dropdown">
-                            <button class="btn dropdown-toggle d-flex align-items-center" type="button" data-bs-toggle="dropdown" data-bs-display="static">
-                                <?php
-                                switch($sfThemeSelect) {
-                                    case "light" : echo "<i class=\"bi bi-sun-fill\"></i> Light"; break;
-                                    case "dark" : echo "<i class=\"bi bi-moon-stars-fill\"></i> Dark"; break;
-                                    default : echo "<i class=\"bi bi-circle-half\"></i> Auto"; break;
-                                }
-                                ?>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li>
-                                    <button type="button" class="dropdown-item d-flex align-items-center<?php if($sfThemeSelect == "light") echo " active"; ?>" data-sf-theme-value="light">
-                                        <i class="bi bi-sun-fill"></i> Light
-                                    </button>
-                                </li>
-                                <li>
-                                    <button type="button" class="dropdown-item d-flex align-items-center<?php if($sfThemeSelect == "dark") echo " active"; ?>" data-sf-theme-value="dark">
-                                        <i class="bi bi-moon-stars-fill"></i> Dark
-                                    </button>
-                                </li>
-                                <li>
-                                    <button type="button" class="dropdown-item d-flex align-items-center<?php if($sfThemeSelect == "auto") echo " active"; ?>" data-sf-theme-value="auto">
-                                        <i class="bi bi-circle-half"></i> Auto
-                                    </button>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="d-flex align-items-center me-5">
-                        <div class="shakeflat-clock text-center">
-                            <div class="shakeflat-clock-time d-flex justify-content-center">
-                                <div id="shakeflat-clock-hours"></div>
-                                <div class="shakeflat-clock-point">:</div>
-                                <div id="shakeflat-clock-min"></div>
-                                <div class="shakeflat-clock-point">:</div>
-                                <div id="shakeflat-clock-sec"></div>
+                    <!-- Right Section: Account, Theme, Clock -->
+                    <div class="d-flex align-items-center">
+                        <!-- Account Dropdown -->
+                        <div class="d-flex align-items-center me-2">
+                            <div class="shakeflat-account-dropdown dropdown">
+                                <button class="btn dropdown-toggle d-flex align-items-center" type="button" data-bs-toggle="dropdown" data-bs-display="static">
+                                    Admin
+                                </button>
+                                <ul class="shakeflat-account-dropdown-menu dropdown-menu">
+                                    <div class="row text-nowrap my-1 mx-3">Tel : 010-0000-1111</div>
+                                    <div class="row text-nowrap my-1 mx-3">email : shakeflat@domain.com</div>
+                                    <div class="row text-nowrap my-1 mx-3">Last Login : 2023-01-01 12:00:00</div>
+                                    <div class="dropdown-divider"></div>
+                                    <li><a class="dropdown-item" href="/auth/logout"><i class="bi bi-power me-1"></i> LOGOUT</a></li>
+                                </ul>
                             </div>
-                            <div id="shakeflat-clock-date"></div>
+                        </div>
+
+                        <!-- Theme Dropdown -->
+                        <div class="d-flex align-items-center me-3">
+                            <div class="shakeflat-theme-dropdown dropdown">
+                                <button class="btn dropdown-toggle d-flex align-items-center" type="button" data-bs-toggle="dropdown" data-bs-display="static">
+                                    <i class="bi bi-circle-half"></i> Auto
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li>
+                                        <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light">
+                                            <i class="bi bi-sun-fill"></i> Light
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark">
+                                            <i class="bi bi-moon-stars-fill"></i> Dark
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto">
+                                            <i class="bi bi-circle-half"></i> Auto
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Clock -->
+                        <div class="d-flex align-items-center me-5">
+                            <div class="shakeflat-clock text-center">
+                                <div class="shakeflat-clock-time d-flex justify-content-center">
+                                    <div id="shakeflat-clock-hours"></div>
+                                    <div class="shakeflat-clock-point">:</div>
+                                    <div id="shakeflat-clock-min"></div>
+                                    <div class="shakeflat-clock-point">:</div>
+                                    <div id="shakeflat-clock-sec"></div>
+                                </div>
+                                <div id="shakeflat-clock-date"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </header>
+        </header>
 
-    <div class="d-flex w-100">
-        <div data-simplebar class="shakeflat-left" data-status="full">
-            <!-- leftside menu -->
-            <div class="list-group mt-3">
-                <?php
-                $selectedMenuTitle = null;
-                foreach($leftMenu as $idx => $menu) :
-                    //if (!Auth::isSuper() && isset($menu["permission"]) && $menu["permission"] && !array_intersect($menu["permission"], Auth::info()["permission"])) continue;
+        <!-- Main Content Area -->
+        <div class="d-flex w-100">
+            <!-- Sidebar -->
+            <sf-sidebar
+                id="shakeflat-sidebar"
+                current-active-menu="<?php echo htmlspecialchars($currentPath); ?>"
+                data-menu='<?php echo json_encode($menuStructure, JSON_HEX_APOS | JSON_HEX_QUOT); ?>'
+                mode="full"
+                locked="false"
+                font-family="'Pretendard GOV Variable', -apple-system, BlinkMacSystemFont, sans-serif"
+                icon-size="1.2rem">
+            </sf-sidebar>
 
-                    $active = "";
-                    $opened = "";
-                    $dataToggle = "";
-                    $dataLink = "";
-                    if ($menu["sub"]) {
-                        if ($menu["subopened"] ?? false) {
-                            $opened = " opened";
+            <!-- Content Area -->
+            <div class="shakeflat-contents flex-fill p-3">
+                <div class="shakeflat-content-wrapper">
+                    <!-- Page Title -->
+                    <div class="shakeflat-contents-title">
+                        <i class="bi bi-caret-right-fill"></i>
+                        <?php
+                        if (isset($res) && $res->pageTitle) {
+                            echo $res->pageTitle;
                         } else {
-                            $dataToggle = " data-bs-toggle=\"collapse\" data-bs-target=\"#sfadmin-left-collapse-{$idx}\"";
+                            echo "{$router->module()}/{$router->fnc()}";
                         }
-
-                        foreach($menu["sub"] as $idx2 => $submenu) {
-                            if (($submenu["link"] ?? null) == null) continue;
-                            //if (isset($submenu["permission"]) && $submenu["permission"] && !Auth::hasPermission($submenu["permission"])) continue;
-
-                            list($m, $f) = explode("/", trim($submenu["link"], "/")) + [null, null];        // Add + [null, null] to suppress warning message
-                            $menu["sub"][$idx2]["active"] = "";
-                            if ($router->module() == $m && $router->fnc() == $f) {
-                                $active = " active open";
-                                $menu["sub"][$idx2]["active"] = " active";
-                                $selectedMenuTitle = $menu["title"] . " <span style=\"font-size:0.7rem;\"><i class=\"bi bi-chevron-right\"></i></span> " . $submenu["title"];
-                            }
-                        }
-                ?>
-                <?php
-                    }
-
-                    if ($menu["link"]) {
-                        list($m, $f) = explode("/", trim($menu["link"], "/")) + [null, null];
-                        if ($router->module() == $m && $router->fnc() == $f) {
-                            $active = " active";
-                            $selectedMenuTitle = $menu["title"];
-                        }
-                ?>
-
-                <a class="list-group-item<?php echo $active; ?>" href="<?php echo $menu["link"]; ?>"<?php echo $dataToggle; ?>>
-                    <span class="list-group-item-icon"><?php echo $menu["icon"] ?? ""; ?></span><span class="list-group-item-text"><?php echo $menu["title"] ?? ""; ?></span>
-                </a>
-                <?php
-                    } else {
-                ?>
-
-                <div class="list-group-item<?php echo $active; ?>"<?php echo $dataToggle; ?>>
-                    <span class="list-group-item-icon"><?php echo $menu["icon"] ?? ""; ?></span><span class="list-group-item-text"><?php echo $menu["title"] ?? ""; ?></span>
-                </div>
-
-                <?php
-                    }
-                    if ($menu["sub"]) :
-                        $subShow = "";
-                        if ($active != "" || $opened != "") $subShow = " show";
-                ?>
-
-                <div class="list-group collapse<?php echo $subShow; ?><?php echo $opened; ?>" id="sfadmin-left-collapse-<?php echo $idx; ?>">
-                    <?php
-                    foreach($menu["sub"] as $submenu) :
-                        // if (!Auth::isSuper() && isset($submenu["permission"]) && $submenu["permission"] && !array_intersect($submenu["permission"], Auth::info()["permission"])) continue;
-
-                        $dataSubLink = "";
-                        if ($submenu["link"]) {
-                    ?>
-
-                    <a class="list-group-item<?php echo $submenu["active"] ?? ""; ?>" href="<?php echo $submenu["link"]; ?>">
-                        <span class="list-group-item-icon-sub"><i class="fa-solid fa-angle-right"></i></span><span class="list-group-item-text sub"><?php echo $submenu["title"]; ?></span>
-                    </a>
-                    <?php
-                        } else {
-                    ?>
-
-                    <div class="list-group-item<?php echo $submenu["active"]; ?>">
-                        <span class="list-group-item-text"><?php echo $submenu["title"]; ?></span>
+                        ?>
                     </div>
-                    <?php
-                        }
-                    endforeach;
-                    ?>
 
-                </div>
-                <?php
-                    endif;
-                ?>
-                <div class="list-group-gap"></div>
-                <?php
-                endforeach;
-                ?>
-
-            </div>
-        </div>
-
-        <div class="shakeflat-contents flex-fill p-3">
-            <div class="shakeflat-content-wrapper">
-                <div class="shakeflat-contents-title"><i class="bi bi-caret-right-fill"></i> <?php if (isset($res) && $res->pageTitle) echo $res->pageTitle; elseif ($selectedMenuTitle) echo $selectedMenuTitle; else echo "{$router->module()}/{$router->fnc()}"; ?></div>
-                <div class="shakeflat-contents-body p-3">
-                    <?= $contentBody ?>
-
-                </div>
-            </div>
-
-            <footer>
-                <div class="shakeflat-copyright-box rounded p-2">
-                    <div class="row align-items-end">
-                        <div class="col-auto ms-1">
-                            <?=SHAKEFLAT_ENV["app"]["name"] ?? "Project Name";?><br>
-                            Copyright © <a href="<?=SHAKEFLAT_ENV["app"]["company_link"] ?? "https://github.com/umuusf/shakeFlat";?>" target="_blank"><?=SHAKEFLAT_ENV["app"]["company"] ?? "shakeFlat";?></a>. All rights reserved.
-                        </div>
-                        <div class="shakeflat-copyright-me ms-auto me-2 col-auto text-end">
-                            Design & Develop by <a href="https://github.com/umuusf/shakeFlat" target="_blank">shakeFlat</a>
-                        </div>
+                    <!-- Page Content -->
+                    <div class="shakeflat-contents-body p-3">
+                        <?= $contentBody ?>
                     </div>
                 </div>
-            </footer>
+
+                <!-- Footer -->
+                <footer>
+                    <div class="shakeflat-copyright-box rounded p-2">
+                        <div class="row align-items-end">
+                            <div class="col-auto ms-1">
+                                <?= SHAKEFLAT_ENV["app"]["name"] ?? "Project Name"; ?><br>
+                                Copyright © <a href="<?= SHAKEFLAT_ENV["app"]["company_link"] ?? "https://github.com/umuusf/shakeFlat"; ?>" target="_blank"><?= SHAKEFLAT_ENV["app"]["company"] ?? "shakeFlat"; ?></a>. All rights reserved.
+                            </div>
+                            <div class="shakeflat-copyright-me ms-auto me-2 col-auto text-end">
+                                Design & Develop by <a href="https://github.com/umuusf/shakeFlat" target="_blank">shakeFlat</a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
         </div>
     </div>
-
-    <aside class="shakeflat-sidebar-blind">
-    </aside>
-</div>
-
 </body>
 </html>

@@ -3,29 +3,40 @@ function _ajaxOpt(url, frm)
     let frmObj = null;
     let frmData = new FormData();
 
-    if (typeof frm === 'string') { frmObj = $("#" + frm); }
-    else if (frm instanceof jQuery) { frmObj = frm; }
-    else if (frm instanceof HTMLElement) { frmObj = $(frm); }
-    else if (typeof frm == "object" && frm.constructor.name == "FormData") frmData = frm;
-    else if (typeof frm == "object" && frm.constructor.name == "Object") {
-        $.each(frm, function(k, v) {
+    if (typeof frm === 'string') {
+        frmObj = document.getElementById(frm);
+    } else if (frm instanceof HTMLElement) {
+        frmObj = frm;
+    } else if (typeof frm == "object" && frm.constructor.name == "FormData") {
+        frmData = frm;
+    } else if (typeof frm == "object" && frm.constructor.name == "Object") {
+        Object.entries(frm).forEach(([k, v]) => {
             if (typeof v == "object" && v.constructor.name == "File") {
-                frmData.append(k, $("#"+k)[0].files[0]);
+                const element = document.getElementById(k);
+                if (element && element.files && element.files[0]) {
+                    frmData.append(k, element.files[0]);
+                }
             } else {
                 frmData.append(k, v);
             }
         });
     }
+
     if (frmObj) {
-        //console.log("frmObj");
-        $(frmObj.find('input,textarea,select')).each(function() {
-            //console.log($(this).attr("type"), $(this).attr("name"), $(this).val());
-            if ($(this).attr("type") == "file") {
-                frmData.append($(this).attr("name"), $("input[name="+$(this).attr("name")+"]")[0].files[0]);
+        const formElements = frmObj.querySelectorAll('input, textarea, select');
+        formElements.forEach(element => {
+            const type = element.getAttribute("type");
+            const name = element.getAttribute("name");
+
+            if (type === "file") {
+                if (element.files && element.files[0]) {
+                    frmData.append(name, element.files[0]);
+                }
             } else {
-                //console.log("frm.append : ", $(this).attr("name"), $(this).val(), $(this).is(":checked"));
                 // In the case of a checkbox, if it is not checked, the value is not passed.
-                if (!($(this).attr("type") == "checkbox" && !$(this).is(":checked"))) frmData.append($(this).attr("name"), $(this).val());
+                if (!(type === "checkbox" && !element.checked)) {
+                    frmData.append(name, element.value);
+                }
             }
         });
     }
@@ -34,7 +45,7 @@ function _ajaxOpt(url, frm)
         url: url,
         method: "POST",
         data: frmData,
-        xhrFields: { withCredentials: true },
+        credentials: 'include',
         statusCode: {
             404: function() {
                 alert('페이지를 찾을 수 없습니다. (404)');
@@ -54,12 +65,24 @@ function callAjax(url, frm, successCallback, errorCallback, _this = null)
 {
     let opt = _ajaxOpt(url, frm);
 
-    //console.log(typeof frmData, opt);return;
-
-    $.ajax(opt).done(function(result, textStatus, jqXHR) {
+    fetch(opt.url, {
+        method: opt.method,
+        body: opt.data,
+        credentials: opt.credentials
+    })
+    .then(response => {
+        if (response.status === 404) {
+            opt.statusCode[404]();
+            throw new Error('404 Not Found');
+        }
+        if (response.status === 500) {
+            opt.statusCode[500]();
+            throw new Error('500 Server Error');
+        }
+        return response.json();
+    })
+    .then(result => {
         if (!result || result.constructor != Object || !("data" in result) || !("error" in result) || !("errCode" in result.error)) {
-            //console.log(textStatus);
-            //console.log(jqXHR);
             if (errorCallback) {
                 errorCallback(result, _this);
             } else {
@@ -87,11 +110,12 @@ function callAjax(url, frm, successCallback, errorCallback, _this = null)
                     return false;
             }
         }
-    }).fail(function(e) {
+    })
+    .catch(error => {
         if (errorCallback) {
-            errorCallback(e, _this);
+            errorCallback(error, _this);
         } else {
-            console.log(e);
+            console.log(error);
             alert("서버 호출시 문제가 발생하였습니다. 잠시 후 다시 시도해주세요.");
         }
         return false;
@@ -102,7 +126,18 @@ async function ajaxSync(url, frm)
 {
     try {
         const opt = _ajaxOpt(url, frm);
-        const result = await $.ajax(opt);
+
+        const response = await fetch(opt.url, {
+            method: opt.method,
+            body: opt.data,
+            credentials: opt.credentials
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const result = await response.json();
 
         if (!result || result.constructor !== Object || !("data" in result) || !("error" in result) || !("errCode" in result.error)) {
             console.log(result);
@@ -130,9 +165,12 @@ async function ajaxSync(url, frm)
 
 function valueForSelect(id, defaultValue) {
     let obj = null;
-    if (typeof id == "string") obj = $("#"+id);
-    if (typeof id == "object") obj = id;
-    let v = obj.val();
+    if (typeof id == "string") {
+        obj = document.getElementById(id);
+    } else if (id instanceof HTMLElement) {
+        obj = id;
+    }
+    let v = obj ? obj.value : undefined;
     if (v == undefined) return defaultValue;
     if (v) return v;
     return defaultValue;
@@ -178,33 +216,40 @@ function getParam(k, defaultValue)
 }
 
 // retrieves the computed CSS styles of an HTML element and converts them into a JavaScript object
-// example : let styles = $("#element").getStyleObject();
+// example : let styles = getStyleObject(document.getElementById("element"));
 // styles : {width: "100px", height: "100px", ...}
-jQuery.prototype.getStyleObject = function (str) {
-    let dom = this.get(0);
+function getStyleObject(element) {
     let style;
     let returns = {};
-    if(window.getComputedStyle){
-        let camelize = function(a,b){
+
+    if (window.getComputedStyle) {
+        let camelize = function(a, b) {
             return b.toUpperCase();
         };
-        style = window.getComputedStyle(dom, null);
-        for(let i = 0, l = style.length; i < l; i++){
+        style = window.getComputedStyle(element, null);
+        for (let i = 0, l = style.length; i < l; i++) {
             let prop = style[i];
             let camel = prop.replace(/\-([a-z])/g, camelize);
             let val = style.getPropertyValue(prop);
             returns[camel] = val;
-        };
+        }
         return returns;
-    };
-    if(style = dom.currentStyle){
-        for(let prop in style){
+    }
+
+    if (style = element.currentStyle) {
+        for (let prop in style) {
             returns[prop] = style[prop];
-        };
+        }
         return returns;
-    };
-    return this.css();
+    }
+
+    return {};
 }
+
+// HTMLElement prototype method for convenience
+HTMLElement.prototype.getStyleObject = function() {
+    return getStyleObject(this);
+};
 
 // Cut to length of string. (Korean processing)
 String.prototype.cut = function(len) {
@@ -321,7 +366,7 @@ function sortKeysDescending(obj) {
     items.sort(function(first, second) { return second[0].localeCompare(first[0]); });
 
     let sorted_obj = {};
-    $.each(items, function(index, value) {
+    items.forEach(function(value) {
         let key = value[0];
         let val = value[1];
         sorted_obj[key] = val;
@@ -335,17 +380,21 @@ function checkValidityForm(frm, passwdConfirmCustomMessage = "Password does not 
     let frmObj = null;
     let pwList = [];
 
-    if (typeof frm === 'string') { frmObj = $("#" + frm); }
-    else if (frm instanceof jQuery) { frmObj = frm; }
-    else if (frm instanceof HTMLElement) { frmObj = $(frm); }
-    else return false;
+    if (typeof frm === 'string') {
+        frmObj = document.getElementById(frm);
+    } else if (frm instanceof HTMLElement) {
+        frmObj = frm;
+    } else {
+        return false;
+    }
 
-    frmObj.find("input[type=password]").each(function() {
-        let elementId = $(this).attr("id") || $(this).attr("name");
+    const passwordInputs = frmObj.querySelectorAll("input[type=password]");
+    passwordInputs.forEach(element => {
+        let elementId = element.getAttribute("id") || element.getAttribute("name");
         if (elementId) {
             pwList.push({
                 id: elementId,
-                element: $(this)
+                element: element
             });
         }
     });
@@ -357,14 +406,14 @@ function checkValidityForm(frm, passwdConfirmCustomMessage = "Password does not 
                 let originalPw = pwList.find(function(pw) { return pw.id === str; });
 
                 if (originalPw) {
-                    let originalVal = originalPw.element.val();
-                    let confirmVal = o.element.val();
+                    let originalVal = originalPw.element.value;
+                    let confirmVal = o.element.value;
 
                     if (originalVal != confirmVal) {
-                        o.element[0].setCustomValidity(passwdConfirmCustomMessage);
+                        o.element.setCustomValidity(passwdConfirmCustomMessage);
                         return false;
                     } else {
-                        o.element[0].setCustomValidity("");
+                        o.element.setCustomValidity("");
                     }
                 }
             }
@@ -372,7 +421,7 @@ function checkValidityForm(frm, passwdConfirmCustomMessage = "Password does not 
     }
 
     // check validity
-    if (!frmObj[0].checkValidity()) { frmObj[0].reportValidity(); return false; }
+    if (!frmObj.checkValidity()) { frmObj.reportValidity(); return false; }
 
     return true;
 }
@@ -409,17 +458,27 @@ function getStringPixelWidth(str, element) {
 String.prototype.stringWidth = function(font, fontSize) {
     let tt = this.toLowerCase().split(/\n|<br>|<br\/>|<br \/>|<p>/);
     let max_tt = "";
-    for(i=0;i<tt.length;i++) if (max_tt.length < tt[i].length) max_tt = tt[i];
+    for (let i = 0; i < tt.length; i++) {
+        if (max_tt.length < tt[i].length) max_tt = tt[i];
+    }
 
     let fs = "1.2rem";
     if (fontSize) fs = fontSize;
-    let f = font || fs + " 'Pretendard GOV Variable'",
-        o = $('<div></div>')
-            .text(max_tt)
-            .css({'position': 'absolute', 'float': 'left', 'white-space': 'nowrap', 'visibility': 'hidden', 'font': f})
-            .appendTo($('body')),
-        w = o.width();
-    o.remove();
+    let f = font || fs + " 'Pretendard GOV Variable'";
+
+    // Create temporary element to measure width
+    let tempDiv = document.createElement('div');
+    tempDiv.textContent = max_tt;
+    tempDiv.style.position = 'absolute';
+    tempDiv.style.float = 'left';
+    tempDiv.style.whiteSpace = 'nowrap';
+    tempDiv.style.visibility = 'hidden';
+    tempDiv.style.font = f;
+
+    document.body.appendChild(tempDiv);
+    let w = tempDiv.offsetWidth;
+    document.body.removeChild(tempDiv);
+
     w += 50;
     if (w < 400) w = 400;
     if (w > 1200) w = 1200;

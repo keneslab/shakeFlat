@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="ko" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sfUI - Demo & Examples</title>
+
+    <!-- Bootstrap Icons (optional, for better icons) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+    <!-- sfUI CSS -->
+    <link rel="stylesheet" href="dist/sfui.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--sfui-body-color);
+            background: var(--sfui-body-bg);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            margin-bottom: 40px;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 20px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .section {
+            background: var(--sfui-modal-bg);
+            color: var(--sfui-modal-color);
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: var(--sfui-shadow-sm);
+            border: 1px solid var(--sfui-border-color);
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .demo-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .demo-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .demo-btn.primary { background: #007bff; color: white; }
+        .demo-btn.success { background: #28a745; color: white; }
+        .demo-btn.danger { background: #dc3545; color: white; }
+        .demo-btn.warning { background: #ffc107; color: #212529; }
+        .demo-btn.info { background: #17a2b8; color: white; }
+        .demo-btn.secondary { background: #6c757d; color: white; }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .gallery img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .gallery img:hover {
+            transform: scale(1.05);
+        }
+
+        .demo-input {
+            width: 100%;
+            max-width: 400px;
+            padding: 10px;
+            border: 1px solid var(--sfui-input-border);
+            background: var(--sfui-input-bg);
+            color: var(--sfui-input-color);
+            border-radius: 5px;
+            font-size: 14px;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+
+        .code-block {
+            background: var(--sfui-input-bg);
+            color: var(--sfui-input-color);
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 4px solid #667eea;
+            margin: 15px 0;
+            overflow-x: auto;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .code-block code {
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            color: #e83e8c;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .theme-toggle {
+                top: 10px;
+                right: 10px;
+                font-size: 16px;
+                padding: 6px 12px;
+            }
+
+            .gallery {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+                <i class="bi bi-sun-fill" id="themeIcon"></i>
+                <span id="themeText">Light</span>
+            </button>
+            <h1>🎨 sfUI</h1>
+            <p>Unified UI Component Library v1.0.0</p>
+            <p style="font-size: 0.9rem; margin-top: 10px;">Vanilla JavaScript • Zero Dependencies • Modern Design</p>
+        </div>
+
+        <!-- Alert Examples -->
+        <div class="section">
+            <h2>📢 Alert Component</h2>
+            <p>Beautiful alert, notification, confirm, and input dialogs</p>
+
+            <div class="btn-group">
+                <button class="demo-btn primary" onclick="sfUI.alert.alert('This is a simple alert!')">
+                    Simple Alert
+                </button>
+                <button class="demo-btn info" onclick="sfUI.alert.noti('This is a notification message')">
+                    Notification
+                </button>
+                <button class="demo-btn success" onclick="sfUI.alert.confirm('Are you sure?', () => sfUI.alert.noti('Yes clicked!'), () => sfUI.alert.noti('No clicked!'))">
+                    Confirm Dialog
+                </button>
+                <button class="demo-btn warning" onclick="sfUI.alert.inputConfirm('Enter your name:', (value) => sfUI.alert.noti('Hello, ' + value + '!'))">
+                    Input Dialog
+                </button>
+                <button class="demo-btn danger" onclick="sfUI.alert.alertBack('This will go back!')">
+                    Alert & Go Back
+                </button>
+            </div>
+
+            <div class="code-block">
+                <code>sfUI.alert.alert('Hello World!');</code><br>
+                <code>sfUI.alert.confirm('Sure?', yesCallback, noCallback);</code><br>
+                <code>sfUI.alert.inputConfirm('Name?', callback);</code>
+            </div>
+        </div>
+
+        <!-- Modal Examples -->
+        <div class="section">
+            <h2>🪟 Modal Component</h2>
+            <p>Reusable modal dialogs with customizable content</p>
+
+            <div class="btn-group">
+                <button class="demo-btn primary" onclick="showSimpleModal()">
+                    Simple Modal
+                </button>
+                <button class="demo-btn success" onclick="showModalWithForm()">
+                    Modal with Form
+                </button>
+                <button class="demo-btn info" onclick="showLargeModal()">
+                    Large Modal
+                </button>
+            </div>
+
+            <div class="code-block">
+                <code>const modal = sfUI.modal.create('myModal', { title: 'Title', body: { html: 'Content' } });</code><br>
+                <code>modal.show();</code><br>
+                <code>modal.setBody('New content');</code>
+            </div>
+        </div>
+
+        <!-- LightBox Examples -->
+        <div class="section">
+            <h2>🖼️ LightBox Component</h2>
+            <p>Image gallery with smooth transitions and keyboard navigation</p>
+
+            <div class="gallery">
+                <img src="https://picsum.photos/400/300?random=1"
+                     data-sflightbox="gallery1"
+                     data-caption="Beautiful Landscape 1"
+                     alt="Image 1">
+                <img src="https://picsum.photos/400/300?random=2"
+                     data-sflightbox="gallery1"
+                     data-caption="Beautiful Landscape 2"
+                     alt="Image 2">
+                <img src="https://picsum.photos/400/300?random=3"
+                     data-sflightbox="gallery1"
+                     data-caption="Beautiful Landscape 3"
+                     alt="Image 3">
+                <img src="https://picsum.photos/400/300?random=4"
+                     data-sflightbox="gallery1"
+                     data-caption="Beautiful Landscape 4"
+                     alt="Image 4">
+                <img src="https://picsum.photos/400/300?random=5"
+                     data-sflightbox="gallery1"
+                     data-caption="Beautiful Landscape 5"
+                     alt="Image 5">
+                <img src="https://picsum.photos/400/300?random=6"
+                     data-sflightbox="gallery1"
+                     data-caption="Beautiful Landscape 6"
+                     alt="Image 6">
+            </div>
+
+            <div class="code-block">
+                <code>&lt;img data-sflightbox="gallery1" data-caption="Caption" src="image.jpg"&gt;</code><br>
+                <code>sfUI.lightbox.init('[data-sflightbox]');</code>
+            </div>
+        </div>
+
+        <!-- RangeSlider Examples -->
+        <div class="section">
+            <h2>🎚️ RangeSlider Component</h2>
+            <p>Interactive range slider for number inputs</p>
+
+            <div style="margin: 20px 0;">
+                <label for="priceRange" style="display: block; margin-bottom: 10px; font-weight: bold;">
+                    Price Range:
+                </label>
+                <input type="text"
+                       id="priceRange"
+                       class="demo-input"
+                       data-sfrangeslider
+                       data-min="0"
+                       data-max="1000000"
+                       data-thousands=","
+                       data-prefix="$"
+                       placeholder="Click to select range">
+            </div>
+
+            <div style="margin: 20px 0;">
+                <label for="yearRange" style="display: block; margin-bottom: 10px; font-weight: bold;">
+                    Year Range:
+                </label>
+                <input type="text"
+                       id="yearRange"
+                       class="demo-input"
+                       data-sfrangeslider
+                       data-min="1900"
+                       data-max="2025"
+                       placeholder="Click to select range">
+            </div>
+
+            <div class="code-block">
+                <code>&lt;input data-sfrangeslider data-min="0" data-max="1000000" data-prefix="$"&gt;</code><br>
+                <code>sfUI.rangeslider.init('#input', { min: 0, max: 1000000, prefix: '$' });</code>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="section">
+            <h2>📋 Sidebar</h2>
+            <p>Responsive sidebar menu component with full, mini, and hide modes</p>
+
+            <div class="btn-group">
+                <button class="demo-btn primary" onclick="demoSidebarCreate()">
+                    Create Sidebar
+                </button>
+                <button class="demo-btn success" onclick="demoSidebarModes()">
+                    Toggle Modes
+                </button>
+                <button class="demo-btn info" onclick="demoSidebarLock()">
+                    Toggle Lock
+                </button>
+            </div>
+
+            <div class="code-block">
+                <code>&lt;sf-sidebar menu-src="/menu.json" mode="full" theme="light"&gt;&lt;/sf-sidebar&gt;</code><br>
+                <code>const sidebar = sfUI.sidebar.create('#container', { menuSrc: '/menu.json' });</code><br>
+                <code>sfUI.sidebar.setMode(sidebar, 'mini'); // 'full', 'mini', 'hide'</code><br>
+                <code>sfUI.sidebar.toggleLock(sidebar);</code>
+            </div>
+
+            <div style="margin-top: 20px; padding: 15px; background: rgba(102, 126, 234, 0.1); border-radius: 8px;">
+                <p><strong>Note:</strong> The sidebar component is best demonstrated in a full layout. Check the SF-SIDEBAR-README.md for complete examples.</p>
+                <p style="margin-top: 10px;">
+                    <strong>Menu JSON Structure:</strong>
+                </p>
+                <pre style="background: rgba(0,0,0,0.1); padding: 15px; border-radius: 4px; overflow-x: auto; margin-top: 10px;">
+{
+  "menu": [
+    {
+      "title": "Dashboard",
+      "icon": "bi-speedometer2",
+      "link": "/dashboard"
+    },
+    {
+      "title": "Users",
+      "icon": "bi-people",
+      "sub": [
+        { "title": "List", "link": "/users/list" },
+        { "title": "Add", "link": "/users/add" }
+      ]
+    }
+  ]
+}</pre>
+            </div>
+        </div>
+
+        <!-- Utilities -->
+        <div class="section">
+            <h2>🛠️ Utilities</h2>
+            <p>Helper functions for common tasks</p>
+
+            <div class="btn-group">
+                <button class="demo-btn primary" onclick="demoFormatNumber()">
+                    Format Number
+                </button>
+                <button class="demo-btn success" onclick="demoShortNumber()">
+                    Short Number
+                </button>
+                <button class="demo-btn info" onclick="demoTheme()">
+                    Get Theme
+                </button>
+                <button class="demo-btn warning" onclick="sfUI.setLanguage(sfUI.getLanguage() === 'ko' ? 'en' : 'ko'); sfUI.alert.noti('Language changed to ' + sfUI.getLanguage())">
+                    Toggle Language
+                </button>
+                <button class="demo-btn secondary" onclick="toggleTheme()">
+                    <i class="bi bi-moon-stars-fill"></i> Toggle Theme
+                </button>
+            </div>
+
+            <div class="code-block">
+                <code>sfUI.formatNumber(1234567.89, 2, '.', ','); // "1,234,567.89"</code><br>
+                <code>sfUI.formatNumberShort(1500000); // "1.5M"</code><br>
+                <code>sfUI.getTheme(); // "light" or "dark"</code><br>
+                <code>sfUI.setLanguage('en'); // Set language</code>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="section" style="text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+            <h3>🎉 Ready to Use!</h3>
+            <p>Check the README.md for complete documentation</p>
+            <p style="margin-top: 15px; opacity: 0.8;">
+                Made with ❤️ by ShakeFlat Team
+            </p>
+        </div>
+    </div>
+
+    <!-- sfUI JavaScript -->
+    <script src="dist/sfui.js"></script>
+
+    <script>
+        // Theme toggle function
+        function toggleTheme() {
+            const newTheme = sfUI.toggleTheme();
+            updateThemeUI(newTheme);
+        }
+
+        // Update theme UI indicators
+        function updateThemeUI(theme) {
+            const icon = document.getElementById('themeIcon');
+            const text = document.getElementById('themeText');
+
+            if (theme === 'dark') {
+                icon.className = 'bi bi-moon-stars-fill';
+                text.textContent = 'Dark';
+            } else {
+                icon.className = 'bi bi-sun-fill';
+                text.textContent = 'Light';
+            }
+        }
+
+        // Initialize theme UI on load
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentTheme = sfUI.getTheme();
+            updateThemeUI(currentTheme);
+
+            // Listen for theme changes
+            sfUI.onThemeChange(function(theme) {
+                updateThemeUI(theme);
+                console.log('Theme changed to:', theme);
+            });
+        });
+
+        // Modal Examples
+        function showSimpleModal() {
+            const modal = sfUI.modal.create('simpleModal', {
+                title: 'Simple Modal',
+                body: {
+                    html: '<p>This is a simple modal with default settings.</p><p>You can put any HTML content here!</p>'
+                }
+            });
+            modal.show();
+        }
+
+        function showModalWithForm() {
+            const modal = sfUI.modal.create('formModal', {
+                title: 'Contact Form',
+                body: {
+                    html: `
+                        <form id="contactForm">
+                            <div style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px;">Name:</label>
+                                <input type="text" class="sfui-form-control" name="name" required>
+                            </div>
+                            <div style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px;">Email:</label>
+                                <input type="email" class="sfui-form-control" name="email" required>
+                            </div>
+                            <div style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px;">Message:</label>
+                                <textarea class="sfui-form-control" name="message" rows="4" required></textarea>
+                            </div>
+                        </form>
+                    `
+                },
+                footer: {
+                    submit: {
+                        enable: true,
+                        text: 'Submit',
+                        callback: function() {
+                            const form = document.getElementById('contactForm');
+                            if (form.checkValidity()) {
+                                sfUI.alert.noti('Form submitted successfully!');
+                                modal.hide();
+                            } else {
+                                sfUI.alert.alert('Please fill in all fields');
+                            }
+                        }
+                    }
+                }
+            });
+            modal.show();
+        }
+
+        function showLargeModal() {
+            const modal = sfUI.modal.create('largeModal', {
+                title: 'Large Modal with Long Content',
+                dialogClass: 'sfui-modal-lg',
+                dialogStyle: 'max-width: 800px;',
+                body: {
+                    html: `
+                        <h4>Lorem Ipsum</h4>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                        <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                        <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                        <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                        <h4>More Content</h4>
+                        <p>This modal can scroll if the content is too long for the screen.</p>
+                    `
+                }
+            });
+            modal.show();
+        }
+
+        // Utility Demos
+        function demoFormatNumber() {
+            const formatted = sfUI.formatNumber(1234567.89, 2, '.', ',');
+            sfUI.alert.noti(`Formatted: ${formatted}`);
+        }
+
+        function demoShortNumber() {
+            const short = sfUI.formatNumberShort(1500000);
+            sfUI.alert.noti(`Short form: ${short}`);
+        }
+
+        function demoTheme() {
+            const theme = sfUI.getTheme();
+            sfUI.alert.noti(`Current theme: ${theme}`);
+        }
+
+        // Range slider event listener
+        document.getElementById('priceRange').addEventListener('apply.sfrangeslider', function(e) {
+            console.log('Price range:', e.detail.min, '-', e.detail.max);
+        });
+
+        document.getElementById('yearRange').addEventListener('apply.sfrangeslider', function(e) {
+            console.log('Year range:', e.detail.min, '-', e.detail.max);
+        });
+
+        // Sidebar demos
+        let demoSidebar = null;
+
+        function demoSidebarCreate() {
+            const menuData = [
+                {
+                    title: "Dashboard",
+                    icon: "bi-speedometer2",
+                    link: "#dashboard"
+                },
+                {
+                    title: "Users",
+                    icon: "bi-people",
+                    sub: [
+                        { title: "User List", link: "#users/list" },
+                        { title: "Add User", link: "#users/add" }
+                    ]
+                },
+                {
+                    title: "Settings",
+                    icon: "bi-gear",
+                    link: "#settings"
+                }
+            ];
+
+            const modal = sfUI.modal.create('sidebarDemo', {
+                title: 'Sidebar Demo',
+                dialogClass: 'sfui-modal-lg',
+                dialogStyle: 'max-width: 900px; height: 600px;',
+                body: {
+                    html: `
+                        <div style="display: flex; height: 500px; gap: 10px;">
+                            <div id="sidebarContainer" style="height: 100%;"></div>
+                            <div style="flex: 1; padding: 20px; background: rgba(0,0,0,0.05); border-radius: 8px;">
+                                <h4>Content Area</h4>
+                                <p>The sidebar can switch between:</p>
+                                <ul>
+                                    <li><strong>Full mode:</strong> Shows icons and text</li>
+                                    <li><strong>Mini mode:</strong> Shows only icons</li>
+                                    <li><strong>Hide mode:</strong> Completely hidden</li>
+                                </ul>
+                                <p style="margin-top: 20px;">Hover over the mini sidebar to temporarily expand it.</p>
+                            </div>
+                        </div>
+                    `
+                },
+                footer: {
+                    close: { enable: true }
+                }
+            });
+
+            modal.show();
+
+            // Create sidebar after modal is shown
+            setTimeout(() => {
+                const container = document.querySelector('#sidebarContainer');
+                if (container) {
+                    demoSidebar = document.createElement('sf-sidebar');
+                    demoSidebar.setAttribute('mode', 'full');
+                    demoSidebar.setAttribute('theme', sfUI.getTheme());
+
+                    // Append to container
+                    container.appendChild(demoSidebar);
+
+                    // Wait for component to be ready, then set menu data directly
+                    setTimeout(() => {
+                        demoSidebar.setMenuData(menuData);
+                    }, 100);
+                }
+            }, 100);
+        }
+
+        function demoSidebarModes() {
+            if (!demoSidebar) {
+                sfUI.alert.alert('Please create a sidebar demo first!');
+                return;
+            }
+
+            const currentMode = demoSidebar.getMode();
+            const modes = ['full', 'mini', 'hide'];
+            const currentIndex = modes.indexOf(currentMode);
+            const nextMode = modes[(currentIndex + 1) % modes.length];
+
+            demoSidebar.setMode(nextMode);
+            sfUI.alert.noti(`Mode changed to: ${nextMode}`);
+        }
+
+        function demoSidebarLock() {
+            if (!demoSidebar) {
+                sfUI.alert.alert('Please create a sidebar demo first!');
+                return;
+            }
+
+            demoSidebar.toggleLock();
+            const isLocked = demoSidebar.isLocked();
+            sfUI.alert.noti(`Sidebar ${isLocked ? 'locked' : 'unlocked'}`);
+        }
+    </script>
+</body>
+</html>

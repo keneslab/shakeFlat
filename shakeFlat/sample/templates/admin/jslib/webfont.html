@@ -1,0 +1,1031 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/dark.min.css">
+
+<!-- ============================================== -->
+<!-- ALREADY IMPLEMENTED IN PRODUCTION             -->
+<!-- ============================================== -->
+<!-- ✓ sfUI is already loaded in layout.html (line 33-34)                  -->
+<!-- ✓ Font preconnect & preload in layout.html (lines 13-16)              -->
+<!-- ✓ Font Loader library in layout.html (lines 18-19)                    -->
+<!-- ✓ Font injection script in layout.html (after body)                   -->
+<!-- ============================================== -->
+
+<style>
+/* ============================================== */
+/* Note: 테마 전환 및 색상 변수는 이미 구현되어 있습니다 */
+/* ✓ template-admin.css에서 CSS 변수로 관리     */
+/* ✓ template-admin.js에서 테마 전환 처리       */
+/* ============================================== */
+
+/* 공통 스타일 */
+.example-section {
+    background: var(--bs-body-bg);
+    border: 1px solid var(--bs-border-color);
+    transition: all 0.3s ease;
+}
+
+.example-section:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.code-section {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: var(--bs-secondary-bg);
+    border-radius: 0.375rem;
+    border: 1px solid var(--bs-border-color);
+}
+
+pre {
+    margin-bottom: 0;
+    background: var(--bs-dark-bg-subtle);
+    border-radius: 0.375rem;
+    padding: 1rem;
+    overflow-x: auto;
+}
+
+code {
+    color: var(--bs-code-color);
+    font-family: 'Courier New', monospace;
+}
+
+.font-demo {
+    font-size: 24px;
+    line-height: 1.6;
+}
+
+/* ============================================== */
+/* ✓ ALREADY IMPLEMENTED in template-admin.js   */
+/* sfThemeManager가 자동으로 테마 전환 처리     */
+/* ============================================== */
+/* Smooth theme transitions */
+* {
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.demo-btn {
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s;
+    border: none;
+}
+
+.demo-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.bg-light-custom {
+    background-color: var(--bs-secondary-bg);
+}
+</style>
+
+<!-- 소개 섹션 -->
+<div class="row mb-3">
+    <div class="col-12">
+        <div class="card example-section">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="bi bi-fonts me-2"></i>sfUI 웹폰트 주입 기능</h5>
+            </div>
+            <div class="card-body">
+                <p class="lead">sfUI에 새로 추가된 웹폰트 주입 기능을 사용하면 동적으로 웹폰트를 로드하고 관리할 수 있습니다.</p>
+
+                <div class="alert alert-success mb-3">
+                    <h6 class="alert-heading"><i class="bi bi-check-circle-fill me-2"></i>이미 프로덕션에 적용됨</h6>
+                    <ul class="mb-0">
+                        <li><strong>layout.html (13-19줄):</strong> 웹폰트 사전 로드 (preconnect, Font Loader)</li>
+                        <li><strong>layout.html (33-34줄):</strong> sfUI 라이브러리 로드</li>
+                        <li><strong>template-admin.js:</strong> 테마 관리 (sfThemeManager)</li>
+                        <li><strong>template-admin.css:</strong> CSS 변수를 통한 테마 스타일 정의</li>
+                    </ul>
+                </div>
+
+                <h6 class="mt-4 mb-3"><i class="bi bi-star-fill text-warning me-2"></i>주요 기능:</h6>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Google Fonts 또는 외부 CSS 파일에서 폰트 로드</li>
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>로컬 폰트 파일 (WOFF2, WOFF, TTF 등) 로드</li>
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>여러 폰트를 한 번에 로드</li>
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>폰트 로딩 상태 확인</li>
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>폰트 로딩 완료 대기</li>
+                </ul>
+
+                <div class="alert alert-info mt-4 mb-0">
+                    <i class="bi bi-info-circle-fill me-2"></i>
+                    <strong>참고:</strong> 모든 예제는 sfUI Core에 내장된 <code>sfUICore</code> 객체를 사용합니다.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 예제 1: Google Fonts 로드 -->
+<div class="row mb-3">
+    <div class="col-12">
+        <div class="card example-section">
+            <div class="card-header">
+                <h5><i class="bi bi-1-circle-fill text-primary me-2"></i>예제 1: Google Fonts 로드</h5>
+            </div>
+            <div class="card-body">
+                <p>Google Fonts API를 사용하여 웹폰트를 동적으로 로드합니다.</p>
+
+                <div class="mb-3">
+                    <button id="btn-load-google-font" class="btn btn-primary demo-btn">
+                        <i class="bi bi-cloud-download me-2"></i>Google Font 로드하기
+                    </button>
+                    <button id="btn-check-google-font" class="btn btn-secondary demo-btn ms-2">
+                        <i class="bi bi-search me-2"></i>로드 상태 확인
+                    </button>
+                </div>
+
+                <div id="google-font-demo" class="mt-3 p-3 border rounded bg-light-custom font-demo">
+                    이 텍스트는 Noto Serif KR 폰트로 표시됩니다. (세리프 명조체)<br>
+                    This text will be displayed in Noto Serif KR font.
+                </div>
+
+                <div class="code-section">
+                    <h6><i class="bi bi-code-slash me-2"></i>코드 예제</h6>
+                    <pre><code class="language-javascript">// Google Fonts 로드 - 명조체(세리프)
+sfUICore.loadFont({
+    family: 'Noto Serif KR',
+    src: 'https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&display=swap'
+}).then(() => {
+    console.log('Google Font loaded!');
+    document.getElementById('google-font-demo').style.fontFamily = 'Noto Serif KR';
+});</code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 예제 2: 로컬 폰트 파일 로드 -->
+<div class="row mb-3">
+    <div class="col-12">
+        <div class="card example-section">
+            <div class="card-header">
+                <h5><i class="bi bi-2-circle-fill text-primary me-2"></i>예제 2: 로컬 폰트 파일 로드</h5>
+            </div>
+            <div class="card-body">
+                <p>서버에 저장된 로컬 폰트 파일을 직접 로드합니다. WOFF2, WOFF, TTF 등 다양한 형식을 지원합니다.</p>
+
+                <div class="mb-3">
+                    <button id="btn-load-local-font" class="btn btn-primary demo-btn">
+                        <i class="bi bi-file-earmark-font me-2"></i>로컬 폰트 로드하기
+                    </button>
+                    <button id="btn-check-local-font" class="btn btn-secondary demo-btn ms-2">
+                        <i class="bi bi-search me-2"></i>로드 상태 확인
+                    </button>
+                </div>
+
+                <div id="local-font-demo" class="mt-3 p-3 border rounded bg-light-custom font-demo">
+                    이 텍스트는 Black Han Sans 폰트로 표시됩니다. (굵은 고딕체)<br>
+                    Black Han Sans는 강한 임팩트를 주는 서체입니다.
+                </div>
+
+                <div class="code-section">
+                    <h6><i class="bi bi-code-slash me-2"></i>코드 예제</h6>
+                    <pre><code class="language-javascript">// Google Fonts 로드 - 굵은 고딕체
+sfUICore.loadFont({
+    family: 'Black Han Sans',
+    src: 'https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap',
+    weight: 400,
+    style: 'normal',
+    display: 'swap'
+}).then(() => {
+    console.log('Local font loaded!');
+    document.getElementById('local-font-demo').style.fontFamily = 'Black Han Sans';
+});</code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 예제 3: 여러 소스를 가진 폰트 로드 -->
+<div class="row mb-3">
+    <div class="col-12">
+        <div class="card example-section">
+            <div class="card-header">
+                <h5><i class="bi bi-3-circle-fill text-primary me-2"></i>예제 3: 여러 소스를 가진 폰트 로드 (Fallback)</h5>
+            </div>
+            <div class="card-body">
+                <p>여러 폰트 형식을 제공하여 브라우저 호환성을 높입니다. 브라우저는 지원하는 첫 번째 형식을 자동으로 선택합니다.</p>
+
+                <div class="mb-3">
+                    <button id="btn-load-multi-source" class="btn btn-primary demo-btn">
+                        <i class="bi bi-stack me-2"></i>다중 소스 폰트 로드하기
+                    </button>
+                </div>
+
+                <div id="multi-source-demo" class="mt-3 p-3 border rounded bg-light-custom font-demo">
+                    이 텍스트는 Nanum Gothic 폰트로 표시됩니다.<br>
+                    나눔고딕은 한글과 영문을 아름답게 표현합니다.
+                </div>
+
+                <div class="code-section">
+                    <h6><i class="bi bi-code-slash me-2"></i>코드 예제</h6>
+                    <pre><code class="language-javascript">// 여러 소스를 가진 폰트 로드 (fallback 지원)
+sfUICore.loadFont({
+    family: 'Nanum Gothic',
+    src: [
+        { url: '/assets/fonts/nanum-gothic-v21-latin_korean/nanum-gothic-v21-latin_korean-regular.woff2', format: 'woff2' },
+        { url: '/assets/fonts/nanum-gothic-v21-latin_korean/nanum-gothic-v21-latin_korean-regular.woff', format: 'woff' },
+        { url: '/assets/fonts/nanum-gothic-v21-latin_korean/nanum-gothic-v21-latin_korean-regular.ttf', format: 'truetype' }
+    ],
+    weight: 400,
+    style: 'normal'
+}).then(() => {
+    console.log('Multi-source font loaded!');
+    document.getElementById('multi-source-demo').style.fontFamily = 'Nanum Gothic';
+});</code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 예제 4: 여러 폰트를 한 번에 로드 -->
+<div class="row mb-3">
+    <div class="col-12">
+        <div class="card example-section">
+            <div class="card-header">
+                <h5><i class="bi bi-4-circle-fill text-primary me-2"></i>예제 4: 여러 폰트를 한 번에 로드</h5>
+            </div>
+            <div class="card-body">
+                <p>배열을 사용하여 여러 폰트를 동시에 로드할 수 있습니다. 모든 폰트 로드가 완료되면 Promise가 resolve됩니다.</p>
+
+                <div class="mb-3">
+                    <button id="btn-load-multiple-fonts" class="btn btn-primary demo-btn">
+                        <i class="bi bi-collection me-2"></i>여러 폰트 로드하기
+                    </button>
+                </div>
+
+                <div class="mt-3">
+                    <div id="multi-font-demo-1" class="p-3 border rounded mb-2 bg-light-custom" style="font-size: 20px;">
+                        <strong>Font 1:</strong> Oswald - Bold and Modern Display Font
+                    </div>
+                    <div id="multi-font-demo-2" class="p-3 border rounded bg-light-custom" style="font-size: 20px;">
+                        <strong>Font 2:</strong> Schibsted Grotesk - Clean and Readable
+                    </div>
+                </div>
+
+                <div class="code-section">
+                    <h6><i class="bi bi-code-slash me-2"></i>코드 예제</h6>
+                    <pre><code class="language-javascript">// 여러 폰트를 배열로 한 번에 로드
+sfUICore.loadFont([
+    {
+        family: 'Oswald',
+        src: '/assets/fonts/oswald-v49/oswald-v49-latin-ext_latin_cyrillic-ext_cyrillic-regular.woff2',
+        weight: 400
+    },
+    {
+        family: 'Schibsted Grotesk',
+        src: '/assets/fonts/Schibsted_Grotesk/static/SchibstedGrotesk-Regular.ttf',
+        weight: 400
+    }
+]).then(() => {
+    console.log('All fonts loaded!');
+    document.getElementById('multi-font-demo-1').style.fontFamily = 'Oswald';
+    document.getElementById('multi-font-demo-2').style.fontFamily = 'Schibsted Grotesk';
+});</code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 예제 5: 폰트 프리로드 및 상태 확인 -->
+<div class="row mb-3">
+    <div class="col-12">
+        <div class="card example-section">
+            <div class="card-header">
+                <h5><i class="bi bi-5-circle-fill text-primary me-2"></i>예제 5: 폰트 프리로드 및 상태 확인</h5>
+            </div>
+            <div class="card-body">
+                <p>폰트를 백그라운드에서 미리 로드하고, 로딩 상태를 확인하며, 캐시를 관리할 수 있습니다.</p>
+
+                <div class="mb-3">
+                    <button id="btn-preload-fonts" class="btn btn-primary demo-btn">
+                        <i class="bi bi-arrow-down-circle me-2"></i>폰트 프리로드
+                    </button>
+                    <button id="btn-show-loaded-fonts" class="btn btn-info demo-btn ms-2">
+                        <i class="bi bi-list-ul me-2"></i>로드된 폰트 목록
+                    </button>
+                    <button id="btn-clear-font-cache" class="btn btn-danger demo-btn ms-2">
+                        <i class="bi bi-trash me-2"></i>폰트 캐시 초기화
+                    </button>
+                </div>
+
+                <div id="font-status" class="mt-3 p-3 border rounded bg-light-custom">
+                    <i class="bi bi-info-circle me-2"></i>
+                    <strong>상태:</strong> <span id="status-text">대기 중</span>
+                </div>
+
+                <div class="code-section">
+                    <h6><i class="bi bi-code-slash me-2"></i>코드 예제</h6>
+                    <pre><code class="language-javascript">// 폰트 프리로드 (백그라운드 로딩)
+sfUICore.preloadFonts([
+    { family: 'Noto Sans KR', src: 'https://fonts.googleapis.com/...' },
+    { family: 'Roboto', src: 'https://fonts.googleapis.com/...' }
+]);
+
+// 폰트 로드 상태 확인
+if (sfUICore.isFontLoaded('Noto Sans KR', 400, 'normal')) {
+    console.log('Font is loaded!');
+}
+
+// 폰트 로딩 대기
+await sfUICore.waitForFont('Noto Sans KR');
+
+// 로드된 모든 폰트 목록
+const loadedFonts = sfUICore.getLoadedFonts();
+console.log(loadedFonts);
+
+// 폰트 캐시 초기화
+sfUICore.clearFontCache();</code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 예제 6: 사전 로드된 폰트 자동 주입 (NEW) -->
+<div class="row mb-3">
+    <div class="col-12">
+        <div class="card example-section border-primary">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="bi bi-lightning-charge-fill me-2"></i>예제 6: 사전 로드된 폰트 자동 주입 (NEW v1.1)</h5>
+            </div>
+            <div class="card-body">
+                <p class="lead">HTML에서 미리 로드한 폰트를 sfUI 웹컴포넌트에 자동으로 주입하여 페이지 초기 로딩 시 깜빡임을 완전히 제거합니다.</p>
+
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle-fill me-2"></i>
+                    <strong>작동 방식:</strong>
+                    <ol class="mb-0 mt-2">
+                        <li>HTML <code>&lt;head&gt;</code>에서 Google Fonts 또는 로컬 폰트를 먼저 로드</li>
+                        <li><code>injectPreloadedFonts()</code>가 document.fonts API로 로드된 폰트 자동 감지</li>
+                        <li>감지된 폰트를 모든 sfUI 웹컴포넌트(사이드바, 모달 등)에 자동 주입</li>
+                        <li>Shadow DOM 내부에도 폰트가 적용되어 일관된 UI 제공</li>
+                    </ol>
+                </div>
+
+                <div class="mb-3">
+                    <button id="btn-inject-preloaded" class="btn btn-primary btn-lg demo-btn">
+                        <i class="bi bi-lightning-charge me-2"></i>사전 로드된 폰트 주입하기
+                    </button>
+                    <button id="btn-show-injected-fonts" class="btn btn-info demo-btn ms-2">
+                        <i class="bi bi-list-check me-2"></i>주입된 폰트 확인
+                    </button>
+                </div>
+
+                <div id="injection-status" class="mt-3 p-3 border rounded bg-light-custom">
+                    <i class="bi bi-info-circle me-2"></i>
+                    <strong>상태:</strong> <span id="injection-status-text">준비됨</span>
+                </div>
+
+                <div class="code-section">
+                    <h6><i class="bi bi-code-slash me-2"></i>HTML에서 폰트 사전 로드 (권장 방법)</h6>
+                    <pre><code class="language-html">&lt;!-- ============================================== --&gt;
+&lt;!-- ✓ ALREADY IMPLEMENTED in layout.html (lines 13-19) --&gt;
+&lt;!-- ============================================== --&gt;
+
+&lt;!-- HTML head에서 폰트 미리 로드 --&gt;
+&lt;link rel="preconnect" href="https://fonts.googleapis.com"&gt;
+&lt;link rel="preconnect" href="https://fonts.gstatic.com" crossorigin&gt;
+&lt;link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=block"&gt;
+
+&lt;!-- Font Loader - FOUC Prevention Library --&gt;
+&lt;link rel="stylesheet" href="/assets/libs/font-loader-1.0.0/font-loader.css"&gt;
+&lt;script src="/assets/libs/font-loader-1.0.0/font-loader.js"&gt;&lt;/script&gt;
+
+&lt;!-- ============================================== --&gt;
+&lt;!-- Note: 아래 스타일과 스크립트는 예제 설명용입니다.       --&gt;
+&lt;!-- Font Loader 라이브러리가 이 기능을 자동으로 제공합니다. --&gt;
+&lt;!-- ============================================== --&gt;
+
+&lt;!-- 폰트 로딩 전 페이지 숨김 (Font Loader가 자동 처리) --&gt;
+&lt;style id="font-loading-styles"&gt;
+    html:not(.fonts-ready) body {
+        visibility: hidden !important;
+    }
+    html.fonts-ready body {
+        visibility: visible !important;
+    }
+&lt;/style&gt;
+
+&lt;script&gt;
+(function() {
+    'use strict';
+
+    // 폰트 로딩 완료 후 페이지 표시 및 자동 주입
+    const initializePage = () => {
+        document.documentElement.classList.add('fonts-ready');
+
+        // 사전 로드된 폰트를 sfUI 컴포넌트에 자동 주입
+        if (window.sfUICore) {
+            sfUICore.injectPreloadedFonts({
+                autoDetect: true,
+                important: false
+            }).then(result => {
+                console.log('✓ Fonts auto-injected:', result);
+            });
+        }
+    };
+
+    // document.fonts.ready를 기다린 후 초기화
+    document.fonts.ready.then(initializePage);
+
+    // 폴백: 3초 후 무조건 표시
+    setTimeout(() => {
+        if (!document.documentElement.classList.contains('fonts-ready')) {
+            initializePage();
+        }
+    }, 3000);
+})();
+&lt;/script&gt;</code></pre>
+                </div>
+
+                <div class="code-section mt-3">
+                    <h6><i class="bi bi-code-slash me-2"></i>특정 폰트만 주입하기</h6>
+                    <pre><code class="language-javascript">// ==============================================
+// ✓ ALREADY IMPLEMENTED in layout.html
+// Font Loader 라이브러리가 자동으로 처리합니다.
+// ==============================================
+
+// 특정 폰트만 sfUI 컴포넌트에 주입
+await sfUICore.injectPreloadedFonts({
+    targetFont: 'Noto Sans KR',  // 특정 폰트만 선택
+    selector: '*',                // 컴포넌트 내 대상 요소
+    important: true               // !important 플래그
+});
+
+// 또는 자동 주입 (DOM Ready 시 자동 실행)
+sfUICore.autoInjectFonts({
+    autoDetect: true
+});</code></pre>
+                </div>
+
+                <div class="alert alert-success mt-3">
+                    <i class="bi bi-check-circle-fill me-2"></i>
+                    <strong>이 페이지에서 이미 사용 중!</strong>
+                    <p class="mb-0 mt-2">
+                        이 데모 페이지는 페이지 로드 시 자동으로 <code>injectPreloadedFonts()</code>를 실행하여
+                        사이드바를 포함한 모든 sfUI 컴포넌트에 Noto Sans KR 폰트를 적용했습니다.
+                        그래서 페이지 로딩 시 깜빡임 없이 일관된 폰트로 표시됩니다.
+                    </p>
+                </div>
+
+                <div class="alert alert-warning mt-3">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    <strong>Best Practice:</strong>
+                    <ul class="mb-0 mt-2">
+                        <li><code>&lt;link rel="preconnect"&gt;</code>로 Google Fonts 서버에 미리 연결</li>
+                        <li>페이지 <code>&lt;head&gt;</code>에서 <code>font-display: block</code>으로 폰트 로드</li>
+                        <li><code>document.fonts.ready</code>를 기다린 후 <code>injectPreloadedFonts()</code> 실행</li>
+                        <li>페이지 visibility를 CSS로 제어하여 폰트 로딩 완료까지 화면 숨김</li>
+                        <li>3초 폴백 타임아웃으로 네트워크 문제 시에도 페이지 표시 보장</li>
+                        <li>✅ 결과: FOUC(Flash of Unstyled Content) 완전 방지!</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 예제 7: 웹컴포넌트에서 웹폰트 사용 -->
+<div class="row mb-3">
+    <div class="col-12">
+        <div class="card example-section">
+            <div class="card-header">
+                <h5><i class="bi bi-7-circle-fill text-primary me-2"></i>예제 7: 웹컴포넌트에서 웹폰트 적용</h5>
+            </div>
+            <div class="card-body">
+                <p>sfUI의 웹컴포넌트(예: sf-sidebar, sf-modal 등)에서도 로드된 웹폰트를 적용할 수 있습니다.</p>
+
+                <div class="mb-3">
+                    <button id="btn-load-component-font" class="btn btn-primary demo-btn">
+                        <i class="bi bi-fonts me-2"></i>폰트 로드 및 적용
+                    </button>
+                    <button id="btn-reset-component-font" class="btn btn-secondary demo-btn ms-2">
+                        <i class="bi bi-arrow-counterclockwise me-2"></i>기본 폰트로 복원
+                    </button>
+                </div>
+
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle-fill me-2"></i>
+                    <strong>데모:</strong> 좌측 사이드바의 폰트가 변경됩니다. 메뉴 텍스트를 확인해보세요!
+                </div>
+
+                <div class="mt-3 p-3 border rounded bg-light-custom">
+                    <h6 class="mb-3"><i class="bi bi-palette me-2"></i>폰트 선택:</h6>
+                    <div class="btn-group mb-3" role="group">
+                        <input type="radio" class="btn-check" name="webcomponent-font" id="font-gaegu" autocomplete="off">
+                        <label class="btn btn-outline-primary" for="font-gaegu">Gaegu (손글씨)</label>
+
+                        <input type="radio" class="btn-check" name="webcomponent-font" id="font-jua" autocomplete="off">
+                        <label class="btn btn-outline-primary" for="font-jua">Jua (귀여운)</label>
+
+                        <input type="radio" class="btn-check" name="webcomponent-font" id="font-dokdo" autocomplete="off">
+                        <label class="btn btn-outline-primary" for="font-dokdo">Dokdo (캐주얼)</label>
+
+                        <input type="radio" class="btn-check" name="webcomponent-font" id="font-single-day" autocomplete="off">
+                        <label class="btn btn-outline-primary" for="font-single-day">Single Day (깔끔)</label>
+                    </div>
+                    <div id="webcomponent-status" class="mt-2 text-muted small">
+                        현재 폰트: 기본 폰트
+                    </div>
+                </div>
+
+                <div class="code-section">
+                    <h6><i class="bi bi-code-slash me-2"></i>코드 예제 - sfUICore API 사용</h6>
+                    <pre><code class="language-javascript">// ==============================================
+// Note: 웹컴포넌트 폰트 적용 기능
+// sfUI 라이브러리에서 제공하는 API입니다.
+// ==============================================
+
+// 1. 폰트 로드
+await sfUICore.loadFont({
+    family: 'Gaegu',
+    src: 'https://fonts.googleapis.com/css2?family=Gaegu&display=swap'
+});
+
+// 2. 단일 웹컴포넌트에 폰트 적용
+const sidebar = document.querySelector('sf-sidebar');
+sfUICore.applyFontToComponent(sidebar, 'Gaegu', {
+    selector: '*',        // 모든 요소에 적용
+    important: true       // !important 플래그 사용
+});
+
+// 3. 여러 컴포넌트에 폰트 적용
+const components = document.querySelectorAll('sf-sidebar, sf-modal');
+sfUICore.applyFontToComponents(components, 'Gaegu');
+
+// 4. 모든 sfUI 웹컴포넌트에 폰트 적용
+sfUICore.applyFontToAllComponents('Gaegu');
+
+// 5. 컴포넌트에서 폰트 제거 (기본 폰트로 복원)
+sfUICore.removeFontFromComponent(sidebar);
+
+// 6. 모든 컴포넌트에서 폰트 제거
+sfUICore.removeFontFromAllComponents();</code></pre>
+                </div>
+
+                <div class="alert alert-success mt-3">
+                    <i class="bi bi-check-circle-fill me-2"></i>
+                    <strong>새로운 API 특징:</strong>
+                    <ul class="mb-0 mt-2">
+                        <li>Shadow DOM 자동 감지 및 처리</li>
+                        <li>여러 컴포넌트 일괄 처리 지원</li>
+                        <li>커스텀 CSS 선택자 지원</li>
+                        <li>에러 핸들링 및 결과 반환</li>
+                    </ul>
+                </div>
+
+                <div class="alert alert-warning mt-3">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    <strong>참고:</strong> 웹컴포넌트가 Shadow DOM을 사용하는 경우,
+                    sfUICore API가 자동으로 Shadow DOM 내부에 스타일을 주입합니다.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- API 참조 -->
+<div class="row mb-3">
+    <div class="col-12">
+        <div class="card example-section">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0"><i class="bi bi-book me-2"></i>API 참조</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead class="table-light">
+                            <tr>
+                                <th width="30%">메서드</th>
+                                <th>설명</th>
+                                <th width="15%">반환값</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>loadFont(fontConfig)</code></td>
+                                <td>웹폰트를 로드합니다. 단일 객체 또는 배열을 받을 수 있습니다.</td>
+                                <td>Promise</td>
+                            </tr>
+                            <tr>
+                                <td><code>isFontLoaded(family, weight, style)</code></td>
+                                <td>폰트가 이미 로드되었는지 확인합니다.</td>
+                                <td>Boolean</td>
+                            </tr>
+                            <tr>
+                                <td><code>waitForFont(family, text, timeout)</code></td>
+                                <td>폰트가 사용 가능할 때까지 대기합니다.</td>
+                                <td>Promise</td>
+                            </tr>
+                            <tr>
+                                <td><code>preloadFonts(fontConfigs)</code></td>
+                                <td>여러 폰트를 백그라운드에서 로드합니다.</td>
+                                <td>Promise</td>
+                            </tr>
+                            <tr>
+                                <td><code>getLoadedFonts()</code></td>
+                                <td>로드된 모든 폰트의 목록을 반환합니다.</td>
+                                <td>Array</td>
+                            </tr>
+                            <tr>
+                                <td><code>clearFontCache()</code></td>
+                                <td>폰트 캐시를 초기화하고 동적으로 생성된 @font-face 규칙을 제거합니다.</td>
+                                <td>void</td>
+                            </tr>
+                            <tr class="table-success">
+                                <td><code>applyFontToComponent(component, fontFamily, options)</code></td>
+                                <td><strong>[NEW]</strong> 웹컴포넌트에 폰트를 적용합니다. Shadow DOM을 자동으로 감지하고 처리합니다.</td>
+                                <td>Boolean</td>
+                            </tr>
+                            <tr class="table-success">
+                                <td><code>applyFontToComponents(components, fontFamily, options)</code></td>
+                                <td><strong>[NEW]</strong> 여러 웹컴포넌트에 폰트를 일괄 적용합니다.</td>
+                                <td>Object</td>
+                            </tr>
+                            <tr class="table-success">
+                                <td><code>applyFontToAllComponents(fontFamily, options)</code></td>
+                                <td><strong>[NEW]</strong> 페이지의 모든 sfUI 웹컴포넌트에 폰트를 적용합니다.</td>
+                                <td>Object</td>
+                            </tr>
+                            <tr class="table-success">
+                                <td><code>removeFontFromComponent(component)</code></td>
+                                <td><strong>[NEW]</strong> 웹컴포넌트에서 커스텀 폰트를 제거하고 기본 폰트로 복원합니다.</td>
+                                <td>Boolean</td>
+                            </tr>
+                            <tr class="table-success">
+                                <td><code>removeFontFromAllComponents()</code></td>
+                                <td><strong>[NEW]</strong> 모든 sfUI 웹컴포넌트에서 커스텀 폰트를 제거합니다.</td>
+                                <td>Number</td>
+                            </tr>
+                            <tr class="table-primary">
+                                <td><code>injectPreloadedFonts(options)</code></td>
+                                <td><strong>[NEW v1.1]</strong> HTML 문서에서 사전 로드된 폰트를 자동으로 감지하여 sfUI 웹컴포넌트에 주입합니다. 페이지 초기 로딩 시 깜빡임 방지에 최적화되어 있습니다.</td>
+                                <td>Promise&lt;Object&gt;</td>
+                            </tr>
+                            <tr class="table-primary">
+                                <td><code>autoInjectFonts(options)</code></td>
+                                <td><strong>[NEW v1.1]</strong> DOM 준비 시 자동으로 사전 로드된 폰트를 주입합니다. 편의 메서드입니다.</td>
+                                <td>Promise&lt;Object&gt;</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="alert alert-warning mt-3">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    <strong>참고:</strong> 폰트 로딩은 비동기 작업입니다. 항상 <code>.then()</code> 또는 <code>await</code>를 사용하여 로딩 완료를 기다린 후 폰트를 적용하세요.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// ==============================================
+// Syntax highlighting 초기화
+// ==============================================
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => hljs.highlightAll());
+} else {
+    hljs.highlightAll();
+}
+
+// ========================================
+// 공통 유틸리티 함수
+// ========================================
+// ✓ Note: sfUI.alert.noti는 sfUI 라이브러리에서 제공
+// ✓ layout.html에서 이미 로드됨
+// ========================================
+
+// 폰트 로드 성공/실패 처리 헬퍼
+function handleFontLoad(family, demoElementId, fallbackFamily = 'sans-serif') {
+    return sfUICore.loadFont(arguments[3] || { family, src: arguments[2] })
+        .then(() => {
+            sfUI.alert.noti(`${family} 폰트가 성공적으로 로드되었습니다!`);
+            document.getElementById(demoElementId).style.fontFamily = `${family}, ${fallbackFamily}`;
+        })
+        .catch(err => {
+            sfUI.alert.noti('폰트 로드 실패: ' + err.message);
+        });
+}
+
+// 폰트 로드 상태 확인 헬퍼
+function checkFontStatus(family, weight = 400, style = 'normal') {
+    const isLoaded = sfUICore.isFontLoaded(family, weight, style);
+    sfUI.alert.noti(isLoaded ? '폰트가 로드되었습니다.' : '폰트가 아직 로드되지 않았습니다.');
+}
+
+// ========================================
+// 예제 1: Google Fonts 로드 - 명조체
+// ========================================
+document.getElementById('btn-load-google-font').addEventListener('click', function() {
+    handleFontLoad(
+        'Noto Serif KR',
+        'google-font-demo',
+        'https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&display=swap',
+        {
+            family: 'Noto Serif KR',
+            src: 'https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&display=swap'
+        }
+    );
+});
+
+document.getElementById('btn-check-google-font').addEventListener('click', () =>
+    checkFontStatus('Noto Serif KR')
+);
+
+// ========================================
+// 예제 2: Google Fonts 로드 - 굵은 고딕체
+// ========================================
+document.getElementById('btn-load-local-font').addEventListener('click', function() {
+    handleFontLoad(
+        'Black Han Sans',
+        'local-font-demo',
+        null,
+        {
+            family: 'Black Han Sans',
+            src: 'https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap',
+            weight: 400,
+            style: 'normal',
+            display: 'swap'
+        }
+    );
+});
+
+document.getElementById('btn-check-local-font').addEventListener('click', () =>
+    checkFontStatus('Black Han Sans')
+);
+
+// ========================================
+// 예제 3: 여러 소스를 가진 폰트 로드
+// ========================================
+document.getElementById('btn-load-multi-source').addEventListener('click', function() {
+    handleFontLoad(
+        'Nanum Gothic',
+        'multi-source-demo',
+        null,
+        {
+            family: 'Nanum Gothic',
+            src: [
+                { url: '/assets/fonts/nanum-gothic-v21-latin_korean/nanum-gothic-v21-latin_korean-regular.woff2', format: 'woff2' },
+                { url: '/assets/fonts/nanum-gothic-v21-latin_korean/nanum-gothic-v21-latin_korean-regular.woff', format: 'woff' },
+                { url: '/assets/fonts/nanum-gothic-v21-latin_korean/nanum-gothic-v21-latin_korean-regular.ttf', format: 'truetype' }
+            ],
+            weight: 400,
+            style: 'normal'
+        }
+    );
+});
+
+// ========================================
+// 예제 4: 여러 폰트를 한 번에 로드
+// ========================================
+document.getElementById('btn-load-multiple-fonts').addEventListener('click', function() {
+    sfUICore.loadFont([
+        {
+            family: 'Oswald',
+            src: '/assets/fonts/oswald-v49/oswald-v49-latin-ext_latin_cyrillic-ext_cyrillic-regular.woff2',
+            weight: 400
+        },
+        {
+            family: 'Schibsted Grotesk',
+            src: '/assets/fonts/Schibsted_Grotesk/static/SchibstedGrotesk-Regular.ttf',
+            weight: 400
+        }
+    ]).then(() => {
+        sfUI.alert.noti('여러 폰트가 성공적으로 로드되었습니다!');
+        document.getElementById('multi-font-demo-1').style.fontFamily = 'Oswald, sans-serif';
+        document.getElementById('multi-font-demo-2').style.fontFamily = 'Schibsted Grotesk, sans-serif';
+    }).catch(err => {
+        sfUI.alert.noti('폰트 로드 실패: ' + err.message);
+    });
+});
+
+// ========================================
+// 예제 5: 폰트 프리로드 및 상태 확인
+// ========================================
+document.getElementById('btn-preload-fonts').addEventListener('click', function() {
+    const statusEl = document.getElementById('status-text');
+    statusEl.textContent = '폰트 프리로드 중...';
+
+    sfUICore.preloadFonts([
+        {
+            family: 'Noto Serif KR',
+            src: 'https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&display=swap'
+        },
+        {
+            family: 'Oswald',
+            src: '/assets/fonts/oswald-v49/oswald-v49-latin-ext_latin_cyrillic-ext_cyrillic-regular.woff2',
+            weight: 400
+        }
+    ]).then(() => {
+        statusEl.innerHTML = '<i class="bi bi-check-circle-fill text-success me-2"></i>모든 폰트가 프리로드되었습니다!';
+        sfUI.alert.noti('폰트 프리로드가 완료되었습니다!');
+    }).catch(err => {
+        statusEl.innerHTML = `<i class="bi bi-x-circle-fill text-danger me-2"></i>프리로드 실패: ${err.message}`;
+        sfUI.alert.noti('폰트 프리로드 실패: ' + err.message);
+    });
+});
+
+document.getElementById('btn-show-loaded-fonts').addEventListener('click', function() {
+    const loadedFonts = sfUICore.getLoadedFonts();
+    const fontList = loadedFonts.length > 0
+        ? '<ul class="list-unstyled mb-0">' +
+          loadedFonts.map(font => `<li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i><code>${font}</code></li>`).join('') +
+          '</ul>'
+        : '<div class="alert alert-warning mb-0"><i class="bi bi-exclamation-triangle me-2"></i>로드된 폰트가 없습니다.</div>';
+
+    sfUI.modal.create('fontListModal', {
+        title: '<i class="bi bi-list-ul me-2"></i>로드된 폰트 목록',
+        body: { html: `<div class="p-3">${fontList}</div>` },
+        size: 'lg'
+    }).show();
+});
+
+document.getElementById('btn-clear-font-cache').addEventListener('click', function() {
+    sfUI.alert.confirm('정말로 폰트 캐시를 초기화하시겠습니까?', function() {
+        sfUICore.clearFontCache();
+        document.getElementById('status-text').innerHTML = '<i class="bi bi-info-circle-fill text-info me-2"></i>폰트 캐시가 초기화되었습니다.';
+        sfUI.alert.noti('폰트 캐시가 초기화되었습니다.');
+    });
+});
+
+// ========================================
+// 예제 6: 웹컴포넌트에서 웹폰트 사용
+// ========================================
+// ✓ Note: document.querySelector('sf-sidebar')는
+// ✓ layout.html의 <sf-sidebar> 컴포넌트를 참조
+// ✓ sf-sidebar는 sfUI 라이브러리의 웹컴포넌트
+// ========================================
+let currentComponentFont = null;
+
+// 폰트 설정 객체
+const componentFonts = {
+    'gaegu': {
+        family: 'Gaegu',
+        src: 'https://fonts.googleapis.com/css2?family=Gaegu&display=swap',
+        displayName: 'Gaegu (손글씨체)'
+    },
+    'jua': {
+        family: 'Jua',
+        src: 'https://fonts.googleapis.com/css2?family=Jua&display=swap',
+        displayName: 'Jua (귀여운 폰트)'
+    },
+    'dokdo': {
+        family: 'Dokdo',
+        src: 'https://fonts.googleapis.com/css2?family=Dokdo&display=swap',
+        displayName: 'Dokdo (캐주얼 폰트)'
+    },
+    'single-day': {
+        family: 'Single Day',
+        src: 'https://fonts.googleapis.com/css2?family=Single+Day&display=swap',
+        displayName: 'Single Day (깔끔한 폰트)'
+    }
+};
+
+// 웹컴포넌트에 폰트 적용 함수
+function applyFontToWebComponent(fontFamily) {
+    const sidebar = document.querySelector('sf-sidebar');
+    if (!sidebar) {
+        sfUI.alert.noti('사이드바 컴포넌트를 찾을 수 없습니다.');
+        return false;
+    }
+
+    const success = sfUICore.applyFontToComponent(sidebar, fontFamily, {
+        selector: '*',
+        important: true
+    });
+
+    if (success) {
+        currentComponentFont = fontFamily;
+        console.log('폰트가 사이드바에 적용되었습니다:', fontFamily);
+    } else {
+        console.error('폰트 적용 실패');
+    }
+
+    return success;
+}
+
+// 폰트 라디오 버튼 이벤트
+document.querySelectorAll('input[name="webcomponent-font"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+        if (!this.checked) return;
+
+        const fontKey = this.id.replace('font-', '');
+        const fontConfig = componentFonts[fontKey];
+        const statusEl = document.getElementById('webcomponent-status');
+
+        statusEl.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>폰트 로드 중...';
+
+        sfUICore.loadFont({
+            family: fontConfig.family,
+            src: fontConfig.src
+        }).then(() => {
+            applyFontToWebComponent(fontConfig.family);
+            statusEl.innerHTML = `<i class="bi bi-check-circle-fill text-success me-2"></i>현재 폰트: ${fontConfig.displayName}`;
+            sfUI.alert.noti(`${fontConfig.displayName}가 사이드바에 적용되었습니다!`);
+        }).catch(err => {
+            statusEl.innerHTML = '<i class="bi bi-x-circle-fill text-danger me-2"></i>폰트 로드 실패';
+            sfUI.alert.noti('폰트 로드 실패: ' + err.message);
+        });
+    });
+});
+
+// 폰트 로드 및 적용 버튼
+document.getElementById('btn-load-component-font').addEventListener('click', function() {
+    const firstRadio = document.getElementById('font-gaegu');
+    firstRadio.checked = true;
+    firstRadio.dispatchEvent(new Event('change'));
+});
+
+// 기본 폰트로 복원 버튼
+document.getElementById('btn-reset-component-font').addEventListener('click', function() {
+    const sidebar = document.querySelector('sf-sidebar');
+    if (!sidebar) return;
+
+    sfUICore.removeFontFromComponent(sidebar);
+
+    document.querySelectorAll('input[name="webcomponent-font"]').forEach(radio => {
+        radio.checked = false;
+    });
+
+    currentComponentFont = null;
+    document.getElementById('webcomponent-status').innerHTML =
+        '<i class="bi bi-info-circle me-2"></i>현재 폰트: 기본 폰트';
+
+    sfUI.alert.noti('기본 폰트로 복원되었습니다.');
+    console.log('기본 폰트로 복원되었습니다.');
+});
+
+// ========================================
+// 예제 7: 사전 로드된 폰트 자동 주입
+// ========================================
+document.getElementById('btn-inject-preloaded').addEventListener('click', function() {
+    const statusEl = document.getElementById('injection-status-text');
+    statusEl.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>폰트 주입 중...';
+
+    sfUICore.injectPreloadedFonts({
+        autoDetect: true,
+        important: false
+    }).then(result => {
+        statusEl.innerHTML = `<i class="bi bi-check-circle-fill text-success me-2"></i>완료! ${result.injectedFonts.length}개 폰트가 ${result.componentsAffected}개 컴포넌트에 주입됨`;
+
+        const message = `
+            <strong>주입 완료!</strong><br>
+            <ul class="mt-2 mb-0">
+                <li>주입된 폰트: ${result.injectedFonts.join(', ')}</li>
+                <li>영향받은 컴포넌트: ${result.componentsAffected}개</li>
+                ${result.errors.length > 0 ? `<li class="text-danger">에러: ${result.errors.length}개</li>` : ''}
+            </ul>
+        `;
+
+        sfUI.alert.noti(message);
+        console.log('Font injection result:', result);
+    }).catch(err => {
+        statusEl.innerHTML = '<i class="bi bi-x-circle-fill text-danger me-2"></i>주입 실패';
+        sfUI.alert.noti('폰트 주입 실패: ' + err.message);
+    });
+});
+
+document.getElementById('btn-show-injected-fonts').addEventListener('click', function() {
+    const loadedFonts = new Set();
+
+    if (document.fonts) {
+        document.fonts.forEach(fontFace => {
+            if (fontFace.status === 'loaded') {
+                loadedFonts.add(fontFace.family);
+            }
+        });
+    }
+
+    const fontList = loadedFonts.size > 0
+        ? '<ul class="list-unstyled mb-0">' +
+          Array.from(loadedFonts).map(font => `<li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i><code>${font}</code></li>`).join('') +
+          '</ul>'
+        : '<div class="alert alert-warning mb-0"><i class="bi bi-exclamation-triangle me-2"></i>감지된 폰트가 없습니다.</div>';
+
+    sfUI.modal.create('injectedFontsModal', {
+        title: '<i class="bi bi-list-check me-2"></i>사전 로드된 폰트 목록',
+        body: {
+            html: `
+                <div class="p-3">
+                    <p class="mb-3">현재 문서에 로드된 폰트들입니다:</p>
+                    ${fontList}
+                </div>
+            `
+        },
+        size: 'lg'
+    }).show();
+});
+</script>

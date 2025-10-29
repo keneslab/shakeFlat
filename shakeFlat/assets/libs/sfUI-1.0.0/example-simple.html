@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Icon Font Demo - sfUI</title>
+
+    <!-- sfUI -->
+    <link rel="stylesheet" href="./dist/sfui.css">
+    <script src="./dist/sfui.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        .content {
+            flex: 1;
+            padding: 2rem;
+            background: #f5f5f5;
+        }
+
+        h1 {
+            margin-bottom: 1rem;
+        }
+
+        .info-box {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .info-box p {
+            margin-bottom: 0.5rem;
+        }
+
+        .info-box code {
+            background: #f0f0f0;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <sf-sidebar id="demo-sidebar"></sf-sidebar>
+
+    <!-- Main Content -->
+    <div class="content">
+        <h1>📦 Simple Icon Font Demo</h1>
+
+        <div class="info-box">
+            <p><strong>✅ Bootstrap Icons과 FontAwesome이 자동으로 주입되었습니다!</strong></p>
+            <p>왼쪽 사이드바를 확인해보세요:</p>
+            <ul>
+                <li>메뉴 아이콘들이 표시됩니다 (Bootstrap Icons)</li>
+                <li>서브메뉴를 펼치면 화살표가 표시됩니다 (FontAwesome)</li>
+            </ul>
+            <br>
+            <p><strong>사용된 코드:</strong></p>
+            <pre style="background: #f0f0f0; padding: 1rem; border-radius: 4px; overflow-x: auto;"><code>// 아이콘 폰트 주입
+await sfUICore.injectIconFonts([
+    { cssUrl: '../bootstrap-icons-1.13.1/font/bootstrap-icons.min.css' },
+    { cssUrl: '../fontawesome-free-7.1.0-web/css/all.min.css' }
+]);
+
+// 사이드바 메뉴 설정
+sidebar.setMenuData([
+    { title: 'Dashboard', icon: 'bi-speedometer2', link: '#' },
+    { title: 'Content', icon: 'bi-file-text', sub: [...] }
+]);</code></pre>
+        </div>
+    </div>
+
+    <script>
+        // 메뉴 데이터
+        const menuData = [
+            {
+                title: 'Dashboard',
+                icon: 'bi-speedometer2',
+                link: '#dashboard'
+            },
+            {
+                title: 'Users',
+                icon: 'bi-people',
+                link: '#users'
+            },
+            {
+                title: 'Content',
+                icon: 'bi-file-text',
+                subopened: true,
+                sub: [
+                    { title: 'Articles', link: '#articles' },
+                    { title: 'Pages', link: '#pages' }
+                ]
+            },
+            {
+                title: 'Analytics',
+                icon: 'bi-graph-up',
+                link: '#analytics'
+            },
+            {
+                title: 'Settings',
+                icon: 'bi-gear',
+                link: '#settings'
+            }
+        ];
+
+        // 초기화
+        document.addEventListener('DOMContentLoaded', async () => {
+            const sidebar = document.querySelector('#demo-sidebar');
+
+            // 메뉴 설정
+            sidebar.setMenuData(menuData);
+            sidebar.setAttribute('current-active-menu', '#dashboard');
+
+            // 아이콘 폰트 주입
+            await sfUICore.injectIconFonts([
+                {
+                    cssUrl: '../bootstrap-icons-1.13.1/font/bootstrap-icons.min.css'
+                },
+                {
+                    cssUrl: '../fontawesome-free-7.1.0-web/css/all.min.css'
+                }
+            ]);
+
+            console.log('✅ Icon fonts injected!');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,602 @@
+<style>
+.icon-demo-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.icon-demo-item {
+    padding: 1rem;
+    border: 1px solid var(--bs-border-color);
+    border-radius: 0.375rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    background-color: var(--bs-body-bg);
+}
+
+.icon-demo-item:hover {
+    background-color: var(--bs-secondary-bg);
+    border-color: var(--bs-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(var(--bs-primary-rgb), 0.2);
+}
+
+.icon-demo-item i {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--bs-body-color);
+}
+
+.icon-demo-item .icon-name {
+    font-size: 0.875rem;
+    color: var(--bs-secondary-color);
+    word-break: break-word;
+}
+
+.size-demo i {
+    margin: 0 0.5rem;
+    color: var(--bs-body-color);
+}
+
+.color-demo i {
+    margin: 0 0.5rem;
+}
+
+.code-preview {
+    background-color: var(--bs-secondary-bg);
+    color: var(--bs-body-color);
+    border: 1px solid var(--bs-border-color);
+}
+</style>
+
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="mb-3">Bootstrap Icons 1.13.1 사용 예제</h2>
+            <div class="alert alert-info">
+                <i class="bi bi-info-circle-fill me-2"></i>
+                Bootstrap Icons 1.13.1 라이브러리를 사용하는 다양한 예제들입니다.
+            </div>
+        </div>
+    </div>
+
+    <!-- Icon Sizes -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h3 class="mb-3"><i class="bi bi-rulers"></i> 아이콘 크기 조절</h3>
+            <div class="card">
+                <div class="card-body">
+                    <div class="size-demo d-flex align-items-end mb-3">
+                        <i class="bi bi-star-fill" style="font-size: 1rem;"></i>
+                        <i class="bi bi-star-fill" style="font-size: 1.5rem;"></i>
+                        <i class="bi bi-star-fill" style="font-size: 2rem;"></i>
+                        <i class="bi bi-star-fill" style="font-size: 2.5rem;"></i>
+                        <i class="bi bi-star-fill" style="font-size: 3rem;"></i>
+                        <i class="bi bi-star-fill" style="font-size: 4rem;"></i>
+                    </div>
+                    <pre class="code-preview p-3 rounded"><code>&lt;i class="bi bi-star-fill" style="font-size: 1rem;"&gt;&lt;/i&gt;
+&lt;i class="bi bi-star-fill" style="font-size: 2rem;"&gt;&lt;/i&gt;
+&lt;i class="bi bi-star-fill" style="font-size: 3rem;"&gt;&lt;/i&gt;</code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Icon Colors -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h3 class="mb-3"><i class="bi bi-palette-fill"></i> 아이콘 색상</h3>
+            <div class="card">
+                <div class="card-body">
+                    <div class="color-demo d-flex align-items-center mb-3">
+                        <i class="bi bi-heart-fill text-primary" style="font-size: 2rem;"></i>
+                        <i class="bi bi-heart-fill text-secondary" style="font-size: 2rem;"></i>
+                        <i class="bi bi-heart-fill text-success" style="font-size: 2rem;"></i>
+                        <i class="bi bi-heart-fill text-danger" style="font-size: 2rem;"></i>
+                        <i class="bi bi-heart-fill text-warning" style="font-size: 2rem;"></i>
+                        <i class="bi bi-heart-fill text-info" style="font-size: 2rem;"></i>
+                        <i class="bi bi-heart-fill text-dark" style="font-size: 2rem;"></i>
+                    </div>
+                    <pre class="code-preview p-3 rounded"><code>&lt;i class="bi bi-heart-fill text-primary"&gt;&lt;/i&gt;
+&lt;i class="bi bi-heart-fill text-success"&gt;&lt;/i&gt;
+&lt;i class="bi bi-heart-fill text-danger"&gt;&lt;/i&gt;</code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popular Icons -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h3 class="mb-3"><i class="bi bi-fire"></i> 자주 사용하는 아이콘</h3>
+            <div class="card">
+                <div class="card-body">
+                    <div class="icon-demo-container">
+                        <div class="icon-demo-item" onclick="copyIconClass('bi-house-fill')">
+                            <i class="bi bi-house-fill"></i>
+                            <div class="icon-name">bi-house-fill</div>
+                        </div>
+                        <div class="icon-demo-item" onclick="copyIconClass('bi-person-fill')">
+                            <i class="bi bi-person-fill"></i>
+                            <div class="icon-name">bi-person-fill</div>
+                        </div>
+                        <div class="icon-demo-item" onclick="copyIconClass('bi-gear-fill')">
+                            <i class="bi bi-gear-fill"></i>
+                            <div class="icon-name">bi-gear-fill</div>
+                        </div>
+                        <div class="icon-demo-item" onclick="copyIconClass('bi-search')">
+                            <i class="bi bi-search"></i>
+                            <div class="icon-name">bi-search</div>
+                        </div>
+                        <div class="icon-demo-item" onclick="copyIconClass('bi-bell-fill')">
+                            <i class="bi bi-bell-fill"></i>
+                            <div class="icon-name">bi-bell-fill</div>
+                        </div>
+                        <div class="icon-demo-item" onclick="copyIconClass('bi-envelope-fill')">
+                            <i class="bi bi-envelope-fill"></i>
+                            <div class="icon-name">bi-envelope-fill</div>
+                        </div>
+                        <div class="icon-demo-item" onclick="copyIconClass('bi-calendar-fill')">
+                            <i class="bi bi-calendar-fill"></i>
+                            <div class="icon-name">bi-calendar-fill</div>
+                        </div>
+                        <div class="icon-demo-item" onclick="copyIconClass('bi-trash-fill')">
+                            <i class="bi bi-trash-fill"></i>
+                            <div class="icon-name">bi-trash-fill</div>
+                        </div>
+                        <div class="icon-demo-item" onclick="copyIconClass('bi-pencil-fill')">
+                            <i class="bi bi-pencil-fill"></i>
+                            <div class="icon-name">bi-pencil-fill</div>
+                        </div>
+                        <div class="icon-demo-item" onclick="copyIconClass('bi-download')">
+                            <i class="bi bi-download"></i>
+                            <div class="icon-name">bi-download</div>
+                        </div>
+                        <div class="icon-demo-item" onclick="copyIconClass('bi-upload')">
+                            <i class="bi bi-upload"></i>
+                            <div class="icon-name">bi-upload</div>
+                        </div>
+                        <div class="icon-demo-item" onclick="copyIconClass('bi-check-circle-fill')">
+                            <i class="bi bi-check-circle-fill"></i>
+                            <div class="icon-name">bi-check-circle-fill</div>
+                        </div>
+                        <div class="icon-demo-item" onclick="copyIconClass('bi-x-circle-fill')">
+                            <i class="bi bi-x-circle-fill"></i>
+                            <div class="icon-name">bi-x-circle-fill</div>
+                        </div>
+                        <div class="icon-demo-item" onclick="copyIconClass('bi-exclamation-triangle-fill')">
+                            <i class="bi bi-exclamation-triangle-fill"></i>
+                            <div class="icon-name">bi-exclamation-triangle-fill</div>
+                        </div>
+                        <div class="icon-demo-item" onclick="copyIconClass('bi-info-circle-fill')">
+                            <i class="bi bi-info-circle-fill"></i>
+                            <div class="icon-name">bi-info-circle-fill</div>
+                        </div>
+                        <div class="icon-demo-item" onclick="copyIconClass('bi-cloud-upload-fill')">
+                            <i class="bi bi-cloud-upload-fill"></i>
+                            <div class="icon-name">bi-cloud-upload-fill</div>
+                        </div>
+                        <div class="icon-demo-item" onclick="copyIconClass('bi-file-earmark-text-fill')">
+                            <i class="bi bi-file-earmark-text-fill"></i>
+                            <div class="icon-name">bi-file-earmark-text-fill</div>
+                        </div>
+                        <div class="icon-demo-item" onclick="copyIconClass('bi-folder-fill')">
+                            <i class="bi bi-folder-fill"></i>
+                            <div class="icon-name">bi-folder-fill</div>
+                        </div>
+                        <div class="icon-demo-item" onclick="copyIconClass('bi-lock-fill')">
+                            <i class="bi bi-lock-fill"></i>
+                            <div class="icon-name">bi-lock-fill</div>
+                        </div>
+                        <div class="icon-demo-item" onclick="copyIconClass('bi-unlock-fill')">
+                            <i class="bi bi-unlock-fill"></i>
+                            <div class="icon-name">bi-unlock-fill</div>
+                        </div>
+                    </div>
+                    <div class="alert alert-success">
+                        <i class="bi bi-lightbulb-fill me-2"></i>
+                        아이콘을 클릭하면 클래스 이름이 클립보드에 복사됩니다!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Buttons with Icons -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h3 class="mb-3"><i class="bi bi-ui-radios"></i> 버튼과 함께 사용</h3>
+            <div class="card">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <button type="button" class="btn btn-primary me-2 mb-2">
+                            <i class="bi bi-save me-1"></i> 저장
+                        </button>
+                        <button type="button" class="btn btn-success me-2 mb-2">
+                            <i class="bi bi-check-lg me-1"></i> 확인
+                        </button>
+                        <button type="button" class="btn btn-danger me-2 mb-2">
+                            <i class="bi bi-trash me-1"></i> 삭제
+                        </button>
+                        <button type="button" class="btn btn-warning me-2 mb-2">
+                            <i class="bi bi-pencil me-1"></i> 수정
+                        </button>
+                        <button type="button" class="btn btn-info me-2 mb-2">
+                            <i class="bi bi-search me-1"></i> 검색
+                        </button>
+                        <button type="button" class="btn btn-secondary me-2 mb-2">
+                            <i class="bi bi-x-lg me-1"></i> 취소
+                        </button>
+                    </div>
+                    <pre class="code-preview p-3 rounded"><code>&lt;button type="button" class="btn btn-primary"&gt;
+    &lt;i class="bi bi-save me-1"&gt;&lt;/i&gt; 저장
+&lt;/button&gt;</code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alert with Icons -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h3 class="mb-3"><i class="bi bi-exclamation-diamond-fill"></i> Alert와 함께 사용</h3>
+            <div class="card">
+                <div class="card-body">
+                    <div class="alert alert-primary d-flex align-items-center mb-3" role="alert">
+                        <i class="bi bi-info-circle-fill me-2" style="font-size: 1.5rem;"></i>
+                        <div>일반 정보 메시지입니다.</div>
+                    </div>
+                    <div class="alert alert-success d-flex align-items-center mb-3" role="alert">
+                        <i class="bi bi-check-circle-fill me-2" style="font-size: 1.5rem;"></i>
+                        <div>작업이 성공적으로 완료되었습니다.</div>
+                    </div>
+                    <div class="alert alert-warning d-flex align-items-center mb-3" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-2" style="font-size: 1.5rem;"></i>
+                        <div>주의가 필요한 경고 메시지입니다.</div>
+                    </div>
+                    <div class="alert alert-danger d-flex align-items-center mb-3" role="alert">
+                        <i class="bi bi-x-circle-fill me-2" style="font-size: 1.5rem;"></i>
+                        <div>오류가 발생했습니다.</div>
+                    </div>
+                    <pre class="code-preview p-3 rounded"><code>&lt;div class="alert alert-success d-flex align-items-center" role="alert"&gt;
+    &lt;i class="bi bi-check-circle-fill me-2" style="font-size: 1.5rem;"&gt;&lt;/i&gt;
+    &lt;div&gt;작업이 성공적으로 완료되었습니다.&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- List with Icons -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h3 class="mb-3"><i class="bi bi-list-ul"></i> 리스트와 함께 사용</h3>
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> 완료된 작업</li>
+                                <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> 테스트 통과</li>
+                                <li class="mb-2"><i class="bi bi-clock-fill text-warning me-2"></i> 진행 중인 작업</li>
+                                <li class="mb-2"><i class="bi bi-x-circle-fill text-danger me-2"></i> 실패한 작업</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="bi bi-person-fill text-primary me-2"></i> 사용자 관리</li>
+                                <li class="mb-2"><i class="bi bi-gear-fill text-secondary me-2"></i> 설정</li>
+                                <li class="mb-2"><i class="bi bi-file-earmark-text-fill text-info me-2"></i> 문서</li>
+                                <li class="mb-2"><i class="bi bi-graph-up text-success me-2"></i> 통계</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <pre class="code-preview p-3 rounded"><code>&lt;ul class="list-unstyled"&gt;
+    &lt;li&gt;&lt;i class="bi bi-check-circle-fill text-success me-2"&gt;&lt;/i&gt; 완료된 작업&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Badge with Icons -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h3 class="mb-3"><i class="bi bi-award-fill"></i> Badge와 함께 사용</h3>
+            <div class="card">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <span class="badge bg-primary me-2 mb-2">
+                            <i class="bi bi-bell-fill me-1"></i> 알림 5
+                        </span>
+                        <span class="badge bg-success me-2 mb-2">
+                            <i class="bi bi-check-circle-fill me-1"></i> 성공
+                        </span>
+                        <span class="badge bg-danger me-2 mb-2">
+                            <i class="bi bi-x-circle-fill me-1"></i> 오류
+                        </span>
+                        <span class="badge bg-warning text-dark me-2 mb-2">
+                            <i class="bi bi-exclamation-triangle-fill me-1"></i> 경고
+                        </span>
+                        <span class="badge bg-info me-2 mb-2">
+                            <i class="bi bi-info-circle-fill me-1"></i> 정보
+                        </span>
+                    </div>
+                    <pre class="code-preview p-3 rounded"><code>&lt;span class="badge bg-primary"&gt;
+    &lt;i class="bi bi-bell-fill me-1"&gt;&lt;/i&gt; 알림 5
+&lt;/span&gt;</code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Input Groups with Icons -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h3 class="mb-3"><i class="bi bi-input-cursor-text"></i> Input Group과 함께 사용</h3>
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">검색</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="bi bi-search"></i>
+                                </span>
+                                <input type="text" class="form-control" placeholder="검색어를 입력하세요">
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">이메일</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="bi bi-envelope-fill"></i>
+                                </span>
+                                <input type="email" class="form-control" placeholder="example@email.com">
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">비밀번호</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="bi bi-lock-fill"></i>
+                                </span>
+                                <input type="password" class="form-control" placeholder="비밀번호">
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">날짜</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="bi bi-calendar-fill"></i>
+                                </span>
+                                <input type="date" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <pre class="code-preview p-3 rounded"><code>&lt;div class="input-group"&gt;
+    &lt;span class="input-group-text"&gt;
+        &lt;i class="bi bi-search"&gt;&lt;/i&gt;
+    &lt;/span&gt;
+    &lt;input type="text" class="form-control" placeholder="검색어를 입력하세요"&gt;
+&lt;/div&gt;</code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- More Icons Categories -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h3 class="mb-3"><i class="bi bi-grid-3x3-gap-fill"></i> 카테고리별 아이콘</h3>
+
+            <div class="accordion" id="iconCategories">
+                <!-- Communication Icons -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#communication">
+                            <i class="bi bi-chat-dots-fill me-2"></i> 커뮤니케이션
+                        </button>
+                    </h2>
+                    <div id="communication" class="accordion-collapse collapse" data-bs-parent="#iconCategories">
+                        <div class="accordion-body">
+                            <div class="icon-demo-container">
+                                <div class="icon-demo-item" onclick="copyIconClass('bi-chat-fill')">
+                                    <i class="bi bi-chat-fill"></i>
+                                    <div class="icon-name">bi-chat-fill</div>
+                                </div>
+                                <div class="icon-demo-item" onclick="copyIconClass('bi-chat-dots-fill')">
+                                    <i class="bi bi-chat-dots-fill"></i>
+                                    <div class="icon-name">bi-chat-dots-fill</div>
+                                </div>
+                                <div class="icon-demo-item" onclick="copyIconClass('bi-telephone-fill')">
+                                    <i class="bi bi-telephone-fill"></i>
+                                    <div class="icon-name">bi-telephone-fill</div>
+                                </div>
+                                <div class="icon-demo-item" onclick="copyIconClass('bi-envelope-fill')">
+                                    <i class="bi bi-envelope-fill"></i>
+                                    <div class="icon-name">bi-envelope-fill</div>
+                                </div>
+                                <div class="icon-demo-item" onclick="copyIconClass('bi-send-fill')">
+                                    <i class="bi bi-send-fill"></i>
+                                    <div class="icon-name">bi-send-fill</div>
+                                </div>
+                                <div class="icon-demo-item" onclick="copyIconClass('bi-reply-fill')">
+                                    <i class="bi bi-reply-fill"></i>
+                                    <div class="icon-name">bi-reply-fill</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- File & Folder Icons -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#files">
+                            <i class="bi bi-folder-fill me-2"></i> 파일 & 폴더
+                        </button>
+                    </h2>
+                    <div id="files" class="accordion-collapse collapse" data-bs-parent="#iconCategories">
+                        <div class="accordion-body">
+                            <div class="icon-demo-container">
+                                <div class="icon-demo-item" onclick="copyIconClass('bi-file-earmark-fill')">
+                                    <i class="bi bi-file-earmark-fill"></i>
+                                    <div class="icon-name">bi-file-earmark-fill</div>
+                                </div>
+                                <div class="icon-demo-item" onclick="copyIconClass('bi-file-earmark-pdf-fill')">
+                                    <i class="bi bi-file-earmark-pdf-fill"></i>
+                                    <div class="icon-name">bi-file-earmark-pdf-fill</div>
+                                </div>
+                                <div class="icon-demo-item" onclick="copyIconClass('bi-file-earmark-excel-fill')">
+                                    <i class="bi bi-file-earmark-excel-fill"></i>
+                                    <div class="icon-name">bi-file-earmark-excel-fill</div>
+                                </div>
+                                <div class="icon-demo-item" onclick="copyIconClass('bi-file-earmark-word-fill')">
+                                    <i class="bi bi-file-earmark-word-fill"></i>
+                                    <div class="icon-name">bi-file-earmark-word-fill</div>
+                                </div>
+                                <div class="icon-demo-item" onclick="copyIconClass('bi-file-earmark-image-fill')">
+                                    <i class="bi bi-file-earmark-image-fill"></i>
+                                    <div class="icon-name">bi-file-earmark-image-fill</div>
+                                </div>
+                                <div class="icon-demo-item" onclick="copyIconClass('bi-folder-fill')">
+                                    <i class="bi bi-folder-fill"></i>
+                                    <div class="icon-name">bi-folder-fill</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Social Media Icons -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#social">
+                            <i class="bi bi-share-fill me-2"></i> 소셜 미디어
+                        </button>
+                    </h2>
+                    <div id="social" class="accordion-collapse collapse" data-bs-parent="#iconCategories">
+                        <div class="accordion-body">
+                            <div class="icon-demo-container">
+                                <div class="icon-demo-item" onclick="copyIconClass('bi-facebook')">
+                                    <i class="bi bi-facebook"></i>
+                                    <div class="icon-name">bi-facebook</div>
+                                </div>
+                                <div class="icon-demo-item" onclick="copyIconClass('bi-twitter')">
+                                    <i class="bi bi-twitter"></i>
+                                    <div class="icon-name">bi-twitter</div>
+                                </div>
+                                <div class="icon-demo-item" onclick="copyIconClass('bi-instagram')">
+                                    <i class="bi bi-instagram"></i>
+                                    <div class="icon-name">bi-instagram</div>
+                                </div>
+                                <div class="icon-demo-item" onclick="copyIconClass('bi-youtube')">
+                                    <i class="bi bi-youtube"></i>
+                                    <div class="icon-name">bi-youtube</div>
+                                </div>
+                                <div class="icon-demo-item" onclick="copyIconClass('bi-github')">
+                                    <i class="bi bi-github"></i>
+                                    <div class="icon-name">bi-github</div>
+                                </div>
+                                <div class="icon-demo-item" onclick="copyIconClass('bi-linkedin')">
+                                    <i class="bi bi-linkedin"></i>
+                                    <div class="icon-name">bi-linkedin</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reference Links -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card border">
+                <div class="card-body">
+                    <h4 class="card-title"><i class="bi bi-link-45deg"></i> 참고 링크</h4>
+                    <ul class="mb-0">
+                        <li><a href="https://icons.getbootstrap.com/" target="_blank">Bootstrap Icons 공식 사이트</a></li>
+                        <li><a href="https://github.com/twbs/icons" target="_blank">Bootstrap Icons GitHub</a></li>
+                        <li>현재 버전: Bootstrap Icons 1.13.1</li>
+                        <li>총 아이콘 개수: 2,000+</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function copyIconClass(className) {
+    // 클립보드에 복사
+    const fullClass = 'bi ' + className;
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(fullClass).then(() => {
+            // 성공 메시지
+            showCopyNotification(fullClass);
+        }).catch(err => {
+            // 실패 시 fallback 메서드 사용
+            fallbackCopyTextToClipboard(fullClass);
+        });
+    } else {
+        // 클립보드 API를 지원하지 않는 경우 fallback 메서드 사용
+        fallbackCopyTextToClipboard(fullClass);
+    }
+}
+
+function fallbackCopyTextToClipboard(text) {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    textArea.style.position = "fixed";
+    textArea.style.left = "-999999px";
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+
+    try {
+        document.execCommand('copy');
+        showCopyNotification(text);
+    } catch (err) {
+        console.error('복사 실패:', err);
+    }
+
+    document.body.removeChild(textArea);
+}
+
+function showCopyNotification(text) {
+    // 기존 알림이 있으면 제거
+    const existingToast = document.querySelector('.copy-toast');
+    if (existingToast) {
+        existingToast.remove();
+    }
+
+    // 토스트 알림 생성
+    const toast = document.createElement('div');
+    toast.className = 'copy-toast position-fixed bottom-0 end-0 m-3 p-3 bg-success text-white rounded shadow';
+    toast.style.zIndex = '9999';
+    toast.innerHTML = `
+        <div class="d-flex align-items-center">
+            <i class="bi bi-check-circle-fill me-2"></i>
+            <div>
+                <strong>복사됨!</strong><br>
+                <small>${text}</small>
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(toast);
+
+    // 2초 후 자동으로 제거
+    setTimeout(() => {
+        toast.style.transition = 'opacity 0.3s';
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 300);
+    }, 2000);
+}
+</script>

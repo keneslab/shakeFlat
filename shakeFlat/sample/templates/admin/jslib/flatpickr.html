@@ -1,0 +1,981 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/dark.min.css">
+<link rel="stylesheet" href="/assets/libs/flatpickr-4.6.13/flatpickr.min.css">
+<link rel="stylesheet" href="/assets/libs/flatpickr-4.6.13/themes/dark.css" id="flatpickr-theme">
+<link rel="stylesheet" href="/assets/libs/flatpickr-4.6.13/plugins/monthSelect/style.css">
+<script src="/assets/libs/flatpickr-4.6.13/flatpickr.min.js"></script>
+<script src="/assets/libs/flatpickr-4.6.13/l10n/ko.js"></script>
+<script src="/assets/libs/flatpickr-4.6.13/plugins/monthSelect/index.js"></script>
+
+<div class="mb-5">
+    <strong>Flatpickr</strong> is a lightweight and powerful datetime picker.<br>
+    /assets/libs/flatpickr-4.6.13<br>
+    Official site: <a href="https://flatpickr.js.org/" target="_blank">https://flatpickr.js.org/</a>
+</div>
+
+<!-- Theme Toggle -->
+<div class="mb-5 p-3 rounded" style="background: var(--bs-body-bg); border: 1px solid var(--bs-border-color);">
+    <h5 class="mb-3">Theme Toggle</h5>
+    <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="themeToggle">
+        <label class="form-check-label" for="themeToggle">
+            Dark Theme (Toggle to see how Flatpickr adapts to themes)
+        </label>
+    </div>
+
+    <div class="alert alert-success mt-3">
+        <small><strong>✓ Dynamic Theme Switching:</strong> No page refresh required! The theme changes instantly when you toggle the switch above.</small>
+    </div>
+
+    <!-- Theme-specific Code Example -->
+    <div class="mt-4">
+        <h6>Current Theme Setup:</h6>
+        <pre><code class="language-html" id="theme-code-example"><?php echo htmlspecialchars(<<<'EOD'
+<!-- Light Theme (Default) -->
+<link rel="stylesheet" href="/assets/libs/flatpickr-4.6.13/flatpickr.min.css">
+<script src="/assets/libs/flatpickr-4.6.13/flatpickr.min.js"></script>
+EOD);?></code></pre>
+        <small class="text-muted">Toggle the switch to see how the code changes for Dark theme.</small>
+    </div>
+</div>
+
+<!-- Basic Date Picker (YYYY-MM-DD) -->
+<div class="mb-5 p-3 rounded example-section">
+    <h5 class="mb-3">1. Basic Date Picker (YYYY-MM-DD)</h5>
+    <div class="mb-3">
+        <label for="date-basic" class="form-label">Select Date</label>
+        <input type="text" id="date-basic" class="form-control" placeholder="Select date...">
+    </div>
+    <div class="code-section">
+        <h6>HTML - Required Files <span class="badge bg-secondary" id="basic-theme-badge">Light</span></h6>
+        <pre><code class="language-html" id="basic-html-code"><?php echo htmlspecialchars(<<<'EOD'
+<!-- Flatpickr Core -->
+<link rel="stylesheet" href="/assets/libs/flatpickr-4.6.13/flatpickr.min.css">
+<script src="/assets/libs/flatpickr-4.6.13/flatpickr.min.js"></script>
+
+<!-- Input Element -->
+<input type="text" id="date-basic" class="form-control" placeholder="Select date...">
+EOD);?></code></pre>
+        <h6>JavaScript</h6>
+        <pre><code class="language-js"><?php echo htmlspecialchars(<<<'EOD'
+flatpickr("#date-basic", {
+    dateFormat: "Y-m-d",
+    defaultDate: "today"
+});
+EOD);?></code></pre>
+        <div class="alert alert-info mt-2">
+            <small><strong>Note:</strong> JavaScript code is the same for both Light and Dark themes. Theme is applied via CSS only.</small>
+        </div>
+    </div>
+</div>
+
+<!-- Month Picker (YYYY-MM) -->
+<div class="mb-5 p-3 rounded example-section">
+    <h5 class="mb-3">2. Month Picker (YYYY-MM)</h5>
+    <div class="mb-3">
+        <label for="date-month" class="form-label">Select Month</label>
+        <input type="text" id="date-month" class="form-control" placeholder="Select month...">
+    </div>
+    <div class="code-section">
+        <h6>HTML - Required Files <span class="badge bg-secondary" id="month-theme-badge">Light</span></h6>
+        <pre><code class="language-html" id="month-html-code"><?php echo htmlspecialchars(<<<'EOD'
+<!-- Flatpickr Core (Light Theme) -->
+<link rel="stylesheet" href="/assets/libs/flatpickr-4.6.13/flatpickr.min.css">
+<script src="/assets/libs/flatpickr-4.6.13/flatpickr.min.js"></script>
+
+<!-- Month Select Plugin -->
+<link rel="stylesheet" href="/assets/libs/flatpickr-4.6.13/plugins/monthSelect/style.css">
+<script src="/assets/libs/flatpickr-4.6.13/plugins/monthSelect/index.js"></script>
+
+<!-- Input Element -->
+<input type="text" id="date-month" class="form-control" placeholder="Select month...">
+EOD);?></code></pre>
+        <h6>JavaScript</h6>
+        <pre><code class="language-js" id="month-js-code"><?php echo htmlspecialchars(<<<'EOD'
+// Detect current theme
+const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
+
+flatpickr("#date-month", {
+    dateFormat: "Y-m",
+    plugins: [
+        new monthSelectPlugin({
+            shorthand: false,
+            dateFormat: "Y-m",
+            altFormat: "F Y",
+            theme: isDark ? "dark" : "light"  // Set theme based on page theme
+        })
+    ]
+});
+EOD);?></code></pre>
+        <div class="alert alert-info mt-2">
+            <small><strong>Note:</strong> Month picker uses the <code>theme</code> option in monthSelectPlugin to adapt to light/dark themes.</small>
+        </div>
+    </div>
+</div>
+
+<!-- DateTime Picker -->
+<div class="mb-5 p-3 rounded example-section">
+    <h5 class="mb-3">3. DateTime Picker</h5>
+    <div class="mb-3">
+        <label for="datetime-picker" class="form-label">Select Date and Time</label>
+        <input type="text" id="datetime-picker" class="form-control" placeholder="Select date and time...">
+    </div>
+    <div class="code-section">
+        <h6>HTML - Required Files</h6>
+        <pre><code class="language-html"><?php echo htmlspecialchars(<<<'EOD'
+<!-- Flatpickr Core -->
+<link rel="stylesheet" href="/assets/libs/flatpickr-4.6.13/flatpickr.min.css">
+<script src="/assets/libs/flatpickr-4.6.13/flatpickr.min.js"></script>
+
+<!-- Input Element -->
+<input type="text" id="datetime-picker" class="form-control" placeholder="Select date and time...">
+EOD);?></code></pre>
+        <h6>JavaScript</h6>
+        <pre><code class="language-js"><?php echo htmlspecialchars(<<<'EOD'
+flatpickr("#datetime-picker", {
+    enableTime: true,
+    dateFormat: "Y-m-d H:i",
+    time_24hr: true
+});
+EOD);?></code></pre>
+    </div>
+</div>
+
+<!-- Date Range Picker -->
+<div class="mb-5 p-3 rounded example-section">
+    <h5 class="mb-3">4. Date Range Picker</h5>
+    <div class="mb-3">
+        <label for="daterange-picker" class="form-label">Select Date Range</label>
+        <input type="text" id="daterange-picker" class="form-control" placeholder="Select date range...">
+    </div>
+    <div class="code-section">
+        <h6>HTML - Required Files</h6>
+        <pre><code class="language-html"><?php echo htmlspecialchars(<<<'EOD'
+<!-- Flatpickr Core -->
+<link rel="stylesheet" href="/assets/libs/flatpickr-4.6.13/flatpickr.min.css">
+<script src="/assets/libs/flatpickr-4.6.13/flatpickr.min.js"></script>
+
+<!-- Input Element -->
+<input type="text" id="daterange-picker" class="form-control" placeholder="Select date range...">
+EOD);?></code></pre>
+        <h6>JavaScript</h6>
+        <pre><code class="language-js"><?php echo htmlspecialchars(<<<'EOD'
+flatpickr("#daterange-picker", {
+    mode: "range",
+    dateFormat: "Y-m-d",
+    showMonths: 2
+});
+EOD);?></code></pre>
+    </div>
+</div>
+
+<!-- Time Picker -->
+<div class="mb-5 p-3 rounded example-section">
+    <h5 class="mb-3">5. Time Picker Only</h5>
+    <div class="mb-3">
+        <label for="time-picker" class="form-label">Select Time</label>
+        <input type="text" id="time-picker" class="form-control" placeholder="Select time...">
+    </div>
+    <div class="code-section">
+        <h6>HTML - Required Files</h6>
+        <pre><code class="language-html"><?php echo htmlspecialchars(<<<'EOD'
+<!-- Flatpickr Core -->
+<link rel="stylesheet" href="/assets/libs/flatpickr-4.6.13/flatpickr.min.css">
+<script src="/assets/libs/flatpickr-4.6.13/flatpickr.min.js"></script>
+
+<!-- Input Element -->
+<input type="text" id="time-picker" class="form-control" placeholder="Select time...">
+EOD);?></code></pre>
+        <h6>JavaScript</h6>
+        <pre><code class="language-js"><?php echo htmlspecialchars(<<<'EOD'
+flatpickr("#time-picker", {
+    enableTime: true,
+    noCalendar: true,
+    dateFormat: "H:i",
+    time_24hr: true
+});
+EOD);?></code></pre>
+    </div>
+</div>
+
+<!-- Inline Calendar -->
+<div class="mb-5 p-3 rounded example-section">
+    <h5 class="mb-3">6. Inline Calendar</h5>
+    <div class="mb-3">
+        <label class="form-label">Inline Calendar (Always Visible)</label>
+        <input type="text" id="inline-calendar" class="form-control">
+    </div>
+    <div class="code-section">
+        <h6>HTML - Required Files</h6>
+        <pre><code class="language-html"><?php echo htmlspecialchars(<<<'EOD'
+<!-- Flatpickr Core -->
+<link rel="stylesheet" href="/assets/libs/flatpickr-4.6.13/flatpickr.min.css">
+<script src="/assets/libs/flatpickr-4.6.13/flatpickr.min.js"></script>
+
+<!-- Input Element -->
+<input type="text" id="inline-calendar" class="form-control">
+EOD);?></code></pre>
+        <h6>JavaScript</h6>
+        <pre><code class="language-js"><?php echo htmlspecialchars(<<<'EOD'
+flatpickr("#inline-calendar", {
+    inline: true,
+    dateFormat: "Y-m-d"
+});
+EOD);?></code></pre>
+    </div>
+</div>
+
+<!-- Min/Max Date -->
+<div class="mb-5 p-3 rounded example-section">
+    <h5 class="mb-3">7. Min/Max Date Restrictions</h5>
+    <div class="mb-3">
+        <label for="minmax-picker" class="form-label">Select Date (Last 7 days to Next 7 days)</label>
+        <input type="text" id="minmax-picker" class="form-control" placeholder="Select date...">
+    </div>
+    <div class="code-section">
+        <h6>HTML - Required Files</h6>
+        <pre><code class="language-html"><?php echo htmlspecialchars(<<<'EOD'
+<!-- Flatpickr Core -->
+<link rel="stylesheet" href="/assets/libs/flatpickr-4.6.13/flatpickr.min.css">
+<script src="/assets/libs/flatpickr-4.6.13/flatpickr.min.js"></script>
+
+<!-- Input Element -->
+<input type="text" id="minmax-picker" class="form-control" placeholder="Select date...">
+EOD);?></code></pre>
+        <h6>JavaScript</h6>
+        <pre><code class="language-js"><?php echo htmlspecialchars(<<<'EOD'
+const today = new Date();
+const sevenDaysAgo = new Date(today);
+sevenDaysAgo.setDate(today.getDate() - 7);
+const sevenDaysLater = new Date(today);
+sevenDaysLater.setDate(today.getDate() + 7);
+
+flatpickr("#minmax-picker", {
+    dateFormat: "Y-m-d",
+    minDate: sevenDaysAgo,
+    maxDate: sevenDaysLater
+});
+EOD);?></code></pre>
+    </div>
+</div>
+
+<!-- Disable Specific Dates -->
+<div class="mb-5 p-3 rounded example-section">
+    <h5 class="mb-3">8. Disable Specific Dates</h5>
+    <div class="mb-3">
+        <label for="disable-picker" class="form-label">Select Date (Weekends Disabled)</label>
+        <input type="text" id="disable-picker" class="form-control" placeholder="Select date...">
+    </div>
+    <div class="code-section">
+        <h6>HTML - Required Files</h6>
+        <pre><code class="language-html"><?php echo htmlspecialchars(<<<'EOD'
+<!-- Flatpickr Core -->
+<link rel="stylesheet" href="/assets/libs/flatpickr-4.6.13/flatpickr.min.css">
+<script src="/assets/libs/flatpickr-4.6.13/flatpickr.min.js"></script>
+
+<!-- Input Element -->
+<input type="text" id="disable-picker" class="form-control" placeholder="Select date...">
+EOD);?></code></pre>
+        <h6>JavaScript</h6>
+        <pre><code class="language-js"><?php echo htmlspecialchars(<<<'EOD'
+flatpickr("#disable-picker", {
+    dateFormat: "Y-m-d",
+    disable: [
+        function(date) {
+            // Disable weekends (Saturday = 6, Sunday = 0)
+            return (date.getDay() === 0 || date.getDay() === 6);
+        }
+    ]
+});
+EOD);?></code></pre>
+    </div>
+</div>
+
+<!-- Multiple Dates -->
+<div class="mb-5 p-3 rounded example-section">
+    <h5 class="mb-3">9. Multiple Dates Selection</h5>
+    <div class="mb-3">
+        <label for="multiple-picker" class="form-label">Select Multiple Dates</label>
+        <input type="text" id="multiple-picker" class="form-control" placeholder="Select multiple dates...">
+    </div>
+    <div class="code-section">
+        <h6>HTML - Required Files</h6>
+        <pre><code class="language-html"><?php echo htmlspecialchars(<<<'EOD'
+<!-- Flatpickr Core -->
+<link rel="stylesheet" href="/assets/libs/flatpickr-4.6.13/flatpickr.min.css">
+<script src="/assets/libs/flatpickr-4.6.13/flatpickr.min.js"></script>
+
+<!-- Input Element -->
+<input type="text" id="multiple-picker" class="form-control" placeholder="Select multiple dates...">
+EOD);?></code></pre>
+        <h6>JavaScript</h6>
+        <pre><code class="language-js"><?php echo htmlspecialchars(<<<'EOD'
+flatpickr("#multiple-picker", {
+    mode: "multiple",
+    dateFormat: "Y-m-d",
+    conjunction: ", "
+});
+EOD);?></code></pre>
+    </div>
+</div>
+
+<!-- Week Numbers -->
+<div class="mb-5 p-3 rounded example-section">
+    <h5 class="mb-3">10. With Week Numbers</h5>
+    <div class="mb-3">
+        <label for="week-picker" class="form-label">Select Date (With Week Numbers)</label>
+        <input type="text" id="week-picker" class="form-control" placeholder="Select date...">
+    </div>
+    <div class="code-section">
+        <h6>HTML - Required Files</h6>
+        <pre><code class="language-html"><?php echo htmlspecialchars(<<<'EOD'
+<!-- Flatpickr Core -->
+<link rel="stylesheet" href="/assets/libs/flatpickr-4.6.13/flatpickr.min.css">
+<script src="/assets/libs/flatpickr-4.6.13/flatpickr.min.js"></script>
+
+<!-- Input Element -->
+<input type="text" id="week-picker" class="form-control" placeholder="Select date...">
+EOD);?></code></pre>
+        <h6>JavaScript</h6>
+        <pre><code class="language-js"><?php echo htmlspecialchars(<<<'EOD'
+flatpickr("#week-picker", {
+    dateFormat: "Y-m-d",
+    weekNumbers: true
+});
+EOD);?></code></pre>
+    </div>
+</div>
+
+<!-- Localization (Korean) -->
+<div class="mb-5 p-3 rounded example-section">
+    <h5 class="mb-3">11. Localization (Korean)</h5>
+    <div class="mb-3">
+        <label for="locale-picker" class="form-label">한국어 날짜 선택</label>
+        <input type="text" id="locale-picker" class="form-control" placeholder="날짜를 선택하세요...">
+    </div>
+    <div class="code-section">
+        <h6>HTML - Required Files</h6>
+        <pre><code class="language-html"><?php echo htmlspecialchars(<<<'EOD'
+<!-- Flatpickr Core -->
+<link rel="stylesheet" href="/assets/libs/flatpickr-4.6.13/flatpickr.min.css">
+<script src="/assets/libs/flatpickr-4.6.13/flatpickr.min.js"></script>
+
+<!-- Korean Locale -->
+<script src="/assets/libs/flatpickr-4.6.13/l10n/ko.js"></script>
+
+<!-- Input Element -->
+<input type="text" id="locale-picker" class="form-control" placeholder="날짜를 선택하세요...">
+EOD);?></code></pre>
+        <h6>JavaScript</h6>
+        <pre><code class="language-js"><?php echo htmlspecialchars(<<<'EOD'
+flatpickr("#locale-picker", {
+    locale: "ko",
+    dateFormat: "Y-m-d"
+});
+EOD);?></code></pre>
+    </div>
+</div>
+
+<!-- Events and Callbacks -->
+<div class="mb-5 p-3 rounded example-section">
+    <h5 class="mb-3">12. Events and Callbacks</h5>
+    <div class="mb-3">
+        <label for="event-picker" class="form-label">Date Picker with Events</label>
+        <input type="text" id="event-picker" class="form-control" placeholder="Select date...">
+        <div id="event-output" class="mt-2 p-2 rounded" style="background: var(--bs-secondary-bg); min-height: 50px;">
+            <small class="text-muted">Event logs will appear here...</small>
+        </div>
+    </div>
+    <div class="code-section">
+        <h6>HTML - Required Files</h6>
+        <pre><code class="language-html"><?php echo htmlspecialchars(<<<'EOD'
+<!-- Flatpickr Core -->
+<link rel="stylesheet" href="/assets/libs/flatpickr-4.6.13/flatpickr.min.css">
+<script src="/assets/libs/flatpickr-4.6.13/flatpickr.min.js"></script>
+
+<!-- Input Element -->
+<input type="text" id="event-picker" class="form-control" placeholder="Select date...">
+<div id="event-output"></div>
+EOD);?></code></pre>
+        <h6>JavaScript</h6>
+        <pre><code class="language-js"><?php echo htmlspecialchars(<<<'EOD'
+flatpickr("#event-picker", {
+    dateFormat: "Y-m-d",
+    onChange: function(selectedDates, dateStr, instance) {
+        console.log("Date changed:", dateStr);
+        document.getElementById("event-output").innerHTML =
+            `<strong>onChange:</strong> ${dateStr}`;
+    },
+    onOpen: function(selectedDates, dateStr, instance) {
+        console.log("Calendar opened");
+    },
+    onClose: function(selectedDates, dateStr, instance) {
+        console.log("Calendar closed");
+    },
+    onReady: function(selectedDates, dateStr, instance) {
+        console.log("Flatpickr ready");
+    }
+});
+EOD);?></code></pre>
+    </div>
+</div>
+
+<!-- Alternative Input -->
+<div class="mb-5 p-3 rounded example-section">
+    <h5 class="mb-3">13. Alternative Input Format</h5>
+    <div class="mb-3">
+        <label for="alt-picker" class="form-label">User-Friendly Date Display</label>
+        <input type="text" id="alt-picker" class="form-control" placeholder="Select date...">
+        <small class="form-text text-muted">The actual value is YYYY-MM-DD, but displays as a friendly format</small>
+    </div>
+    <div class="code-section">
+        <h6>HTML - Required Files</h6>
+        <pre><code class="language-html"><?php echo htmlspecialchars(<<<'EOD'
+<!-- Flatpickr Core -->
+<link rel="stylesheet" href="/assets/libs/flatpickr-4.6.13/flatpickr.min.css">
+<script src="/assets/libs/flatpickr-4.6.13/flatpickr.min.js"></script>
+
+<!-- Input Element -->
+<input type="text" id="alt-picker" class="form-control" placeholder="Select date...">
+EOD);?></code></pre>
+        <h6>JavaScript</h6>
+        <pre><code class="language-js"><?php echo htmlspecialchars(<<<'EOD'
+flatpickr("#alt-picker", {
+    altInput: true,
+    altFormat: "F j, Y",
+    dateFormat: "Y-m-d"
+});
+EOD);?></code></pre>
+    </div>
+</div>
+
+<!-- Pre-filled Default Date -->
+<div class="mb-5 p-3 rounded example-section">
+    <h5 class="mb-3">14. Pre-filled Default Date</h5>
+    <div class="mb-3">
+        <label for="default-picker" class="form-label">Date Picker with Default Value</label>
+        <input type="text" id="default-picker" class="form-control">
+    </div>
+    <div class="code-section">
+        <h6>HTML - Required Files</h6>
+        <pre><code class="language-html"><?php echo htmlspecialchars(<<<'EOD'
+<!-- Flatpickr Core -->
+<link rel="stylesheet" href="/assets/libs/flatpickr-4.6.13/flatpickr.min.css">
+<script src="/assets/libs/flatpickr-4.6.13/flatpickr.min.js"></script>
+
+<!-- Input Element -->
+<input type="text" id="default-picker" class="form-control">
+EOD);?></code></pre>
+        <h6>JavaScript</h6>
+        <pre><code class="language-js"><?php echo htmlspecialchars(<<<'EOD'
+flatpickr("#default-picker", {
+    dateFormat: "Y-m-d",
+    defaultDate: "2025-01-01"
+});
+EOD);?></code></pre>
+    </div>
+</div>
+
+<!-- Custom Position -->
+<div class="mb-5 p-3 rounded example-section">
+    <h5 class="mb-3">15. Custom Position</h5>
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label for="position-auto" class="form-label">Position: Auto</label>
+            <input type="text" id="position-auto" class="form-control" placeholder="Select date...">
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="position-above" class="form-label">Position: Above</label>
+            <input type="text" id="position-above" class="form-control" placeholder="Select date...">
+        </div>
+    </div>
+    <div class="code-section">
+        <h6>HTML - Required Files</h6>
+        <pre><code class="language-html"><?php echo htmlspecialchars(<<<'EOD'
+<!-- Flatpickr Core -->
+<link rel="stylesheet" href="/assets/libs/flatpickr-4.6.13/flatpickr.min.css">
+<script src="/assets/libs/flatpickr-4.6.13/flatpickr.min.js"></script>
+
+<!-- Input Elements -->
+<input type="text" id="position-auto" class="form-control" placeholder="Select date...">
+<input type="text" id="position-above" class="form-control" placeholder="Select date...">
+EOD);?></code></pre>
+        <h6>JavaScript</h6>
+        <pre><code class="language-js"><?php echo htmlspecialchars(<<<'EOD'
+// Auto position (default)
+flatpickr("#position-auto", {
+    dateFormat: "Y-m-d",
+    position: "auto"
+});
+
+// Force position above
+flatpickr("#position-above", {
+    dateFormat: "Y-m-d",
+    position: "above"
+});
+EOD);?></code></pre>
+    </div>
+</div>
+
+<!-- Common Options Reference -->
+<div class="mb-5 p-3 rounded" style="background: var(--bs-info-bg-subtle); border: 1px solid var(--bs-info-border-subtle);">
+    <h5 class="mb-3">Common Options Reference</h5>
+    <div class="table-responsive">
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th>Option</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>dateFormat</code></td>
+                    <td>String</td>
+                    <td>Format of the date (e.g., "Y-m-d", "d/m/Y", "F j, Y")</td>
+                </tr>
+                <tr>
+                    <td><code>enableTime</code></td>
+                    <td>Boolean</td>
+                    <td>Enable time picker</td>
+                </tr>
+                <tr>
+                    <td><code>noCalendar</code></td>
+                    <td>Boolean</td>
+                    <td>Hide calendar, show time picker only</td>
+                </tr>
+                <tr>
+                    <td><code>mode</code></td>
+                    <td>String</td>
+                    <td>"single" (default), "multiple", "range"</td>
+                </tr>
+                <tr>
+                    <td><code>inline</code></td>
+                    <td>Boolean</td>
+                    <td>Display calendar inline (always visible)</td>
+                </tr>
+                <tr>
+                    <td><code>minDate</code></td>
+                    <td>Date/String</td>
+                    <td>Minimum selectable date</td>
+                </tr>
+                <tr>
+                    <td><code>maxDate</code></td>
+                    <td>Date/String</td>
+                    <td>Maximum selectable date</td>
+                </tr>
+                <tr>
+                    <td><code>disable</code></td>
+                    <td>Array</td>
+                    <td>Dates to disable</td>
+                </tr>
+                <tr>
+                    <td><code>locale</code></td>
+                    <td>String</td>
+                    <td>Localization (e.g., "ko", "en", "ja")</td>
+                </tr>
+                <tr>
+                    <td><code>time_24hr</code></td>
+                    <td>Boolean</td>
+                    <td>Use 24-hour time format</td>
+                </tr>
+                <tr>
+                    <td><code>weekNumbers</code></td>
+                    <td>Boolean</td>
+                    <td>Show week numbers</td>
+                </tr>
+                <tr>
+                    <td><code>altInput</code></td>
+                    <td>Boolean</td>
+                    <td>Show alternate input format</td>
+                </tr>
+                <tr>
+                    <td><code>defaultDate</code></td>
+                    <td>Date/String</td>
+                    <td>Default/pre-filled date</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+    // Initialize syntax highlighting
+    hljs.highlightAll();
+
+    // Initialize all flatpickr instances
+
+    // 1. Basic Date Picker
+    flatpickr("#date-basic", {
+        dateFormat: "Y-m-d",
+        defaultDate: "today"
+    });
+
+    // 2. Month Picker (with monthSelect plugin)
+    const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
+    const monthPicker = flatpickr("#date-month", {
+        dateFormat: "Y-m",
+        plugins: [
+            new monthSelectPlugin({
+                shorthand: false,
+                dateFormat: "Y-m",
+                altFormat: "F Y",
+                theme: isDark ? "dark" : "light"
+            })
+        ]
+    });
+
+    // 3. DateTime Picker
+    flatpickr("#datetime-picker", {
+        enableTime: true,
+        dateFormat: "Y-m-d H:i",
+        time_24hr: true
+    });
+
+    // 4. Date Range Picker
+    flatpickr("#daterange-picker", {
+        mode: "range",
+        dateFormat: "Y-m-d",
+        showMonths: 2
+    });
+
+    // 5. Time Picker Only
+    flatpickr("#time-picker", {
+        enableTime: true,
+        noCalendar: true,
+        dateFormat: "H:i",
+        time_24hr: true
+    });
+
+    // 6. Inline Calendar
+    flatpickr("#inline-calendar", {
+        inline: true,
+        dateFormat: "Y-m-d"
+    });
+
+    // 7. Min/Max Date
+    const today = new Date();
+    const sevenDaysAgo = new Date(today);
+    sevenDaysAgo.setDate(today.getDate() - 7);
+    const sevenDaysLater = new Date(today);
+    sevenDaysLater.setDate(today.getDate() + 7);
+
+    flatpickr("#minmax-picker", {
+        dateFormat: "Y-m-d",
+        minDate: sevenDaysAgo,
+        maxDate: sevenDaysLater
+    });
+
+    // 8. Disable Weekends
+    flatpickr("#disable-picker", {
+        dateFormat: "Y-m-d",
+        disable: [
+            function(date) {
+                return (date.getDay() === 0 || date.getDay() === 6);
+            }
+        ]
+    });
+
+    // 9. Multiple Dates
+    flatpickr("#multiple-picker", {
+        mode: "multiple",
+        dateFormat: "Y-m-d",
+        conjunction: ", "
+    });
+
+    // 10. Week Numbers
+    flatpickr("#week-picker", {
+        dateFormat: "Y-m-d",
+        weekNumbers: true
+    });
+
+    // 11. Korean Locale
+    flatpickr("#locale-picker", {
+        locale: "ko",
+        dateFormat: "Y-m-d"
+    });
+
+    // 12. Events and Callbacks
+    flatpickr("#event-picker", {
+        dateFormat: "Y-m-d",
+        onChange: function(selectedDates, dateStr, instance) {
+            const output = document.getElementById("event-output");
+            output.innerHTML = `<strong>onChange:</strong> ${dateStr}<br>`;
+            output.innerHTML += `<strong>Selected Date Object:</strong> ${selectedDates[0]}<br>`;
+            output.innerHTML += `<strong>Timestamp:</strong> ${new Date().toLocaleTimeString()}`;
+        },
+        onOpen: function(selectedDates, dateStr, instance) {
+            console.log("Calendar opened");
+        },
+        onClose: function(selectedDates, dateStr, instance) {
+            console.log("Calendar closed");
+        },
+        onReady: function(selectedDates, dateStr, instance) {
+            console.log("Flatpickr ready");
+        }
+    });
+
+    // 13. Alternative Input
+    flatpickr("#alt-picker", {
+        altInput: true,
+        altFormat: "F j, Y",
+        dateFormat: "Y-m-d"
+    });
+
+    // 14. Pre-filled Default Date
+    flatpickr("#default-picker", {
+        dateFormat: "Y-m-d",
+        defaultDate: "2025-01-01"
+    });
+
+    // 15. Custom Position
+    flatpickr("#position-auto", {
+        dateFormat: "Y-m-d",
+        position: "auto"
+    });
+
+    flatpickr("#position-above", {
+        dateFormat: "Y-m-d",
+        position: "above"
+    });
+
+    // Theme Toggle Functionality
+    const themeToggle = document.getElementById('themeToggle');
+    const flatpickrThemeLink = document.getElementById('flatpickr-theme');
+    const htmlElement = document.documentElement;
+    const themeCodeExample = document.getElementById('theme-code-example');
+    const monthHtmlCode = document.getElementById('month-html-code');
+    const monthJsCode = document.getElementById('month-js-code');
+    const monthThemeBadge = document.getElementById('month-theme-badge');
+    const basicHtmlCode = document.getElementById('basic-html-code');
+    const basicThemeBadge = document.getElementById('basic-theme-badge');
+
+    // Function to get theme CSS string
+    function getThemeCssString(isDark) {
+        return isDark ?
+            `<link rel="stylesheet" href="/assets/libs/flatpickr-4.6.13/flatpickr.min.css">
+<link rel="stylesheet" href="/assets/libs/flatpickr-4.6.13/themes/dark.css">` :
+            '<link rel="stylesheet" href="/assets/libs/flatpickr-4.6.13/flatpickr.min.css">';
+    }
+
+    // Function to update theme code example
+    function updateThemeCodeExample(isDark) {
+        const lightThemeCode = `<!-- Light Theme (Default) -->
+<link rel="stylesheet" href="/assets/libs/flatpickr-4.6.13/flatpickr.min.css">
+<script src="/assets/libs/flatpickr-4.6.13/flatpickr.min.js"><\/script>`;
+
+        const darkThemeCode = `<!-- Dark Theme -->
+<link rel="stylesheet" href="/assets/libs/flatpickr-4.6.13/flatpickr.min.css">
+<link rel="stylesheet" href="/assets/libs/flatpickr-4.6.13/themes/dark.css">
+<script src="/assets/libs/flatpickr-4.6.13/flatpickr.min.js"><\/script>`;
+
+        themeCodeExample.textContent = isDark ? darkThemeCode : lightThemeCode;
+
+        // Re-highlight the code
+        if (typeof hljs !== 'undefined') {
+            hljs.highlightElement(themeCodeExample);
+        }
+    }
+
+    // Function to update Basic Date Picker code example
+    function updateBasicPickerCodeExample(isDark) {
+        const themeText = isDark ? 'Dark' : 'Light';
+        const themeCss = getThemeCssString(isDark);
+
+        // Update badge
+        basicThemeBadge.textContent = themeText;
+        basicThemeBadge.className = isDark ? 'badge bg-dark' : 'badge bg-secondary';
+
+        // Update HTML code
+        const basicHtmlCodeText = `<!-- Flatpickr Core -->
+${themeCss}
+<script src="/assets/libs/flatpickr-4.6.13/flatpickr.min.js"><\/script>
+
+<!-- Input Element -->
+<input type="text" id="date-basic" class="form-control" placeholder="Select date...">`;
+
+        basicHtmlCode.textContent = basicHtmlCodeText;
+
+        // Re-highlight the code
+        if (typeof hljs !== 'undefined') {
+            hljs.highlightElement(basicHtmlCode);
+        }
+    }
+
+    // Function to update Month Picker code example
+    function updateMonthPickerCodeExample(isDark) {
+        const themeText = isDark ? 'Dark' : 'Light';
+        const themeCss = getThemeCssString(isDark);
+
+        // Update badge
+        monthThemeBadge.textContent = themeText;
+        monthThemeBadge.className = isDark ? 'badge bg-dark' : 'badge bg-secondary';
+
+        // Update HTML code
+        const monthHtmlCodeText = `<!-- Flatpickr Core (${themeText} Theme) -->
+${themeCss}
+<script src="/assets/libs/flatpickr-4.6.13/flatpickr.min.js"><\/script>
+
+<!-- Month Select Plugin -->
+<link rel="stylesheet" href="/assets/libs/flatpickr-4.6.13/plugins/monthSelect/style.css">
+<script src="/assets/libs/flatpickr-4.6.13/plugins/monthSelect/index.js"><\/script>
+
+<!-- Input Element -->
+<input type="text" id="date-month" class="form-control" placeholder="Select month...">`;
+
+        monthHtmlCode.textContent = monthHtmlCodeText;
+
+        // Update JavaScript code
+        const monthJsCodeText = `// Detect current theme
+const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
+
+flatpickr("#date-month", {
+    dateFormat: "Y-m",
+    plugins: [
+        new monthSelectPlugin({
+            shorthand: false,
+            dateFormat: "Y-m",
+            altFormat: "F Y",
+            theme: "${isDark ? 'dark' : 'light'}"  // Current: ${themeText} theme
+        })
+    ]
+});`;
+
+        monthJsCode.textContent = monthJsCodeText;
+
+        // Re-highlight the code
+        if (typeof hljs !== 'undefined') {
+            hljs.highlightElement(monthHtmlCode);
+            hljs.highlightElement(monthJsCode);
+        }
+    }
+
+    // Check current theme
+    const isDarkMode = htmlElement.getAttribute('data-bs-theme') === 'dark';
+    themeToggle.checked = isDarkMode;
+    updateThemeCodeExample(isDarkMode);
+    updateBasicPickerCodeExample(isDarkMode);
+    updateMonthPickerCodeExample(isDarkMode);
+
+    themeToggle.addEventListener('change', function() {
+        const newTheme = this.checked ? 'dark' : 'light';
+
+        if (this.checked) {
+            // Switch to dark theme
+            htmlElement.setAttribute('data-bs-theme', 'dark');
+            flatpickrThemeLink.href = '/assets/libs/flatpickr-4.6.13/themes/dark.css';
+        } else {
+            // Switch to light theme
+            htmlElement.setAttribute('data-bs-theme', 'light');
+            flatpickrThemeLink.href = '/assets/libs/flatpickr-4.6.13/flatpickr.min.css';
+        }
+
+        // Update code examples
+        updateThemeCodeExample(this.checked);
+        updateBasicPickerCodeExample(this.checked);
+        updateMonthPickerCodeExample(this.checked);
+
+        // Reinitialize month picker with new theme
+        if (monthPicker) {
+            monthPicker.destroy();
+            const newMonthPicker = flatpickr("#date-month", {
+                dateFormat: "Y-m",
+                plugins: [
+                    new monthSelectPlugin({
+                        shorthand: false,
+                        dateFormat: "Y-m",
+                        altFormat: "F Y",
+                        theme: newTheme
+                    })
+                ]
+            });
+            // Update the reference
+            window.monthPicker = newMonthPicker;
+        }
+    });
+
+    // Store monthPicker globally for theme toggle
+    window.monthPicker = monthPicker;
+});
+</script>
+
+<style>
+.example-section {
+    background: var(--bs-body-bg);
+    border: 1px solid var(--bs-border-color);
+    transition: all 0.3s ease;
+}
+
+.example-section:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.code-section {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: var(--bs-secondary-bg);
+    border-radius: 0.375rem;
+    border: 1px solid var(--bs-border-color);
+}
+
+.code-section h6 {
+    color: var(--bs-emphasis-color);
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.code-section h6:first-child {
+    margin-top: 0;
+}
+
+pre {
+    margin-bottom: 0;
+    background: var(--bs-dark-bg-subtle);
+    border-radius: 0.375rem;
+    padding: 1rem;
+}
+
+code {
+    color: var(--bs-code-color);
+}
+
+/* Flatpickr custom styling for better theme integration */
+.flatpickr-calendar {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* Ensure form controls adapt to theme */
+.form-control {
+    background-color: var(--bs-body-bg);
+    border-color: var(--bs-border-color);
+    color: var(--bs-body-color);
+}
+
+.form-control:focus {
+    background-color: var(--bs-body-bg);
+    border-color: var(--bs-primary);
+    color: var(--bs-body-color);
+}
+
+/* Table styling for theme compatibility */
+.table {
+    --bs-table-bg: transparent;
+    --bs-table-color: var(--bs-body-color);
+    --bs-table-border-color: var(--bs-border-color);
+}
+
+/* Alert styling */
+.alert-info {
+    background-color: var(--bs-info-bg-subtle);
+    border-color: var(--bs-info-border-subtle);
+    color: var(--bs-info-text-emphasis);
+}
+
+/* Smooth theme transitions */
+* {
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+</style>

@@ -1,0 +1,1488 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/dark.min.css">
+<!-- sfUI is already loaded in layout.html, no need to load again -->
+
+<script>
+// sfUI is already loaded in layout.html
+</script>
+
+<style>
+/* 공통 스타일 */
+.example-section {
+    background: var(--bs-body-bg);
+    border: 1px solid var(--bs-border-color);
+    transition: all 0.3s ease;
+}
+
+.example-section:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.code-section {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: var(--bs-secondary-bg);
+    border-radius: 0.375rem;
+    border: 1px solid var(--bs-border-color);
+}
+
+.code-section h6 {
+    color: var(--bs-emphasis-color);
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.code-section h6:first-child {
+    margin-top: 0;
+}
+
+pre {
+    margin-bottom: 0;
+    background: var(--bs-dark-bg-subtle);
+    border-radius: 0.375rem;
+    padding: 1rem;
+}
+
+code {
+    color: var(--bs-code-color);
+}
+
+.table {
+    --bs-table-bg: transparent;
+    --bs-table-color: var(--bs-body-color);
+    --bs-table-border-color: var(--bs-border-color);
+}
+
+.alert-info {
+    background-color: var(--bs-info-bg-subtle);
+    border-color: var(--bs-info-border-subtle);
+    color: var(--bs-info-text-emphasis);
+}
+
+.alert-success {
+    background-color: var(--bs-success-bg-subtle);
+    border-color: var(--bs-success-border-subtle);
+    color: var(--bs-success-text-emphasis);
+}
+
+.alert-warning {
+    background-color: var(--bs-warning-bg-subtle);
+    border-color: var(--bs-warning-border-subtle);
+    color: var(--bs-warning-text-emphasis);
+}
+
+/* Smooth theme transitions */
+* {
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.demo-btn {
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s;
+    border: none;
+}
+
+.demo-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.demo-btn.primary { background: #007bff; color: white; }
+.demo-btn.success { background: #28a745; color: white; }
+.demo-btn.danger { background: #dc3545; color: white; }
+.demo-btn.warning { background: #ffc107; color: #212529; }
+.demo-btn.info { background: #17a2b8; color: white; }
+.demo-btn.secondary { background: #6c757d; color: white; }
+.demo-btn.dark { background: #343a40; color: white; }
+
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+}
+
+.gallery img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.3s;
+    border: 2px solid var(--bs-border-color);
+}
+
+.gallery img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.demo-input {
+    width: 100%;
+    max-width: 500px;
+    padding: 10px;
+    border: 1px solid var(--bs-border-color);
+    background: var(--bs-body-bg);
+    color: var(--bs-body-color);
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.hero-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 40px 30px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+
+.hero-section h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.hero-section p {
+    opacity: 0.9;
+    font-size: 1.1rem;
+}
+
+.feature-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.2);
+    margin: 3px;
+    font-size: 0.85rem;
+}
+
+@media (max-width: 768px) {
+    .gallery {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    }
+
+    .gallery img {
+        height: 120px;
+    }
+
+    .hero-section h1 {
+        font-size: 1.8rem;
+    }
+}
+</style>
+
+<!-- Hero Section -->
+<div class="hero-section mb-4">
+    <h1><i class="bi bi-palette-fill"></i> sfUI - Unified UI Component Library</h1>
+    <p class="mb-3">Modern, lightweight, vanilla JavaScript UI components with zero dependencies</p>
+    <div>
+        <span class="feature-badge">✨ Zero Dependencies</span>
+        <span class="feature-badge">🎨 Modern Design</span>
+        <span class="feature-badge">🌙 Dark Mode</span>
+        <span class="feature-badge">📱 Responsive</span>
+        <span class="feature-badge">🚀 Lightweight</span>
+        <span class="feature-badge">🌐 i18n Support</span>
+    </div>
+</div>
+
+<!-- Installation -->
+<div class="mb-5">
+    <strong>sfUI</strong> is a modern UI component library built with vanilla JavaScript.<br>
+    /assets/libs/sfUI-1.0.0<br>
+    Version: <strong>1.0.0</strong> (Released: 2025-10-27)
+</div>
+
+<!-- Required Files -->
+<div class="mb-5 p-3 rounded" style="background: var(--bs-warning-bg-subtle); border: 1px solid var(--bs-warning-border-subtle);">
+    <h5 class="mb-3"><i class="bi bi-file-earmark-code"></i> Required Files</h5>
+    <p class="mb-2">To use sfUI in your project, include the following files:</p>
+    <pre><code class="language-html"><?php echo htmlspecialchars(<<<'EOD'
+<!-- sfUI CSS -->
+<link rel="stylesheet" href="/assets/libs/sfUI-1.0.0/dist/sfui.css">
+
+<!-- sfUI JavaScript -->
+<script src="/assets/libs/sfUI-1.0.0/dist/sfui.js"></script>
+EOD);?></code></pre>
+    <div class="alert alert-info mt-3 mb-0">
+        <small><strong><i class="bi bi-info-circle"></i> Note:</strong> sfUI automatically detects and adapts to Bootstrap 5 themes. No additional configuration needed for theme support!</small>
+    </div>
+</div>
+
+<!-- Theme Support -->
+<div class="mb-5 p-3 rounded" style="background: var(--bs-body-bg); border: 1px solid var(--bs-border-color);">
+    <h5 class="mb-3"><i class="bi bi-moon-stars"></i> Dark/Light Theme Support</h5>
+    <div class="alert alert-success">
+        <small><strong>✓ Automatic Theme Adaptation:</strong> sfUI automatically syncs with Bootstrap 5's theme system. Toggle the theme in the top navigation to see all components adapt instantly!</small>
+    </div>
+    <div class="mt-3">
+        <p class="mb-2"><strong>Theme Features:</strong></p>
+        <ul class="mb-0">
+            <li>Automatic detection of <code>data-bs-theme</code> attribute</li>
+            <li>Synchronizes with Bootstrap 5 theme changes</li>
+            <li>Custom theme API: <code>sfUI.setTheme('dark')</code>, <code>sfUI.getTheme()</code>, <code>sfUI.toggleTheme()</code></li>
+            <li>System preference support via <code>prefers-color-scheme</code></li>
+            <li>Smooth transitions between theme changes</li>
+            <li>Theme change event listeners: <code>sfUI.onThemeChange(callback)</code></li>
+        </ul>
+    </div>
+</div>
+
+<!-- Global Configuration -->
+<div class="mb-5 p-3 rounded example-section">
+    <h5 class="mb-3"><i class="bi bi-gear-fill"></i> Global Configuration</h5>
+    <p>Configure sfUI globally for your application:</p>
+    <div class="code-section">
+        <h6>JavaScript - Initialization</h6>
+        <pre><code class="language-js"><?php echo htmlspecialchars(<<<'EOD'
+// Initialize sfUI with custom settings
+sfUI.init({
+    language: 'ko',           // 'ko' or 'en'
+    zIndexBase: 10000,        // Base z-index for components
+    animationDuration: 300    // Animation duration in ms
+});
+
+// Change language dynamically
+sfUI.setLanguage('en');
+
+// Get current language
+const lang = sfUI.getLanguage();  // Returns: 'ko' or 'en'
+
+// Theme management
+const currentTheme = sfUI.getTheme();        // Returns: 'light' or 'dark'
+sfUI.setTheme('dark');                       // Set theme manually
+const newTheme = sfUI.toggleTheme();         // Toggle between themes
+
+// Listen for theme changes
+sfUI.onThemeChange(function(theme) {
+    console.log('Theme changed to:', theme);
+});
+EOD);?></code></pre>
+    </div>
+</div>
+
+<!-- 1. Alert Component -->
+<div class="mb-5 p-3 rounded example-section">
+    <h5 class="mb-3"><i class="bi bi-bell-fill"></i> 1. Alert Component</h5>
+    <p>Beautiful alert, notification, confirm, and input dialogs with smooth animations</p>
+
+    <div class="mb-3">
+        <button class="demo-btn primary me-2 mb-2" onclick="demoSimpleAlert()">
+            <i class="bi bi-info-circle"></i> Simple Alert
+        </button>
+        <button class="demo-btn info me-2 mb-2" onclick="demoNotification()">
+            <i class="bi bi-bell"></i> Notification
+        </button>
+        <button class="demo-btn success me-2 mb-2" onclick="demoConfirmDialog()">
+            <i class="bi bi-question-circle"></i> Confirm Dialog
+        </button>
+        <button class="demo-btn warning me-2 mb-2" onclick="demoInputDialog()">
+            <i class="bi bi-pencil"></i> Input Dialog
+        </button>
+        <button class="demo-btn danger me-2 mb-2" onclick="demoAlertBack()">
+            <i class="bi bi-arrow-left"></i> Alert & Go Back
+        </button>
+        <button class="demo-btn dark me-2 mb-2" onclick="demoAlertNoBackdrop()">
+            <i class="bi bi-lock"></i> Alert (No Backdrop Close)
+        </button>
+    </div>
+
+    <div class="alert alert-warning mb-3">
+        <strong><i class="bi bi-bug"></i> Test closeOnBackdropClick Option:</strong>
+        <p class="mb-2 mt-2">Click the buttons below to test the backdrop click behavior:</p>
+        <div class="d-flex gap-2 flex-wrap">
+            <button class="btn btn-success btn-sm" onclick="testAlertBackdropYes()">
+                <i class="bi bi-check-circle"></i> Alert - Backdrop Close: YES
+            </button>
+            <button class="btn btn-danger btn-sm" onclick="testAlertBackdropNo()">
+                <i class="bi bi-x-circle"></i> Alert - Backdrop Close: NO
+            </button>
+            <button class="btn btn-success btn-sm" onclick="testConfirmBackdropYes()">
+                <i class="bi bi-check-circle"></i> Confirm - Backdrop Close: YES
+            </button>
+            <button class="btn btn-danger btn-sm" onclick="testConfirmBackdropNo()">
+                <i class="bi bi-x-circle"></i> Confirm - Backdrop Close: NO
+            </button>
+        </div>
+    </div>
+
+    <div class="code-section">
+        <h6>HTML - Required Files</h6>
+        <pre><code class="language-html"><?php echo htmlspecialchars(<<<'EOD'
+<!-- sfUI CSS -->
+<link rel="stylesheet" href="/assets/libs/sfUI-1.0.0/dist/sfui.css">
+
+<!-- sfUI JavaScript -->
+<script src="/assets/libs/sfUI-1.0.0/dist/sfui.js"></script>
+EOD);?></code></pre>
+        <h6>JavaScript - Usage Examples</h6>
+        <pre><code class="language-js"><?php echo htmlspecialchars(<<<'EOD'
+// Simple alert
+sfUI.alert.alert('Hello World!');
+
+// Alert with callback
+sfUI.alert.alert('Message', function() {
+    console.log('Alert closed');
+});
+
+// Notification (auto-close)
+sfUI.alert.noti('Information message');
+
+// Confirm dialog
+sfUI.alert.confirm('Are you sure?',
+    function() {
+        console.log('Yes clicked');
+    },
+    function() {
+        console.log('No clicked');
+    }
+);
+
+// Input dialog
+sfUI.alert.inputConfirm('Enter your name:', function(value) {
+    console.log('User entered:', value);
+});
+
+// Alert and navigate back
+sfUI.alert.alertBack('Changes saved! Going back...');
+
+// Alert with backdrop close disabled (NEW!)
+sfUI.alert.show({
+    type: 'alert',
+    messageText: 'Important! You must click OK button.',
+    closeOnBackdropClick: false  // Disable backdrop click to close
+});
+
+// Advanced usage with all options
+sfUI.alert.show({
+    type: 'alert',
+    messageText: 'Custom styled alert',
+    alertType: 'warning',
+    fontSize: '1.5rem',
+    closeOnBackdropClick: false,  // User must use OK button
+    okCallback: function() {
+        console.log('OK clicked');
+    }
+});
+
+// Legacy compatibility (still works!)
+alert('This still works!');
+confirm('Confirm?', yesCallback, noCallback);
+EOD);?></code></pre>
+        <div class="alert alert-info mt-3 mb-0">
+            <small><strong><i class="bi bi-lightbulb"></i> Tip:</strong> All alert dialogs automatically adapt to the current theme (light/dark) without any extra configuration!</small>
+        </div>
+        <div class="alert alert-warning mt-3 mb-0">
+            <small><strong><i class="bi bi-lock"></i> closeOnBackdropClick Option:</strong> Set to <code>false</code> to force users to click the action button (OK/Yes/No). Default is <code>true</code> (allows closing by clicking backdrop).</small>
+        </div>
+    </div>
+</div>
+
+<!-- 2. Modal Component -->
+<div class="mb-5 p-3 rounded example-section">
+    <h5 class="mb-3"><i class="bi bi-window"></i> 2. Modal Component</h5>
+    <p>Reusable modal dialogs with customizable headers, bodies, and footers</p>
+
+    <div class="mb-3">
+        <button class="demo-btn primary me-2 mb-2" onclick="showSimpleModal()">
+            <i class="bi bi-window-stack"></i> Simple Modal
+        </button>
+        <button class="demo-btn success me-2 mb-2" onclick="showModalWithForm()">
+            <i class="bi bi-file-earmark-text"></i> Modal with Form
+        </button>
+        <button class="demo-btn info me-2 mb-2" onclick="showLargeModal()">
+            <i class="bi bi-arrows-fullscreen"></i> Large Modal
+        </button>
+        <button class="demo-btn warning me-2 mb-2" onclick="showModalWithFooter()">
+            <i class="bi bi-ui-checks"></i> Modal with Custom Footer
+        </button>
+        <button class="demo-btn secondary me-2 mb-2" onclick="showNestedModal()">
+            <i class="bi bi-layers"></i> Nested Modal Demo
+        </button>
+        <button class="demo-btn dark me-2 mb-2" onclick="showModalNoBackdrop()">
+            <i class="bi bi-lock"></i> Modal (No Backdrop Close)
+        </button>
+    </div>
+
+    <div class="alert alert-warning mb-3">
+        <strong><i class="bi bi-bug"></i> Test closeOnBackdropClick Option:</strong>
+        <p class="mb-2 mt-2">Click the buttons below to test the modal backdrop click behavior:</p>
+        <div class="d-flex gap-2 flex-wrap">
+            <button class="btn btn-success btn-sm" onclick="testModalBackdropYes()">
+                <i class="bi bi-check-circle"></i> Modal - Backdrop Close: YES
+            </button>
+            <button class="btn btn-danger btn-sm" onclick="testModalBackdropNo()">
+                <i class="bi bi-x-circle"></i> Modal - Backdrop Close: NO
+            </button>
+        </div>
+    </div>
+
+    <div class="code-section">
+        <h6>HTML - Required Files</h6>
+        <pre><code class="language-html"><?php echo htmlspecialchars(<<<'EOD'
+<!-- sfUI CSS -->
+<link rel="stylesheet" href="/assets/libs/sfUI-1.0.0/dist/sfui.css">
+
+<!-- sfUI JavaScript -->
+<script src="/assets/libs/sfUI-1.0.0/dist/sfui.js"></script>
+EOD);?></code></pre>
+        <h6>JavaScript - Usage Examples</h6>
+        <pre><code class="language-js"><?php echo htmlspecialchars(<<<'EOD'
+// Create a simple modal
+const modal = sfUI.modal.create('myModal', {
+    title: 'My Modal',
+    body: {
+        html: '<p>Modal content goes here</p>'
+    }
+});
+
+// Show the modal
+modal.show();
+
+// Create modal with custom footer
+const modal2 = sfUI.modal.create('formModal', {
+    title: 'Contact Form',
+    body: {
+        html: '<form>...</form>'
+    },
+    footer: {
+        submit: {
+            enable: true,
+            text: 'Save',
+            callback: function() {
+                console.log('Save clicked');
+                modal2.hide();
+            }
+        },
+        cancel: {
+            enable: true,
+            text: 'Cancel'
+        }
+    }
+});
+
+// Modal with backdrop close disabled (NEW!)
+const importantModal = sfUI.modal.create('importantModal', {
+    title: 'Important Information',
+    closeOnBackdropClick: false,  // Disable backdrop click to close
+    body: {
+        html: '<p>You must use the close button to dismiss this modal.</p>'
+    },
+    footer: {
+        submit: {
+            enable: true,
+            text: 'I Understand',
+            callback: function() {
+                importantModal.hide();
+            }
+        }
+    }
+});
+
+// Update modal content
+modal.setBody('<p>New content</p>');
+modal.setTitle('New Title');
+
+// Get modal elements
+const body = modal.getBody();
+const header = modal.getHeader();
+const footer = modal.getFooter();
+
+// Hide modal
+modal.hide();
+
+// Nested Modals - Automatic z-index and position management
+const modal1 = sfUI.modal.create('modal1', { title: 'First Modal', body: { html: '...' } });
+modal1.show();
+
+// Open second modal on top - automatically offset by 30px
+const modal2 = sfUI.modal.create('modal2', { title: 'Second Modal', body: { html: '...' } });
+modal2.show(); // z-index and position automatically adjusted
+
+// Get existing modal
+const existingModal = sfUI.modal.get('modal1');
+
+// Legacy compatibility
+const modal3 = sfModal('oldStyleModal', options);
+modal3.modal('show');
+EOD);?></code></pre>
+        <div class="alert alert-success mt-3 mb-0">
+            <small><strong><i class="bi bi-check-circle"></i> Nested Modals:</strong> When opening multiple modals, each new modal automatically gets a higher z-index (+10) and position offset (+30px) for better visibility and UX.</small>
+        </div>
+        <div class="alert alert-warning mt-3 mb-0">
+            <small><strong><i class="bi bi-lock"></i> closeOnBackdropClick Option:</strong> Set to <code>false</code> to prevent users from closing the modal by clicking outside. They must use the close button or footer actions. Default is <code>true</code>.</small>
+        </div>
+    </div>
+</div>
+
+<!-- 3. LightBox Component -->
+<div class="mb-5 p-3 rounded example-section">
+    <h5 class="mb-3"><i class="bi bi-images"></i> 3. LightBox Component</h5>
+    <p>Image gallery lightbox with keyboard navigation, touch support, and smooth transitions</p>
+
+    <div class="gallery mb-3">
+        <img src="/assets/images/demo-1.jpg"
+             data-sflightbox="demo-gallery"
+             data-caption="Beautiful Mountain Landscape"
+             alt="Demo Image 1">
+        <img src="/assets/images/demo-2.jpg"
+             data-sflightbox="demo-gallery"
+             data-caption="Scenic Nature View"
+             alt="Demo Image 2">
+        <img src="/assets/images/demo-3.jpg"
+             data-sflightbox="demo-gallery"
+             data-caption="Stunning Sunset"
+             alt="Demo Image 3">
+        <img src="/assets/images/demo-4.jpg"
+             data-sflightbox="demo-gallery"
+             data-caption="Urban Architecture"
+             alt="Demo Image 4">
+        <img src="/assets/images/demo-5.jpg"
+             data-sflightbox="demo-gallery"
+             data-caption="Peaceful Countryside"
+             alt="Demo Image 5">
+        <img src="/assets/images/demo-6.jpg"
+             data-sflightbox="demo-gallery"
+             data-caption="Ocean Horizon"
+             alt="Demo Image 6">
+    </div>
+
+    <div class="alert alert-info">
+        <small><strong><i class="bi bi-lightbulb"></i> Tip:</strong> Click any image above to open the lightbox. Use keyboard arrows or click the navigation buttons to browse through images.</small>
+    </div>
+
+    <div class="code-section">
+        <h6>HTML - Required Files</h6>
+        <pre><code class="language-html"><?php echo htmlspecialchars(<<<'EOD'
+<!-- sfUI CSS -->
+<link rel="stylesheet" href="/assets/libs/sfUI-1.0.0/dist/sfui.css">
+
+<!-- sfUI JavaScript -->
+<script src="/assets/libs/sfUI-1.0.0/dist/sfui.js"></script>
+EOD);?></code></pre>
+        <h6>HTML - Image Markup</h6>
+        <pre><code class="language-html"><?php echo htmlspecialchars(<<<'EOD'
+<!-- Auto-initialization via data attributes -->
+<img src="thumb.jpg"
+     data-sflightbox="gallery1"
+     data-big="large.jpg"
+     data-caption="Image caption"
+     alt="Thumbnail">
+
+<img src="thumb2.jpg"
+     data-sflightbox="gallery1"
+     data-big="large2.jpg"
+     data-caption="Another image"
+     alt="Thumbnail">
+EOD);?></code></pre>
+        <h6>JavaScript - Manual Initialization (Optional)</h6>
+        <pre><code class="language-js"><?php echo htmlspecialchars(<<<'EOD'
+// Auto-initialized via data attributes, but you can also initialize manually
+
+// Initialize with selector
+sfUI.lightbox.init('img[data-sflightbox]');
+
+// Initialize with custom options
+sfUI.lightbox.init('img[data-sflightbox]', {
+    overlayColor: 'rgba(0, 0, 0, 0.9)',
+    captionColor: '#fff',
+    transitionDuration: 500
+});
+
+// Programmatically open lightbox
+sfUI.lightbox.open('gallery1', 'large.jpg');
+
+// Close lightbox
+sfUI.lightbox.close();
+EOD);?></code></pre>
+        <div class="alert alert-success mt-3 mb-0">
+            <small><strong><i class="bi bi-check-circle"></i> Features:</strong> Keyboard navigation (←/→), ESC to close, Click outside to close, Touch swipe support on mobile, Auto-adapts to theme</small>
+        </div>
+    </div>
+</div>
+
+<!-- 4. RangeSlider Component -->
+<div class="mb-5 p-3 rounded example-section">
+    <h5 class="mb-3"><i class="bi bi-sliders"></i> 4. RangeSlider Component</h5>
+    <p>Interactive range slider for number inputs with dual handles and formatting options</p>
+
+    <div class="row mb-3">
+        <div class="col-md-6 mb-3">
+            <label for="priceRange" class="form-label fw-bold">
+                <i class="bi bi-cash"></i> Price Range:
+            </label>
+            <input type="text"
+                   id="priceRange"
+                   class="demo-input"
+                   data-sfrangeslider
+                   data-min="0"
+                   data-max="1000000"
+                   data-thousands=","
+                   data-prefix="$"
+                   placeholder="Click to select price range">
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="yearRange" class="form-label fw-bold">
+                <i class="bi bi-calendar-range"></i> Year Range:
+            </label>
+            <input type="text"
+                   id="yearRange"
+                   class="demo-input"
+                   data-sfrangeslider
+                   data-min="1900"
+                   data-max="2025"
+                   placeholder="Click to select year range">
+        </div>
+    </div>
+
+    <div class="code-section">
+        <h6>HTML - Required Files</h6>
+        <pre><code class="language-html"><?php echo htmlspecialchars(<<<'EOD'
+<!-- sfUI CSS -->
+<link rel="stylesheet" href="/assets/libs/sfUI-1.0.0/dist/sfui.css">
+
+<!-- sfUI JavaScript -->
+<script src="/assets/libs/sfUI-1.0.0/dist/sfui.js"></script>
+EOD);?></code></pre>
+        <h6>HTML - Auto-initialization via Data Attributes</h6>
+        <pre><code class="language-html"><?php echo htmlspecialchars(<<<'EOD'
+<!-- Auto-initialized range slider -->
+<input type="text"
+       id="priceRange"
+       data-sfrangeslider
+       data-min="0"
+       data-max="1000000"
+       data-thousands=","
+       data-prefix="$"
+       placeholder="Select range">
+EOD);?></code></pre>
+        <h6>JavaScript - Manual Initialization (Optional)</h6>
+        <pre><code class="language-js"><?php echo htmlspecialchars(<<<'EOD'
+// Manual initialization with custom options
+sfUI.rangeslider.init('#priceRange', {
+    min: 0,
+    max: 1000000,
+    step: 1000,
+    thousands: ',',
+    prefix: '$',
+    suffix: '',
+    theme: 'auto' // 'auto', 'light', or 'dark'
+});
+
+// Listen for value changes
+document.getElementById('priceRange').addEventListener('apply.sfrangeslider', function(e) {
+    console.log('Range selected:', e.detail.min, '-', e.detail.max);
+    console.log('Formatted:', e.detail.formattedMin, '-', e.detail.formattedMax);
+});
+EOD);?></code></pre>
+        <div class="alert alert-info mt-3 mb-0">
+            <small><strong><i class="bi bi-lightbulb"></i> Tip:</strong> Theme automatically adapts to current Bootstrap theme. Use <code>theme: 'auto'</code> for automatic theme switching.</small>
+        </div>
+    </div>
+</div>
+
+<!-- 5. Utility Functions -->
+<div class="mb-5 p-3 rounded example-section">
+    <h5 class="mb-3"><i class="bi bi-tools"></i> 5. Utility Functions</h5>
+    <p>Helper functions for number formatting and theme management</p>
+
+    <div class="mb-3">
+        <button class="demo-btn primary me-2 mb-2" onclick="demoFormatNumber()">
+            <i class="bi bi-123"></i> Format Number
+        </button>
+        <button class="demo-btn success me-2 mb-2" onclick="demoShortNumber()">
+            <i class="bi bi-calculator"></i> Short Format
+        </button>
+        <button class="demo-btn info me-2 mb-2" onclick="demoTheme()">
+            <i class="bi bi-palette"></i> Get Theme
+        </button>
+        <button class="demo-btn warning me-2 mb-2" onclick="demoToggleLanguage()">
+            <i class="bi bi-translate"></i> Toggle Language
+        </button>
+        <button class="demo-btn dark me-2 mb-2" onclick="demoToggleTheme()">
+            <i class="bi bi-moon-stars"></i> Toggle Theme
+        </button>
+    </div>
+
+    <div class="code-section">
+        <h6>JavaScript - Utility Functions</h6>
+        <pre><code class="language-js"><?php echo htmlspecialchars(<<<'EOD'
+// Number formatting
+const formatted = sfUI.formatNumber(1234567.89, 2, '.', ',');
+console.log(formatted); // "1,234,567.89"
+
+// Short number format (K, M, B)
+const short = sfUI.formatNumberShort(1500000);
+console.log(short); // "1.5M"
+
+// Theme management
+const currentTheme = sfUI.getTheme();
+console.log(currentTheme); // "light" or "dark"
+
+// Set theme manually
+sfUI.setTheme('dark');
+
+// Toggle theme
+const newTheme = sfUI.toggleTheme();
+console.log(newTheme); // Returns new theme
+
+// Listen for theme changes
+sfUI.onThemeChange(function(theme) {
+    console.log('Theme changed to:', theme);
+    // Update your UI accordingly
+});
+
+// Language management
+const currentLang = sfUI.getLanguage();
+console.log(currentLang); // "ko" or "en"
+
+// Set language
+sfUI.setLanguage('en');
+
+// Toggle language
+const newLang = sfUI.getLanguage() === 'ko' ? 'en' : 'ko';
+sfUI.setLanguage(newLang);
+EOD);?></code></pre>
+    </div>
+</div>
+
+<!-- API Reference -->
+<div class="mb-5 p-3 rounded" style="background: var(--bs-info-bg-subtle); border: 1px solid var(--bs-info-border-subtle);">
+    <h5 class="mb-3"><i class="bi bi-code-square"></i> Complete API Reference</h5>
+
+    <h6 class="mt-4">Alert API</h6>
+    <div class="table-responsive">
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th>Method</th>
+                    <th>Parameters</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>sfUI.alert.alert()</code></td>
+                    <td>message, [callback]</td>
+                    <td>Show alert dialog</td>
+                </tr>
+                <tr>
+                    <td><code>sfUI.alert.noti()</code></td>
+                    <td>message</td>
+                    <td>Show notification (auto-close)</td>
+                </tr>
+                <tr>
+                    <td><code>sfUI.alert.confirm()</code></td>
+                    <td>message, yesCallback, [noCallback]</td>
+                    <td>Show confirm dialog</td>
+                </tr>
+                <tr>
+                    <td><code>sfUI.alert.inputConfirm()</code></td>
+                    <td>message, callback, [placeholder]</td>
+                    <td>Show input dialog</td>
+                </tr>
+                <tr>
+                    <td><code>sfUI.alert.alertBack()</code></td>
+                    <td>message</td>
+                    <td>Show alert and go back in history</td>
+                </tr>
+                <tr>
+                    <td><code>sfUI.alert.show()</code></td>
+                    <td>options</td>
+                    <td>Show alert with custom options (see below)</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="alert alert-info mt-2 mb-0">
+            <small><strong>Options for sfUI.alert.show():</strong></small>
+            <ul class="mb-0 mt-2" style="font-size: 0.875rem;">
+                <li><code>closeOnBackdropClick</code> (boolean): Allow closing by clicking backdrop. Default: <code>true</code></li>
+                <li><code>type</code> (string): 'alert', 'confirm', or 'input'</li>
+                <li><code>messageText</code> (string): The message to display</li>
+                <li><code>alertType</code> (string): 'default', 'danger', 'warning', 'info', 'success'</li>
+                <li><code>fontSize</code> (string): Custom font size (e.g., '1.5rem')</li>
+                <li><code>width</code> (string): Custom width (e.g., '500px')</li>
+            </ul>
+        </div>
+    </div>
+
+    <h6 class="mt-4">Modal API</h6>
+    <div class="table-responsive">
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th>Method</th>
+                    <th>Parameters</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>sfUI.modal.create()</code></td>
+                    <td>id, options</td>
+                    <td>Create modal instance</td>
+                </tr>
+                <tr>
+                    <td><code>modal.show()</code></td>
+                    <td>-</td>
+                    <td>Show the modal</td>
+                </tr>
+                <tr>
+                    <td><code>modal.hide()</code></td>
+                    <td>-</td>
+                    <td>Hide the modal</td>
+                </tr>
+                <tr>
+                    <td><code>modal.setBody()</code></td>
+                    <td>html</td>
+                    <td>Update modal body</td>
+                </tr>
+                <tr>
+                    <td><code>modal.setTitle()</code></td>
+                    <td>title</td>
+                    <td>Update modal title</td>
+                </tr>
+                <tr>
+                    <td><code>modal.getBody()</code></td>
+                    <td>-</td>
+                    <td>Get body element</td>
+                </tr>
+                <tr>
+                    <td><code>modal.getHeader()</code></td>
+                    <td>-</td>
+                    <td>Get header element</td>
+                </tr>
+                <tr>
+                    <td><code>modal.getFooter()</code></td>
+                    <td>-</td>
+                    <td>Get footer element</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="alert alert-info mt-2 mb-0">
+            <small><strong>Key Options for sfUI.modal.create():</strong></small>
+            <ul class="mb-0 mt-2" style="font-size: 0.875rem;">
+                <li><code>closeOnBackdropClick</code> (boolean): Allow closing by clicking backdrop. Default: <code>true</code></li>
+                <li><code>title</code> (string): Modal title</li>
+                <li><code>verticalCenter</code> (boolean): Center modal vertically. Default: <code>true</code></li>
+                <li><code>animation</code> (boolean): Enable fade animation. Default: <code>true</code></li>
+                <li><code>header.close</code> (boolean): Show close button in header. Default: <code>true</code></li>
+            </ul>
+        </div>
+    </div>
+
+    <h6 class="mt-4">LightBox API</h6>
+    <div class="table-responsive">
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th>Method</th>
+                    <th>Parameters</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>sfUI.lightbox.init()</code></td>
+                    <td>selector, [options]</td>
+                    <td>Initialize lightbox</td>
+                </tr>
+                <tr>
+                    <td><code>sfUI.lightbox.open()</code></td>
+                    <td>gallery, imageSrc</td>
+                    <td>Open specific image</td>
+                </tr>
+                <tr>
+                    <td><code>sfUI.lightbox.close()</code></td>
+                    <td>-</td>
+                    <td>Close lightbox</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h6 class="mt-4">RangeSlider API</h6>
+    <div class="table-responsive">
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th>Method</th>
+                    <th>Parameters</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>sfUI.rangeslider.init()</code></td>
+                    <td>selector, options</td>
+                    <td>Initialize range slider</td>
+                </tr>
+                <tr>
+                    <td><code>apply.sfrangeslider</code></td>
+                    <td>event</td>
+                    <td>Event fired when range applied</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h6 class="mt-4">Utility API</h6>
+    <div class="table-responsive">
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th>Method</th>
+                    <th>Parameters</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>sfUI.formatNumber()</code></td>
+                    <td>num, decimals, decPoint, thousandsSep</td>
+                    <td>Format number with separators</td>
+                </tr>
+                <tr>
+                    <td><code>sfUI.formatNumberShort()</code></td>
+                    <td>num</td>
+                    <td>Format to K/M/B notation</td>
+                </tr>
+                <tr>
+                    <td><code>sfUI.getTheme()</code></td>
+                    <td>-</td>
+                    <td>Get current theme</td>
+                </tr>
+                <tr>
+                    <td><code>sfUI.setTheme()</code></td>
+                    <td>theme</td>
+                    <td>Set theme ('light'/'dark')</td>
+                </tr>
+                <tr>
+                    <td><code>sfUI.toggleTheme()</code></td>
+                    <td>-</td>
+                    <td>Toggle between themes</td>
+                </tr>
+                <tr>
+                    <td><code>sfUI.onThemeChange()</code></td>
+                    <td>callback</td>
+                    <td>Listen to theme changes</td>
+                </tr>
+                <tr>
+                    <td><code>sfUI.getLanguage()</code></td>
+                    <td>-</td>
+                    <td>Get current language</td>
+                </tr>
+                <tr>
+                    <td><code>sfUI.setLanguage()</code></td>
+                    <td>lang</td>
+                    <td>Set language ('ko'/'en')</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Browser Support -->
+<div class="mb-5 p-3 rounded" style="background: var(--bs-success-bg-subtle); border: 1px solid var(--bs-success-border-subtle);">
+    <h5 class="mb-3"><i class="bi bi-browser-chrome"></i> Browser Support</h5>
+    <div class="row">
+        <div class="col-md-6">
+            <ul>
+                <li><i class="bi bi-check-circle-fill text-success"></i> Chrome/Edge (latest)</li>
+                <li><i class="bi bi-check-circle-fill text-success"></i> Firefox (latest)</li>
+                <li><i class="bi bi-check-circle-fill text-success"></i> Safari (latest)</li>
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <ul>
+                <li><i class="bi bi-check-circle-fill text-success"></i> Opera (latest)</li>
+                <li><i class="bi bi-check-circle-fill text-success"></i> IE11+ (with polyfills)</li>
+                <li><i class="bi bi-check-circle-fill text-success"></i> Mobile browsers</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap Compatibility -->
+<div class="mb-5 p-3 rounded" style="background: var(--bs-warning-bg-subtle); border: 1px solid var(--bs-warning-border-subtle);">
+    <h5 class="mb-3"><i class="bi bi-bootstrap-fill"></i> Bootstrap 5 Compatibility</h5>
+    <div class="alert alert-success">
+        <strong><i class="bi bi-check-circle"></i> Fully Compatible!</strong> sfUI uses unique class names prefixed with <code>sfui-</code> to avoid conflicts with Bootstrap.
+    </div>
+    <p class="mb-2"><strong>Key Features:</strong></p>
+    <ul>
+        <li>All classes use <code>sfui-</code> prefix (e.g., <code>.sfui-modal</code>, <code>.sfui-btn</code>)</li>
+        <li>Automatic integration with Bootstrap's <code>data-bs-theme</code> system</li>
+        <li>Detects and synchronizes with Bootstrap theme changes</li>
+        <li>Can be used alongside Bootstrap modals and components without conflicts</li>
+        <li>Leverages Bootstrap color variables for consistency</li>
+    </ul>
+</div>
+
+<!-- Footer Info -->
+<div class="p-4 rounded text-center" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+    <h5 class="mb-2"><i class="bi bi-heart-fill"></i> Made with Love by ShakeFlat Team</h5>
+    <p class="mb-3">Modern UI Components for Modern Web Applications</p>
+    <div>
+        <span class="badge bg-light text-dark me-2">Version 1.0.0</span>
+        <span class="badge bg-light text-dark me-2">MIT License</span>
+        <span class="badge bg-light text-dark">Released: 2025-10-27</span>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+    // Initialize syntax highlighting
+    hljs.highlightAll();
+
+    // Range slider event listeners - check if elements exist first
+    const priceRangeEl = document.getElementById('priceRange');
+    if (priceRangeEl) {
+        priceRangeEl.addEventListener('apply.sfrangeslider', function(e) {
+            // Price range selected
+        });
+    }
+
+    const yearRangeEl = document.getElementById('yearRange');
+    if (yearRangeEl) {
+        yearRangeEl.addEventListener('apply.sfrangeslider', function(e) {
+            // Year range selected
+        });
+    }
+});
+
+// Alert Demo Functions
+function demoSimpleAlert() {
+    sfUI.alert.alert('This is a simple alert message!');
+}
+
+function demoNotification() {
+    sfUI.alert.noti('This is a notification message');
+}
+
+function demoConfirmDialog() {
+    sfUI.alert.confirm('Are you sure you want to proceed?',
+        function() {
+            sfUI.alert.noti('You clicked Yes!');
+        },
+        function() {
+            sfUI.alert.noti('You clicked No!');
+        }
+    );
+}
+
+function demoInputDialog() {
+    sfUI.alert.inputConfirm('Please enter your name:', function(value) {
+        if (value) {
+            sfUI.alert.noti('Hello, ' + value + '!');
+        }
+    });
+}
+
+function demoAlertBack() {
+    sfUI.alert.alertBack('This alert will navigate back in history!');
+}
+
+function demoAlertNoBackdrop() {
+    sfUI.alert.show({
+        type: 'alert',
+        messageText: '<strong>Important Notice!</strong><br><br>This alert cannot be closed by clicking the background.<br>You must click the OK button.',
+        alertType: 'warning',
+        closeOnBackdropClick: false
+    });
+}
+
+// Test functions for closeOnBackdropClick option
+function testAlertBackdropYes() {
+    sfUI.alert.show({
+        type: 'alert',
+        messageText: '<div class="alert alert-success mb-0"><strong>closeOnBackdropClick: TRUE</strong><br><br>Try clicking the dark area outside this alert.<br>It should close the alert.</div>',
+        closeOnBackdropClick: true
+    });
+}
+
+function testAlertBackdropNo() {
+    sfUI.alert.show({
+        type: 'alert',
+        messageText: '<div class="alert alert-danger mb-0"><strong>closeOnBackdropClick: FALSE</strong><br><br>Try clicking the dark area outside this alert.<br>It should NOT close. You must click OK button.</div>',
+        closeOnBackdropClick: false
+    });
+}
+
+function testConfirmBackdropYes() {
+    sfUI.alert.show({
+        type: 'confirm',
+        messageText: '<div class="alert alert-success mb-0"><strong>closeOnBackdropClick: TRUE</strong><br><br>Try clicking the dark area outside this dialog.<br>It should close the dialog.</div>',
+        closeOnBackdropClick: true,
+        yesCallback: function() {
+            sfUI.alert.noti('You clicked YES');
+        },
+        noCallback: function() {
+            sfUI.alert.noti('You clicked NO');
+        }
+    });
+}
+
+function testConfirmBackdropNo() {
+    sfUI.alert.show({
+        type: 'confirm',
+        messageText: '<div class="alert alert-danger mb-0"><strong>closeOnBackdropClick: FALSE</strong><br><br>Try clicking the dark area outside this dialog.<br>It should NOT close. You must click YES or NO button.</div>',
+        closeOnBackdropClick: false,
+        yesCallback: function() {
+            sfUI.alert.noti('You clicked YES');
+        },
+        noCallback: function() {
+            sfUI.alert.noti('You clicked NO');
+        }
+    });
+}
+
+function testModalBackdropYes() {
+    const modal = sfUI.modal.create('testModalYes', {
+        title: '<i class="bi bi-check-circle"></i> Modal - Backdrop Close: YES',
+        closeOnBackdropClick: true,
+        body: {
+            html: `
+                <div class="alert alert-success">
+                    <strong>closeOnBackdropClick: TRUE</strong>
+                </div>
+                <p class="mb-3">Try clicking the dark area outside this modal.</p>
+                <p class="mb-0"><strong>Expected Result:</strong> The modal should close.</p>
+            `
+        },
+        footer: {
+            submit: {
+                enable: true,
+                text: 'Close',
+                callback: function() {
+                    modal.hide();
+                }
+            }
+        }
+    });
+    modal.show();
+}
+
+function testModalBackdropNo() {
+    const modal = sfUI.modal.create('testModalNo', {
+        title: '<i class="bi bi-x-circle"></i> Modal - Backdrop Close: NO',
+        closeOnBackdropClick: false,
+        body: {
+            html: `
+                <div class="alert alert-danger">
+                    <strong>closeOnBackdropClick: FALSE</strong>
+                </div>
+                <p class="mb-3">Try clicking the dark area outside this modal.</p>
+                <p class="mb-0"><strong>Expected Result:</strong> The modal should NOT close. You must use the Close button or X button in header.</p>
+            `
+        },
+        footer: {
+            submit: {
+                enable: true,
+                text: 'Close',
+                callback: function() {
+                    modal.hide();
+                }
+            }
+        }
+    });
+    modal.show();
+}
+
+// Modal Examples
+function showSimpleModal() {
+    const modal = sfUI.modal.create('simpleModal', {
+        title: 'Simple Modal Example',
+        body: {
+            html: `
+                <p class="mb-3">This is a simple modal with default settings.</p>
+                <p class="mb-3">You can put any HTML content here!</p>
+                <div class="alert alert-info mb-0">
+                    <small><strong>Note:</strong> The modal automatically adapts to the current theme.</small>
+                </div>
+            `
+        }
+    });
+    modal.show();
+}
+
+function showModalWithForm() {
+    const modal = sfUI.modal.create('formModal', {
+        title: '<i class="bi bi-envelope"></i> Contact Form',
+        body: {
+            html: `
+                <form id="contactForm">
+                    <div class="mb-3">
+                        <label for="formName" class="form-label">Name *</label>
+                        <input type="text" class="form-control" id="formName" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="formEmail" class="form-label">Email *</label>
+                        <input type="email" class="form-control" id="formEmail" name="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="formMessage" class="form-label">Message *</label>
+                        <textarea class="form-control" id="formMessage" name="message" rows="4" required></textarea>
+                    </div>
+                </form>
+            `
+        },
+        footer: {
+            submit: {
+                enable: true,
+                text: '<i class="bi bi-send"></i> Submit',
+                callback: function() {
+                    const form = document.getElementById('contactForm');
+                    if (form.checkValidity()) {
+                        sfUI.alert.noti('Form submitted successfully!');
+                        modal.hide();
+                    } else {
+                        sfUI.alert.alert('Please fill in all required fields');
+                    }
+                }
+            },
+            cancel: {
+                enable: true,
+                text: '<i class="bi bi-x-circle"></i> Cancel'
+            }
+        }
+    });
+    modal.show();
+}
+
+function showLargeModal() {
+    const modal = sfUI.modal.create('largeModal', {
+        title: '<i class="bi bi-file-earmark-text"></i> Large Modal with Long Content',
+        dialogClass: 'sfui-modal-lg',
+        dialogStyle: 'max-width: 800px;',
+        body: {
+            html: `
+                <h5>Lorem Ipsum Dolor Sit Amet</h5>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+
+                <h5 class="mt-4">Features</h5>
+                <ul>
+                    <li>Responsive design that works on all devices</li>
+                    <li>Automatic theme adaptation (light/dark)</li>
+                    <li>Smooth animations and transitions</li>
+                    <li>Keyboard support (ESC to close)</li>
+                    <li>Click outside to close</li>
+                </ul>
+
+                <h5 class="mt-4">More Information</h5>
+                <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+                <div class="alert alert-info">
+                    <strong>Tip:</strong> This modal can scroll if the content is too long for the screen. The modal will automatically adjust its height.
+                </div>
+            `
+        }
+    });
+    modal.show();
+}
+
+function showModalWithFooter() {
+    const modal = sfUI.modal.create('footerModal', {
+        title: '<i class="bi bi-trash"></i> Confirm Delete',
+        body: {
+            html: `
+                <p>Are you sure you want to delete this item?</p>
+                <div class="alert alert-warning">
+                    <strong>Warning:</strong> This action cannot be undone!
+                </div>
+            `
+        },
+        footer: {
+            submit: {
+                enable: true,
+                text: '<i class="bi bi-trash"></i> Delete',
+                class: 'btn-danger',
+                callback: function() {
+                    sfUI.alert.noti('Item deleted successfully');
+                    modal.hide();
+                }
+            },
+            cancel: {
+                enable: true,
+                text: '<i class="bi bi-x-circle"></i> Cancel'
+            }
+        }
+    });
+    modal.show();
+}
+
+function showNestedModal() {
+    // First level modal
+    const modal1 = sfUI.modal.create('nestedModal1', {
+        title: '<i class="bi bi-layers"></i> First Modal',
+        body: {
+            html: `
+                <p class="mb-3">This is the first modal.</p>
+                <p class="mb-3">Click the button below to open a second modal on top of this one.</p>
+                <button class="btn btn-primary" onclick="showNestedModal2()">
+                    <i class="bi bi-plus-circle"></i> Open Second Modal
+                </button>
+                <div class="alert alert-info mt-3 mb-0">
+                    <small><strong>Note:</strong> The second modal will appear with a slight offset and higher z-index.</small>
+                </div>
+            `
+        }
+    });
+    modal1.show();
+}
+
+function showNestedModal2() {
+    // Second level modal
+    const modal2 = sfUI.modal.create('nestedModal2', {
+        title: '<i class="bi bi-layers-fill"></i> Second Modal',
+        body: {
+            html: `
+                <p class="mb-3">This is the second modal, nested on top of the first one.</p>
+                <p class="mb-3">Notice the position offset and z-index layering.</p>
+                <button class="btn btn-success" onclick="showNestedModal3()">
+                    <i class="bi bi-plus-circle"></i> Open Third Modal
+                </button>
+                <div class="alert alert-success mt-3 mb-0">
+                    <small><strong>Tip:</strong> You can stack multiple modals!</small>
+                </div>
+            `
+        },
+        footer: {
+            submit: {
+                enable: true,
+                text: '<i class="bi bi-check"></i> Confirm',
+                callback: function() {
+                    sfUI.alert.noti('Second modal confirmed!');
+                    modal2.hide();
+                }
+            }
+        }
+    });
+    modal2.show();
+}
+
+function showNestedModal3() {
+    // Third level modal
+    const modal3 = sfUI.modal.create('nestedModal3', {
+        title: '<i class="bi bi-stack"></i> Third Modal',
+        body: {
+            html: `
+                <p class="mb-3">This is the third level modal!</p>
+                <p class="mb-3">Each modal is positioned with a 30px offset from the previous one.</p>
+                <div class="alert alert-warning mb-0">
+                    <strong>Z-Index Layering:</strong>
+                    <ul class="mb-0 mt-2">
+                        <li>First Modal: Base z-index</li>
+                        <li>Second Modal: Base + 10</li>
+                        <li>Third Modal: Base + 20</li>
+                    </ul>
+                </div>
+            `
+        },
+        footer: {
+            submit: {
+                enable: true,
+                text: '<i class="bi bi-save"></i> Save All',
+                callback: function() {
+                    sfUI.alert.noti('All changes saved!');
+                    // Close all modals
+                    modal3.hide();
+                    setTimeout(() => {
+                        const modal2 = sfUI.modal.get('nestedModal2');
+                        const modal1 = sfUI.modal.get('nestedModal1');
+                        if (modal2) modal2.hide();
+                        setTimeout(() => {
+                            if (modal1) modal1.hide();
+                        }, 100);
+                    }, 100);
+                }
+            }
+        }
+    });
+    modal3.show();
+}
+
+function showModalNoBackdrop() {
+    const modal = sfUI.modal.create('noBackdropModal', {
+        title: '<i class="bi bi-exclamation-triangle"></i> Important Action Required',
+        closeOnBackdropClick: false,  // Disable backdrop click to close
+        body: {
+            html: `
+                <div class="alert alert-warning">
+                    <strong>Warning:</strong> This modal cannot be closed by clicking outside.
+                </div>
+                <p class="mb-3">You must make a selection below to continue.</p>
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" id="agreeCheck">
+                    <label class="form-check-label" for="agreeCheck">
+                        I understand and agree to the terms
+                    </label>
+                </div>
+            `
+        },
+        footer: {
+            submit: {
+                enable: true,
+                text: '<i class="bi bi-check-circle"></i> Accept',
+                callback: function() {
+                    const checkbox = document.getElementById('agreeCheck');
+                    if (checkbox && checkbox.checked) {
+                        sfUI.alert.noti('Thank you for accepting!');
+                        modal.hide();
+                    } else {
+                        sfUI.alert.alert('Please check the agreement box first.');
+                    }
+                }
+            },
+            cancel: {
+                enable: true,
+                text: '<i class="bi bi-x-circle"></i> Decline'
+            }
+        },
+        header: {
+            enable: true,
+            title: '',
+            close: false  // Also disable header close button for this example
+        }
+    });
+    modal.show();
+}
+
+// Utility Demo Functions
+function demoFormatNumber() {
+    const number = 1234567.89;
+    const formatted = sfUI.formatNumber(number, 2, '.', ',');
+    sfUI.alert.noti(`Original: ${number}<br>Formatted: ${formatted}`);
+}
+
+function demoShortNumber() {
+    const numbers = [1500, 1500000, 1500000000];
+    const results = numbers.map(n => `${n} → ${sfUI.formatNumberShort(n)}`).join('<br>');
+    sfUI.alert.alert(`<strong>Short Number Format:</strong><br><br>${results}`);
+}
+
+function demoTheme() {
+    const theme = sfUI.getTheme();
+    sfUI.alert.noti(`Current theme: <strong>${theme}</strong>`);
+}
+
+function demoToggleLanguage() {
+    const currentLang = sfUI.getLanguage();
+    const newLang = currentLang === 'ko' ? 'en' : 'ko';
+    sfUI.setLanguage(newLang);
+    sfUI.alert.noti(`Language changed from <strong>${currentLang}</strong> to <strong>${newLang}</strong>`);
+}
+
+function demoToggleTheme() {
+    try {
+        const oldTheme = sfUI.getTheme();
+        const newTheme = sfUI.toggleTheme();
+        sfUI.alert.noti(`Theme toggled from <strong>${oldTheme}</strong> to <strong>${newTheme}</strong>`);
+    } catch (error) {
+        alert('Error: ' + error.message);
+    }
+}
+</script>
+
+```

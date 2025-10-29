@@ -81,6 +81,7 @@ function __sfConfig__parse_ini_file_extend()
     $data = parse_ini_file($path, true);
     if (!$data) __sfConfig__error("Could not read config.ini");
 
+    $final_data = [];
     $explode_str = '.';
     $escape_char = "'";
     foreach ($data as $section_key => $section) {
@@ -89,11 +90,10 @@ function __sfConfig__parse_ini_file_extend()
             if (strpos($key, $explode_str)) {
                 if (substr($key, 0, 1) !== $escape_char) {
                     $sub_keys = explode($explode_str, $key);
-                    $subs = & $section_data[$sub_keys[0]];
-                    unset($sub_keys[0]);
+                    $subs = & $section_data;
                     foreach ($sub_keys as $sub_key) {
                         if (!isset($subs[$sub_key])) $subs[$sub_key] = [];
-                        $subs =&$subs[$sub_key];
+                        $subs = &$subs[$sub_key];
                     }
                     $subs = $value;
                 } else {
@@ -104,21 +104,25 @@ function __sfConfig__parse_ini_file_extend()
                 $section_data[$key] = $value;
             }
         }
+
         $section_name = trim($section_key);
         $section_extends = "";
-        if (strpos($section_key, ":") != false) {
-            list($section_name, $section_extends) = explode(':', $section_key);
+        if (strpos($section_key, ":") !== false) {
+            list($section_name, $section_extends) = explode(':', $section_key, 2);
             $section_name = trim($section_name);
             $section_extends = trim($section_extends);
         }
-        if (!isset($data[$section_name])) $data[$section_name] = array();
+
         if ($section_extends) {
-            $data[$section_name][$section_extends] = $section_data;
-            unset($data[$section_key]);
+            if (!isset($final_data[$section_name])) $final_data[$section_name] = array();
+            $final_data[$section_name][$section_extends] = $section_data;
+        } else {
+            if (!isset($final_data[$section_name])) $final_data[$section_name] = array();
+            $final_data[$section_name] = array_merge($final_data[$section_name], $section_data);
         }
     }
 
-    return $data;
+    return $final_data;
 }
 
 function __sfConfig__error($msg)

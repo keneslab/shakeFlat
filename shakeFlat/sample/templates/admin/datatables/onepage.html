@@ -1,6 +1,8 @@
 <?php $res->dtSampleOnePage->echoHtml(); ?>
 <script>
-$(document).on("click", "#btn-extra-order", function() {
-    alert("test");
+document.addEventListener('click', function(e) {
+    if (e.target && e.target.id === 'btn-extra-order') {
+        alert("test");
+    }
 });
 </script>

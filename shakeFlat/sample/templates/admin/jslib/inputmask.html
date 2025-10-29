@@ -1,5 +1,7 @@
-<script src="/assets/libs/highlight-11.10.0/highlight.min.js"></script>
-<link rel="stylesheet" href="/assets/libs/highlight-11.10.0/styles/dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/dark.min.css">
+<!-- Load Inputmask library so Inputmask is available to the page scripts -->
+<script src="/assets/libs/inputmask-5.0.10-beta.11/inputmask.min.js"></script>
 
 <div class="mb-5">
     Inputmask is a javascript library that creates an input mask.<br>
@@ -33,10 +35,10 @@
 <div>
     <h5>JavaScript Code</h5>
     <pre><code class="language-js"><?php echo htmlspecialchars(<<<EOD
-    $(document).ready(function(){
-        $(selector).inputmask("99-9999999");  //static mask
-        $(selector).inputmask({"mask": "(999) 999-9999"}); //specifying options
-        $(selector).inputmask("9-a{1,3}9{1,3}"); //mask with dynamic syntax
+    document.addEventListener('DOMContentLoaded', function(){
+        Inputmask("99-9999999").mask(selector);  //static mask
+        Inputmask({"mask": "(999) 999-9999"}).mask(selector); //specifying options
+        Inputmask("9-a{1,3}9{1,3}").mask(selector); //mask with dynamic syntax
     });
     EOD);?></code></pre>
 
@@ -47,16 +49,16 @@
     <input data-inputmask="'mask': '9', 'repeat': 10, 'greedy' : false" />
     EOD);?></code></pre>
     <pre><code class="language-js"><?php echo htmlspecialchars(<<<EOD
-    $(document).ready(function(){
-        $(":input").inputmask();
+    document.addEventListener('DOMContentLoaded', function(){
+        Inputmask().mask(document.querySelectorAll("input"));
     });
     EOD);?></code></pre>
 </div>
 
 <script>
-$(document).ready(function(){
+document.addEventListener('DOMContentLoaded', function(){
     hljs.highlightAll();
-    $("input").inputmask();
+    Inputmask().mask(document.querySelectorAll("input"));
 });
 </script>
 

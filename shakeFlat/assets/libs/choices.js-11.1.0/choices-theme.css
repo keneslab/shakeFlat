@@ -1,0 +1,97 @@
+/* Choices.js Theme Adaptation for Bootstrap Dark/Light Mode */
+
+/* Dark Theme Styles */
+[data-bs-theme="dark"] .choices__inner {
+    background-color: var(--bs-body-bg);
+    border-color: var(--bs-border-color);
+    color: var(--bs-body-color);
+}
+
+[data-bs-theme="dark"] .choices__list--dropdown .choices__item--selectable {
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
+}
+
+[data-bs-theme="dark"] .choices__list--dropdown .choices__item--selectable.is-highlighted {
+    background-color: var(--bs-primary);
+    color: white;
+}
+
+[data-bs-theme="dark"] .choices__list--multiple .choices__item {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+}
+
+[data-bs-theme="dark"] .choices[data-type*='select-multiple'] .choices__button,
+[data-bs-theme="dark"] .choices[data-type*='text'] .choices__button {
+    border-left-color: rgba(255, 255, 255, 0.3);
+}
+
+[data-bs-theme="dark"] .choices__input {
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color) !important;
+}
+
+[data-bs-theme="dark"] .choices__input--cloned {
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color) !important;
+}
+
+[data-bs-theme="dark"] .choices[data-type*='select-one'] .choices__input {
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color) !important;
+}
+
+[data-bs-theme="dark"] .choices__list--single .choices__item {
+    color: var(--bs-body-color);
+}
+
+[data-bs-theme="dark"] .choices__placeholder {
+    color: var(--bs-secondary-color);
+    opacity: 0.7;
+}
+
+[data-bs-theme="dark"] .choices__item--choice.has-no-results {
+    color: var(--bs-body-color);
+    background-color: var(--bs-body-bg);
+}
+
+[data-bs-theme="dark"] .choices__list--dropdown .choices__item--choice.has-no-results {
+    color: var(--bs-body-color);
+}
+
+/* Grouped options (heading / group container) - Dark theme adjustments */
+[data-bs-theme="dark"] .choices__list--dropdown .choices__group {
+    background-color: transparent; /* keep dropdown bg consistent */
+    padding: 0; /* headings carry padding */
+}
+
+[data-bs-theme="dark"] .choices__heading {
+    font-weight: 600;
+    font-size: 12px;
+    padding: 8px 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06); /* subtle divider */
+    color: var(--bs-secondary-color); /* less prominent than body color */
+    background-color: rgba(0, 0, 0, 0.02); /* slight separation from items */
+}
+
+[data-bs-theme="dark"] .choices__list--dropdown .choices__group .choices__item--selectable {
+    background-color: transparent;
+    color: var(--bs-body-color);
+}
+
+/* Light Theme Styles */
+[data-bs-theme="light"] .choices__inner {
+    background-color: #ffffff;
+    border-color: var(--bs-border-color);
+}
+
+[data-bs-theme="light"] .choices__list--dropdown .choices__item--selectable.is-highlighted {
+    background-color: var(--bs-primary);
+    color: white;
+}
+
+[data-bs-theme="light"] .choices__list--multiple .choices__item {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+}

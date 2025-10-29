@@ -1,0 +1,933 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/dark.min.css">
+<link rel="stylesheet" href="/assets/libs/choices.js-11.1.0/public/assets/styles/choices.min.css">
+<link rel="stylesheet" href="/assets/libs/choices.js-11.1.0/choices-theme.css">
+<script src="/assets/libs/choices.js-11.1.0/public/assets/scripts/choices.min.js"></script>
+
+<style>
+/* 공통 스타일 */
+.example-section {
+    background: var(--bs-body-bg);
+    border: 1px solid var(--bs-border-color);
+    transition: all 0.3s ease;
+}
+
+.example-section:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.code-section {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: var(--bs-secondary-bg);
+    border-radius: 0.375rem;
+    border: 1px solid var(--bs-border-color);
+}
+
+.code-section h6 {
+    color: var(--bs-emphasis-color);
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.code-section h6:first-child {
+    margin-top: 0;
+}
+
+pre {
+    margin-bottom: 0;
+    background: var(--bs-dark-bg-subtle);
+    border-radius: 0.375rem;
+    padding: 1rem;
+}
+
+code {
+    color: var(--bs-code-color);
+}
+
+.table {
+    --bs-table-bg: transparent;
+    --bs-table-color: var(--bs-body-color);
+    --bs-table-border-color: var(--bs-border-color);
+}
+
+.alert-info {
+    background-color: var(--bs-info-bg-subtle);
+    border-color: var(--bs-info-border-subtle);
+    color: var(--bs-info-text-emphasis);
+}
+
+.alert-success {
+    background-color: var(--bs-success-bg-subtle);
+    border-color: var(--bs-success-border-subtle);
+    color: var(--bs-success-text-emphasis);
+}
+
+/* Smooth theme transitions */
+* {
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.choices {
+    margin-bottom: 0;
+}
+</style>
+
+<div class="mb-5">
+    <strong>Choices.js</strong> is a lightweight, configurable select box/text input plugin.<br>
+    /assets/libs/choices.js-11.1.0<br>
+    Official site: <a href="https://github.com/Choices-js/Choices" target="_blank">https://github.com/Choices-js/Choices</a>
+</div>
+
+<!-- Required Files -->
+<div class="mb-5 p-3 rounded" style="background: var(--bs-warning-bg-subtle); border: 1px solid var(--bs-warning-border-subtle);">
+    <h5 class="mb-3"><i class="bi bi-file-earmark-code"></i> Required Files</h5>
+    <p class="mb-2">To use Choices.js in your project, include the following files:</p>
+    <pre><code class="language-html"><?php echo htmlspecialchars(<<<'EOD'
+<!-- Choices.js CSS -->
+<link rel="stylesheet" href="/assets/libs/choices.js-11.1.0/public/assets/styles/choices.min.css">
+
+<!-- Choices.js Theme (Optional - for Dark/Light theme support) -->
+<link rel="stylesheet" href="/assets/libs/choices.js-11.1.0/choices-theme.css">
+
+<!-- Choices.js Script -->
+<script src="/assets/libs/choices.js-11.1.0/public/assets/scripts/choices.min.js"></script>
+EOD);?></code></pre>
+    <div class="alert alert-info mt-3 mb-0">
+        <small><strong><i class="bi bi-info-circle"></i> Note:</strong> The <code>choices-theme.css</code> file provides automatic dark/light theme adaptation using Bootstrap's theme system. It's optional but recommended for theme consistency.</small>
+    </div>
+</div>
+
+<!-- Theme Information -->
+<div class="mb-5 p-3 rounded" style="background: var(--bs-body-bg); border: 1px solid var(--bs-border-color);">
+    <h5 class="mb-3">Theme Support</h5>
+    <div class="alert alert-success">
+        <small><strong>✓ Automatic Theme Adaptation:</strong> Choices.js automatically adapts to light/dark themes using CSS custom properties. Toggle the theme in the top-right corner to see the changes.</small>
+    </div>
+    <div class="mt-3">
+        <p class="mb-2"><strong>Current Theme Features:</strong></p>
+        <ul class="mb-0">
+            <li>Background colors adapt to current theme</li>
+            <li>Border colors match Bootstrap theme variables</li>
+            <li>Text colors adjust for optimal readability</li>
+            <li>Highlight colors use primary theme color</li>
+            <li>Smooth transitions between theme changes</li>
+        </ul>
+    </div>
+</div>
+
+<!-- Basic Single Select -->
+<div class="mb-5 p-3 rounded example-section">
+    <h5 class="mb-3">1. Basic Single Select</h5>
+    <div class="mb-3">
+        <label for="single-select" class="form-label">Choose a Country</label>
+        <select id="single-select" class="form-select">
+            <option value="">Select...</option>
+            <option value="kr">South Korea</option>
+            <option value="us">United States</option>
+            <option value="jp">Japan</option>
+            <option value="cn">China</option>
+            <option value="uk">United Kingdom</option>
+            <option value="fr">France</option>
+            <option value="de">Germany</option>
+        </select>
+    </div>
+    <div class="code-section">
+        <h6>HTML</h6>
+        <pre><code class="language-html"><?php echo htmlspecialchars(<<<'EOD'
+<select id="single-select" class="form-select">
+    <option value="">Select...</option>
+    <option value="kr">South Korea</option>
+    <option value="us">United States</option>
+    <option value="jp">Japan</option>
+</select>
+EOD);?></code></pre>
+        <h6>JavaScript</h6>
+        <pre><code class="language-js"><?php echo htmlspecialchars(<<<'EOD'
+const singleSelect = new Choices('#single-select', {
+    searchEnabled: true,
+    placeholder: true,
+    placeholderValue: 'Select a country'
+});
+EOD);?></code></pre>
+    </div>
+</div>
+
+<!-- Multiple Select -->
+<div class="mb-5 p-3 rounded example-section">
+    <h5 class="mb-3">2. Multiple Select</h5>
+    <div class="mb-3">
+        <label for="multiple-select" class="form-label">Choose Programming Languages</label>
+        <select id="multiple-select" class="form-select" multiple>
+            <option value="js">JavaScript</option>
+            <option value="py">Python</option>
+            <option value="java">Java</option>
+            <option value="cpp">C++</option>
+            <option value="php">PHP</option>
+            <option value="ruby">Ruby</option>
+            <option value="go">Go</option>
+            <option value="rust">Rust</option>
+            <option value="ts">TypeScript</option>
+        </select>
+    </div>
+    <div class="code-section">
+        <h6>HTML</h6>
+        <pre><code class="language-html"><?php echo htmlspecialchars(<<<'EOD'
+<select id="multiple-select" class="form-select" multiple>
+    <option value="js">JavaScript</option>
+    <option value="py">Python</option>
+    <option value="java">Java</option>
+    <option value="cpp">C++</option>
+</select>
+EOD);?></code></pre>
+        <h6>JavaScript</h6>
+        <pre><code class="language-js"><?php echo htmlspecialchars(<<<'EOD'
+const multipleSelect = new Choices('#multiple-select', {
+    removeItemButton: true,
+    maxItemCount: 5,
+    searchEnabled: true
+});
+EOD);?></code></pre>
+    </div>
+</div>
+
+<!-- Text Input (Tags) -->
+<div class="mb-5 p-3 rounded example-section">
+    <h5 class="mb-3">3. Text Input (Tag Input)</h5>
+    <div class="mb-3">
+        <label for="tags-input" class="form-label">Add Tags</label>
+        <input id="tags-input" type="text" class="form-control" placeholder="Enter tags...">
+    </div>
+    <div class="code-section">
+        <h6>HTML</h6>
+        <pre><code class="language-html"><?php echo htmlspecialchars(<<<'EOD'
+<input id="tags-input" type="text" class="form-control" placeholder="Enter tags...">
+EOD);?></code></pre>
+        <h6>JavaScript</h6>
+        <pre><code class="language-js"><?php echo htmlspecialchars(<<<'EOD'
+const tagsInput = new Choices('#tags-input', {
+    delimiter: ',',
+    editItems: true,
+    maxItemCount: 10,
+    removeItemButton: true,
+    addItems: true
+});
+EOD);?></code></pre>
+    </div>
+</div>
+
+<!-- Grouped Options -->
+<div class="mb-5 p-3 rounded example-section">
+    <h5 class="mb-3">4. Grouped Options</h5>
+    <div class="mb-3">
+        <label for="grouped-select" class="form-label">Choose a Framework</label>
+        <select id="grouped-select" class="form-select">
+            <option value="">Select...</option>
+            <optgroup label="Frontend">
+                <option value="react">React</option>
+                <option value="vue">Vue.js</option>
+                <option value="angular">Angular</option>
+                <option value="svelte">Svelte</option>
+            </optgroup>
+            <optgroup label="Backend">
+                <option value="express">Express.js</option>
+                <option value="django">Django</option>
+                <option value="flask">Flask</option>
+                <option value="spring">Spring Boot</option>
+            </optgroup>
+            <optgroup label="Full Stack">
+                <option value="nextjs">Next.js</option>
+                <option value="nuxt">Nuxt.js</option>
+                <option value="rails">Ruby on Rails</option>
+            </optgroup>
+        </select>
+    </div>
+    <div class="code-section">
+        <h6>HTML</h6>
+        <pre><code class="language-html"><?php echo htmlspecialchars(<<<'EOD'
+<select id="grouped-select" class="form-select">
+    <option value="">Select...</option>
+    <optgroup label="Frontend">
+        <option value="react">React</option>
+        <option value="vue">Vue.js</option>
+    </optgroup>
+    <optgroup label="Backend">
+        <option value="express">Express.js</option>
+        <option value="django">Django</option>
+    </optgroup>
+</select>
+EOD);?></code></pre>
+        <h6>JavaScript</h6>
+        <pre><code class="language-js"><?php echo htmlspecialchars(<<<'EOD'
+const groupedSelect = new Choices('#grouped-select', {
+    searchEnabled: true
+});
+EOD);?></code></pre>
+    </div>
+</div>
+
+<!-- Pre-selected Options -->
+<div class="mb-5 p-3 rounded example-section">
+    <h5 class="mb-3">5. Pre-selected Options</h5>
+    <div class="mb-3">
+        <label for="preselected-select" class="form-label">Favorite Colors</label>
+        <select id="preselected-select" class="form-select" multiple>
+            <option value="red" selected>Red</option>
+            <option value="blue" selected>Blue</option>
+            <option value="green">Green</option>
+            <option value="yellow">Yellow</option>
+            <option value="purple">Purple</option>
+            <option value="orange">Orange</option>
+        </select>
+    </div>
+    <div class="code-section">
+        <h6>HTML</h6>
+        <pre><code class="language-html"><?php echo htmlspecialchars(<<<'EOD'
+<select id="preselected-select" class="form-select" multiple>
+    <option value="red" selected>Red</option>
+    <option value="blue" selected>Blue</option>
+    <option value="green">Green</option>
+</select>
+EOD);?></code></pre>
+        <h6>JavaScript</h6>
+        <pre><code class="language-js"><?php echo htmlspecialchars(<<<'EOD'
+const preselectedSelect = new Choices('#preselected-select', {
+    removeItemButton: true
+});
+EOD);?></code></pre>
+    </div>
+</div>
+
+<!-- With Search Disabled -->
+<div class="mb-5 p-3 rounded example-section">
+    <h5 class="mb-3">6. Search Disabled</h5>
+    <div class="mb-3">
+        <label for="no-search-select" class="form-label">Choose Priority</label>
+        <select id="no-search-select" class="form-select">
+            <option value="">Select...</option>
+            <option value="low">Low Priority</option>
+            <option value="medium">Medium Priority</option>
+            <option value="high">High Priority</option>
+            <option value="critical">Critical</option>
+        </select>
+    </div>
+    <div class="code-section">
+        <h6>HTML</h6>
+        <pre><code class="language-html"><?php echo htmlspecialchars(<<<'EOD'
+<select id="no-search-select" class="form-select">
+    <option value="">Select...</option>
+    <option value="low">Low Priority</option>
+    <option value="medium">Medium Priority</option>
+    <option value="high">High Priority</option>
+</select>
+EOD);?></code></pre>
+        <h6>JavaScript</h6>
+        <pre><code class="language-js"><?php echo htmlspecialchars(<<<'EOD'
+const noSearchSelect = new Choices('#no-search-select', {
+    searchEnabled: false
+});
+EOD);?></code></pre>
+    </div>
+</div>
+
+<!-- Custom Placeholder -->
+<div class="mb-5 p-3 rounded example-section">
+    <h5 class="mb-3">7. Custom Placeholder & Search Text</h5>
+    <div class="mb-3">
+        <label for="custom-placeholder" class="form-label">Search Cities</label>
+        <select id="custom-placeholder" class="form-select">
+            <option value="">Choose a city...</option>
+            <option value="seoul">Seoul</option>
+            <option value="busan">Busan</option>
+            <option value="incheon">Incheon</option>
+            <option value="daegu">Daegu</option>
+            <option value="daejeon">Daejeon</option>
+            <option value="gwangju">Gwangju</option>
+        </select>
+    </div>
+    <div class="code-section">
+        <h6>HTML</h6>
+        <pre><code class="language-html"><?php echo htmlspecialchars(<<<'EOD'
+<select id="custom-placeholder" class="form-select">
+    <option value="">Choose a city...</option>
+    <option value="seoul">Seoul</option>
+    <option value="busan">Busan</option>
+</select>
+EOD);?></code></pre>
+        <h6>JavaScript</h6>
+        <pre><code class="language-js"><?php echo htmlspecialchars(<<<'EOD'
+const customPlaceholder = new Choices('#custom-placeholder', {
+    searchPlaceholderValue: 'Type to search cities...',
+    noResultsText: 'No cities found',
+    itemSelectText: 'Click to select'
+});
+EOD);?></code></pre>
+    </div>
+</div>
+
+<!-- Disabled Options -->
+<div class="mb-5 p-3 rounded example-section">
+    <h5 class="mb-3">8. Disabled Options</h5>
+    <div class="mb-3">
+        <label for="disabled-options" class="form-label">Choose Browser</label>
+        <select id="disabled-options" class="form-select">
+            <option value="">Select...</option>
+            <option value="chrome">Google Chrome</option>
+            <option value="firefox">Mozilla Firefox</option>
+            <option value="safari">Safari</option>
+            <option value="edge">Microsoft Edge</option>
+            <option value="ie" disabled>Internet Explorer (Not Supported)</option>
+            <option value="opera">Opera</option>
+        </select>
+    </div>
+    <div class="code-section">
+        <h6>HTML</h6>
+        <pre><code class="language-html"><?php echo htmlspecialchars(<<<'EOD'
+<select id="disabled-options" class="form-select">
+    <option value="">Select...</option>
+    <option value="chrome">Google Chrome</option>
+    <option value="ie" disabled>Internet Explorer (Not Supported)</option>
+</select>
+EOD);?></code></pre>
+        <h6>JavaScript</h6>
+        <pre><code class="language-js"><?php echo htmlspecialchars(<<<'EOD'
+const disabledOptions = new Choices('#disabled-options', {
+    searchEnabled: true
+});
+EOD);?></code></pre>
+    </div>
+</div>
+
+<!-- Dynamic Add/Remove Items -->
+<div class="mb-5 p-3 rounded example-section">
+    <h5 class="mb-3">9. Dynamic Add/Remove Items</h5>
+    <div class="mb-3">
+        <label for="dynamic-select" class="form-label">Team Members</label>
+        <select id="dynamic-select" class="form-select" multiple>
+            <option value="john">John Doe</option>
+            <option value="jane">Jane Smith</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <button type="button" class="btn btn-sm btn-primary" id="add-member-btn">
+            <i class="bi bi-plus-circle"></i> Add "Mike Johnson"
+        </button>
+        <button type="button" class="btn btn-sm btn-danger" id="remove-all-btn">
+            <i class="bi bi-trash"></i> Remove All
+        </button>
+        <button type="button" class="btn btn-sm btn-success" id="get-values-btn">
+            <i class="bi bi-check-circle"></i> Get Values
+        </button>
+    </div>
+    <div id="dynamic-output" class="p-2 rounded" style="background: var(--bs-secondary-bg); min-height: 40px;">
+        <small class="text-muted">Actions will be logged here...</small>
+    </div>
+    <div class="code-section">
+        <h6>HTML</h6>
+        <pre><code class="language-html"><?php echo htmlspecialchars(<<<'EOD'
+<select id="dynamic-select" class="form-select" multiple>
+    <option value="john">John Doe</option>
+    <option value="jane">Jane Smith</option>
+</select>
+<button id="add-member-btn">Add "Mike Johnson"</button>
+<button id="remove-all-btn">Remove All</button>
+<button id="get-values-btn">Get Values</button>
+EOD);?></code></pre>
+        <h6>JavaScript</h6>
+        <pre><code class="language-js"><?php echo htmlspecialchars(<<<'EOD'
+const dynamicSelect = new Choices('#dynamic-select', {
+    removeItemButton: true
+});
+
+// Add item
+document.getElementById('add-member-btn').addEventListener('click', () => {
+    dynamicSelect.setChoices([
+        { value: 'mike', label: 'Mike Johnson', selected: true }
+    ], 'value', 'label', false);
+});
+
+// Remove all
+document.getElementById('remove-all-btn').addEventListener('click', () => {
+    dynamicSelect.removeActiveItems();
+});
+
+// Get values
+document.getElementById('get-values-btn').addEventListener('click', () => {
+    const values = dynamicSelect.getValue(true);
+    console.log('Selected values:', values);
+});
+EOD);?></code></pre>
+    </div>
+</div>
+
+<!-- Events and Callbacks -->
+<div class="mb-5 p-3 rounded example-section">
+    <h5 class="mb-3">10. Events and Callbacks</h5>
+    <div class="mb-3">
+        <label for="event-select" class="form-label">Choose with Events</label>
+        <select id="event-select" class="form-select" multiple>
+            <option value="html">HTML</option>
+            <option value="css">CSS</option>
+            <option value="js">JavaScript</option>
+            <option value="react">React</option>
+            <option value="vue">Vue</option>
+        </select>
+    </div>
+    <div id="event-output" class="p-2 rounded" style="background: var(--bs-secondary-bg); min-height: 60px;">
+        <small class="text-muted">Select or remove items to see events...</small>
+    </div>
+    <div class="code-section">
+        <h6>HTML</h6>
+        <pre><code class="language-html"><?php echo htmlspecialchars(<<<'EOD'
+<select id="event-select" class="form-select" multiple>
+    <option value="html">HTML</option>
+    <option value="css">CSS</option>
+    <option value="js">JavaScript</option>
+</select>
+<div id="event-output"></div>
+EOD);?></code></pre>
+        <h6>JavaScript</h6>
+        <pre><code class="language-js"><?php echo htmlspecialchars(<<<'EOD'
+const eventSelect = new Choices('#event-select', {
+    removeItemButton: true
+});
+
+const output = document.getElementById('event-output');
+
+eventSelect.passedElement.element.addEventListener('addItem', (event) => {
+    output.innerHTML = `<strong>Added:</strong> ${event.detail.label}
+                        <br><small>Value: ${event.detail.value}</small>`;
+});
+
+eventSelect.passedElement.element.addEventListener('removeItem', (event) => {
+    output.innerHTML = `<strong>Removed:</strong> ${event.detail.label}
+                        <br><small>Value: ${event.detail.value}</small>`;
+});
+
+eventSelect.passedElement.element.addEventListener('change', (event) => {
+    console.log('Change event:', event.detail);
+});
+EOD);?></code></pre>
+    </div>
+</div>
+
+<!-- Sorting -->
+<div class="mb-5 p-3 rounded example-section">
+    <h5 class="mb-3">11. Sorting Options</h5>
+    <div class="mb-3">
+        <label for="sorted-select" class="form-label">Sorted Alphabetically</label>
+        <select id="sorted-select" class="form-select" multiple>
+            <option value="zebra">Zebra</option>
+            <option value="apple">Apple</option>
+            <option value="banana">Banana</option>
+            <option value="cherry">Cherry</option>
+            <option value="date">Date</option>
+            <option value="elderberry">Elderberry</option>
+        </select>
+    </div>
+    <div class="code-section">
+        <h6>HTML</h6>
+        <pre><code class="language-html"><?php echo htmlspecialchars(<<<'EOD'
+<select id="sorted-select" class="form-select" multiple>
+    <option value="zebra">Zebra</option>
+    <option value="apple">Apple</option>
+    <option value="banana">Banana</option>
+    <option value="cherry">Cherry</option>
+</select>
+EOD);?></code></pre>
+        <h6>JavaScript</h6>
+        <pre><code class="language-js"><?php echo htmlspecialchars(<<<'EOD'
+const sortedSelect = new Choices('#sorted-select', {
+    removeItemButton: true,
+    shouldSort: true,
+    shouldSortItems: true
+});
+EOD);?></code></pre>
+    </div>
+</div>
+
+<!-- Max Items -->
+<div class="mb-5 p-3 rounded example-section">
+    <h5 class="mb-3">12. Maximum Items Limit</h5>
+    <div class="mb-3">
+        <label for="max-items-select" class="form-label">Choose up to 3 items</label>
+        <select id="max-items-select" class="form-select" multiple>
+            <option value="1">Option 1</option>
+            <option value="2">Option 2</option>
+            <option value="3">Option 3</option>
+            <option value="4">Option 4</option>
+            <option value="5">Option 5</option>
+            <option value="6">Option 6</option>
+        </select>
+    </div>
+    <div class="code-section">
+        <h6>HTML</h6>
+        <pre><code class="language-html"><?php echo htmlspecialchars(<<<'EOD'
+<select id="max-items-select" class="form-select" multiple>
+    <option value="1">Option 1</option>
+    <option value="2">Option 2</option>
+    <option value="3">Option 3</option>
+    <option value="4">Option 4</option>
+</select>
+EOD);?></code></pre>
+        <h6>JavaScript</h6>
+        <pre><code class="language-js"><?php echo htmlspecialchars(<<<'EOD'
+const maxItemsSelect = new Choices('#max-items-select', {
+    removeItemButton: true,
+    maxItemCount: 3,
+    maxItemText: (maxItemCount) => {
+        return `Only ${maxItemCount} items can be added`;
+    }
+});
+EOD);?></code></pre>
+    </div>
+</div>
+
+<!-- Common Options Reference -->
+<div class="mb-5 p-3 rounded" style="background: var(--bs-info-bg-subtle); border: 1px solid var(--bs-info-border-subtle);">
+    <h5 class="mb-3">Common Options Reference</h5>
+    <div class="table-responsive">
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th>Option</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>searchEnabled</code></td>
+                    <td>Boolean</td>
+                    <td>true</td>
+                    <td>Enable/disable search functionality</td>
+                </tr>
+                <tr>
+                    <td><code>removeItemButton</code></td>
+                    <td>Boolean</td>
+                    <td>false</td>
+                    <td>Show remove button for selected items</td>
+                </tr>
+                <tr>
+                    <td><code>maxItemCount</code></td>
+                    <td>Number</td>
+                    <td>-1</td>
+                    <td>Maximum number of items that can be selected</td>
+                </tr>
+                <tr>
+                    <td><code>placeholder</code></td>
+                    <td>Boolean</td>
+                    <td>true</td>
+                    <td>Show placeholder text</td>
+                </tr>
+                <tr>
+                    <td><code>placeholderValue</code></td>
+                    <td>String</td>
+                    <td>null</td>
+                    <td>Custom placeholder text</td>
+                </tr>
+                <tr>
+                    <td><code>searchPlaceholderValue</code></td>
+                    <td>String</td>
+                    <td>null</td>
+                    <td>Placeholder for search input</td>
+                </tr>
+                <tr>
+                    <td><code>shouldSort</code></td>
+                    <td>Boolean</td>
+                    <td>true</td>
+                    <td>Sort options alphabetically</td>
+                </tr>
+                <tr>
+                    <td><code>shouldSortItems</code></td>
+                    <td>Boolean</td>
+                    <td>false</td>
+                    <td>Sort selected items</td>
+                </tr>
+                <tr>
+                    <td><code>delimiter</code></td>
+                    <td>String</td>
+                    <td>','</td>
+                    <td>Delimiter for text input values</td>
+                </tr>
+                <tr>
+                    <td><code>editItems</code></td>
+                    <td>Boolean</td>
+                    <td>false</td>
+                    <td>Allow editing of text input items</td>
+                </tr>
+                <tr>
+                    <td><code>addItems</code></td>
+                    <td>Boolean</td>
+                    <td>true</td>
+                    <td>Allow adding new items</td>
+                </tr>
+                <tr>
+                    <td><code>duplicateItemsAllowed</code></td>
+                    <td>Boolean</td>
+                    <td>true</td>
+                    <td>Allow duplicate items</td>
+                </tr>
+                <tr>
+                    <td><code>noResultsText</code></td>
+                    <td>String</td>
+                    <td>'No results found'</td>
+                    <td>Text when no results found</td>
+                </tr>
+                <tr>
+                    <td><code>itemSelectText</code></td>
+                    <td>String</td>
+                    <td>'Press to select'</td>
+                    <td>Text for item selection prompt</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- API Methods Reference -->
+<div class="mb-5 p-3 rounded" style="background: var(--bs-warning-bg-subtle); border: 1px solid var(--bs-warning-border-subtle);">
+    <h5 class="mb-3">Common API Methods</h5>
+    <div class="table-responsive">
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th>Method</th>
+                    <th>Description</th>
+                    <th>Example</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>getValue()</code></td>
+                    <td>Get selected value(s)</td>
+                    <td><code>choice.getValue(true)</code></td>
+                </tr>
+                <tr>
+                    <td><code>setValue()</code></td>
+                    <td>Set value(s)</td>
+                    <td><code>choice.setValue(['value1', 'value2'])</code></td>
+                </tr>
+                <tr>
+                    <td><code>setChoices()</code></td>
+                    <td>Set available choices</td>
+                    <td><code>choice.setChoices([{value:'1', label:'One'}])</code></td>
+                </tr>
+                <tr>
+                    <td><code>clearStore()</code></td>
+                    <td>Clear all options</td>
+                    <td><code>choice.clearStore()</code></td>
+                </tr>
+                <tr>
+                    <td><code>clearInput()</code></td>
+                    <td>Clear input value</td>
+                    <td><code>choice.clearInput()</code></td>
+                </tr>
+                <tr>
+                    <td><code>disable()</code></td>
+                    <td>Disable the input</td>
+                    <td><code>choice.disable()</code></td>
+                </tr>
+                <tr>
+                    <td><code>enable()</code></td>
+                    <td>Enable the input</td>
+                    <td><code>choice.enable()</code></td>
+                </tr>
+                <tr>
+                    <td><code>removeActiveItems()</code></td>
+                    <td>Remove all selected items</td>
+                    <td><code>choice.removeActiveItems()</code></td>
+                </tr>
+                <tr>
+                    <td><code>destroy()</code></td>
+                    <td>Destroy the instance</td>
+                    <td><code>choice.destroy()</code></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Events Reference -->
+<div class="mb-5 p-3 rounded" style="background: var(--bs-success-bg-subtle); border: 1px solid var(--bs-success-border-subtle);">
+    <h5 class="mb-3">Available Events</h5>
+    <div class="table-responsive">
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th>Event</th>
+                    <th>Description</th>
+                    <th>When Triggered</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>addItem</code></td>
+                    <td>Item added to selection</td>
+                    <td>When user selects an item</td>
+                </tr>
+                <tr>
+                    <td><code>removeItem</code></td>
+                    <td>Item removed from selection</td>
+                    <td>When user removes an item</td>
+                </tr>
+                <tr>
+                    <td><code>highlightItem</code></td>
+                    <td>Item highlighted</td>
+                    <td>When user hovers over an item</td>
+                </tr>
+                <tr>
+                    <td><code>unhighlightItem</code></td>
+                    <td>Item unhighlighted</td>
+                    <td>When hover leaves an item</td>
+                </tr>
+                <tr>
+                    <td><code>choice</code></td>
+                    <td>Choice selected from dropdown</td>
+                    <td>When a choice is selected</td>
+                </tr>
+                <tr>
+                    <td><code>change</code></td>
+                    <td>Value changed</td>
+                    <td>When the value changes</td>
+                </tr>
+                <tr>
+                    <td><code>search</code></td>
+                    <td>User searches</td>
+                    <td>When typing in search box</td>
+                </tr>
+                <tr>
+                    <td><code>showDropdown</code></td>
+                    <td>Dropdown shown</td>
+                    <td>When dropdown opens</td>
+                </tr>
+                <tr>
+                    <td><code>hideDropdown</code></td>
+                    <td>Dropdown hidden</td>
+                    <td>When dropdown closes</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+    // Initialize syntax highlighting
+    hljs.highlightAll();
+
+    // Initialize all Choices instances
+
+    // 1. Basic Single Select
+    const singleSelect = new Choices('#single-select', {
+        searchEnabled: true,
+        placeholder: true,
+        placeholderValue: 'Select a country'
+    });
+
+    // 2. Multiple Select
+    const multipleSelect = new Choices('#multiple-select', {
+        removeItemButton: true,
+        maxItemCount: 5,
+        searchEnabled: true
+    });
+
+    // 3. Text Input (Tags)
+    const tagsInput = new Choices('#tags-input', {
+        delimiter: ',',
+        editItems: true,
+        maxItemCount: 10,
+        removeItemButton: true,
+        addItems: true
+    });
+
+    // 4. Grouped Options
+    const groupedSelect = new Choices('#grouped-select', {
+        searchEnabled: true
+    });
+
+    // 5. Pre-selected Options
+    const preselectedSelect = new Choices('#preselected-select', {
+        removeItemButton: true
+    });
+
+    // 6. Search Disabled
+    const noSearchSelect = new Choices('#no-search-select', {
+        searchEnabled: false
+    });
+
+    // 7. Custom Placeholder
+    const customPlaceholder = new Choices('#custom-placeholder', {
+        searchPlaceholderValue: 'Type to search cities...',
+        noResultsText: 'No cities found',
+        itemSelectText: 'Click to select'
+    });
+
+    // 8. Disabled Options
+    const disabledOptions = new Choices('#disabled-options', {
+        searchEnabled: true
+    });
+
+    // 9. Dynamic Add/Remove Items
+    const dynamicSelect = new Choices('#dynamic-select', {
+        removeItemButton: true
+    });
+
+    const dynamicOutput = document.getElementById('dynamic-output');
+
+    document.getElementById('add-member-btn').addEventListener('click', () => {
+        dynamicSelect.setChoices([
+            { value: 'mike', label: 'Mike Johnson', selected: true }
+        ], 'value', 'label', false);
+        dynamicOutput.innerHTML = '<strong>Added:</strong> Mike Johnson';
+    });
+
+    document.getElementById('remove-all-btn').addEventListener('click', () => {
+        dynamicSelect.removeActiveItems();
+        dynamicOutput.innerHTML = '<strong>All items removed</strong>';
+    });
+
+    document.getElementById('get-values-btn').addEventListener('click', () => {
+        const values = dynamicSelect.getValue(true);
+        dynamicOutput.innerHTML = `<strong>Selected values:</strong> ${JSON.stringify(values)}`;
+        console.log('Selected values:', values);
+    });
+
+    // 10. Events and Callbacks
+    const eventSelect = new Choices('#event-select', {
+        removeItemButton: true
+    });
+
+    const eventOutput = document.getElementById('event-output');
+
+    eventSelect.passedElement.element.addEventListener('addItem', (event) => {
+        eventOutput.innerHTML = `<strong>Added:</strong> ${event.detail.label}<br><small>Value: ${event.detail.value} | Time: ${new Date().toLocaleTimeString()}</small>`;
+    });
+
+    eventSelect.passedElement.element.addEventListener('removeItem', (event) => {
+        eventOutput.innerHTML = `<strong>Removed:</strong> ${event.detail.label}<br><small>Value: ${event.detail.value} | Time: ${new Date().toLocaleTimeString()}</small>`;
+    });
+
+    eventSelect.passedElement.element.addEventListener('change', (event) => {
+        console.log('Change event:', event.detail);
+    });
+
+    // 11. Sorting Options
+    const sortedSelect = new Choices('#sorted-select', {
+        removeItemButton: true,
+        shouldSort: true,
+        shouldSortItems: true
+    });
+
+    // 12. Maximum Items Limit
+    const maxItemsSelect = new Choices('#max-items-select', {
+        removeItemButton: true,
+        maxItemCount: 3,
+        maxItemText: (maxItemCount) => {
+            return `Only ${maxItemCount} items can be added`;
+        }
+    });
+});
+</script>

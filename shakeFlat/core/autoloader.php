@@ -13,6 +13,7 @@ require_once "gpath.php";
 // autoloader
 spl_autoload_register(function($class) {
     switch($class) {
+        case "shakeFlat\WebFontLoader" :        require_once SHAKEFLAT_PATH . "/core/webfontloader.php"; break;
         case "shakeFlat\App" :                  require_once SHAKEFLAT_PATH . "/core/core.php"; break;
         case "shakeFlat\Template" :             require_once SHAKEFLAT_PATH . "/core/template.php"; break;
         case "shakeFlat\Translation" :          require_once SHAKEFLAT_PATH . "/core/translation.php"; break;
