@@ -38,6 +38,8 @@ cat "$SRC_DIR/sfui.rangeslider.js" >> "$TEMP_FILE"
 echo "" >> "$TEMP_FILE"
 cat "$SRC_DIR/sfui.sidebar.js" >> "$TEMP_FILE"
 echo "" >> "$TEMP_FILE"
+cat "$SRC_DIR/sfui.notice.js" >> "$TEMP_FILE"
+echo "" >> "$TEMP_FILE"
 cat "$SRC_DIR/sfui.main.js" >> "$TEMP_FILE"
 
 # Copy to sfui.js

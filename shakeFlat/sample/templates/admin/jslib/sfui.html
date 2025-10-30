@@ -1,9 +1,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/dark.min.css">
-<!-- sfUI is already loaded in layout.html, no need to load again -->
 
+<!-- Load sfUI library if not already loaded -->
 <script>
-// sfUI is already loaded in layout.html
+if (typeof sfUI === 'undefined') {
+    document.write('<link rel="stylesheet" href="/assets/libs/sfUI-1.0.0/dist/sfui.css">');
+    document.write('<script src="/assets/libs/sfUI-1.0.0/dist/sfui.js"><\/script>');
+}
 </script>
 
 <style>
@@ -191,7 +194,8 @@ code {
 <div class="mb-5">
     <strong>sfUI</strong> is a modern UI component library built with vanilla JavaScript.<br>
     /assets/libs/sfUI-1.0.0<br>
-    Version: <strong>1.0.0</strong> (Released: 2025-10-27)
+    Version: <strong>1.0.0</strong> (Released: 2025-10-27)<br>
+    <strong>Components:</strong> Alert, Modal, LightBox, RangeSlider, Sidebar, Notice Board
 </div>
 
 <!-- Required Files -->
@@ -602,9 +606,293 @@ EOD);?></code></pre>
     </div>
 </div>
 
-<!-- 4. RangeSlider Component -->
+<!-- 4. Notice Board Component -->
 <div class="mb-5 p-3 rounded example-section">
-    <h5 class="mb-3"><i class="bi bi-sliders"></i> 4. RangeSlider Component</h5>
+    <h5 class="mb-3"><i class="bi bi-megaphone-fill"></i> 4. Notice Board Component (<code>&lt;sf-notice&gt;</code>)</h5>
+    <p>중요 공지, 힌트, 일반 안내 등 다양한 스타일로 메시지를 표시할 수 있는 웹컴포넌트입니다.</p>
+
+    <!-- Live Demo Section -->
+    <div class="mb-4">
+        <h6 class="mb-3"><i class="bi bi-eye-fill"></i> 3가지 타입별 스타일 미리보기:</h6>
+
+        <div class="alert alert-info mb-3">
+            <small><strong><i class="bi bi-info-circle"></i> 실제 적용 모습:</strong> 아래는 실제로 동작하는 Notice Board 컴포넌트입니다. 테마를 변경하면 자동으로 스타일이 적용됩니다.</small>
+        </div>
+
+        <div class="mb-3">
+            <h6 class="text-muted mb-2">1️⃣ Notice 타입 (공지사항 - 파란색)</h6>
+            <sf-notice
+                type="notice"
+                title="공지"
+                message="이것은 <strong>공지사항</strong> 스타일입니다. 중요한 알림이나 공지에 사용하세요. HTML 태그가 적용됩니다!<br>새로운 기능이 추가되었습니다."
+                class="mb-3">
+            </sf-notice>
+        </div>
+
+        <div class="mb-3">
+            <h6 class="text-muted mb-2">2️⃣ Hint 타입 (힌트/팁 - 청록색)</h6>
+            <sf-notice
+                type="hint"
+                title="힌트"
+                message="이것은 <em>힌트</em> 스타일입니다. 도움말이나 팁, 추가 정보 제공에 적합합니다."
+                class="mb-3">
+            </sf-notice>
+        </div>
+
+        <div class="mb-3">
+            <h6 class="text-muted mb-2">3️⃣ Plain 타입 (일반 안내 - 회색)</h6>
+            <sf-notice
+                type="plain"
+                title="일반"
+                message="이것은 플레인 스타일입니다. 단순 안내 메시지나 일반적인 정보 전달에 사용하세요."
+                class="mb-3">
+            </sf-notice>
+        </div>
+    </div>
+
+    <!-- More Examples -->
+    <div class="mb-4">
+        <h6 class="mb-3"><i class="bi bi-palette-fill"></i> 색상 테마 (Color Themes):</h6>
+
+        <div class="alert alert-info mb-3">
+            <small><strong><i class="bi bi-info-circle"></i> NEW!</strong> 이제 <code>color</code> 속성을 사용하여 Bootstrap의 색상 테마를 적용할 수 있습니다. 라이트/다크 테마 양쪽에서 모두 자연스럽게 표시됩니다.</small>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <p class="text-muted mb-2 small"><strong>Primary (파란색)</strong></p>
+                <sf-notice
+                    color="primary"
+                    title="Primary"
+                    message="기본 색상 테마입니다. 중요한 정보나 주요 공지사항에 사용하세요."
+                    class="mb-0">
+                </sf-notice>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <p class="text-muted mb-2 small"><strong>Success (초록색)</strong></p>
+                <sf-notice
+                    color="success"
+                    title="Success"
+                    message="성공, 완료, 승인 등의 긍정적인 메시지에 적합합니다."
+                    class="mb-0">
+                </sf-notice>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <p class="text-muted mb-2 small"><strong>Danger (빨간색)</strong></p>
+                <sf-notice
+                    color="danger"
+                    title="Danger"
+                    message="오류, 경고, 위험한 작업 등에 사용하세요. <strong>주의가 필요합니다!</strong>"
+                    class="mb-0">
+                </sf-notice>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <p class="text-muted mb-2 small"><strong>Warning (노란색)</strong></p>
+                <sf-notice
+                    color="warning"
+                    title="Warning"
+                    message="주의사항이나 확인이 필요한 내용에 사용합니다."
+                    class="mb-0">
+                </sf-notice>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <p class="text-muted mb-2 small"><strong>Info (청록색)</strong></p>
+                <sf-notice
+                    color="info"
+                    title="Info"
+                    message="추가 정보, 도움말, 팁 등을 제공할 때 사용하세요."
+                    class="mb-0">
+                </sf-notice>
+            </div>
+        </div>
+    </div>
+
+    <!-- More Examples -->
+    <div class="mb-4">
+        <h6 class="mb-3"><i class="bi bi-star-fill"></i> 타입별 스타일 (Type-based Styles):</h6>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <p class="text-muted mb-2 small"><strong>시스템 점검 안내</strong></p>
+                <sf-notice
+                    type="notice"
+                    title="시스템 점검"
+                    message="<strong>2025년 11월 1일 02:00 ~ 05:00</strong><br>시스템 정기 점검이 진행됩니다."
+                    class="mb-0">
+                </sf-notice>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <p class="text-muted mb-2 small"><strong>사용 팁</strong></p>
+                <sf-notice
+                    type="hint"
+                    title="💡 Pro Tip"
+                    message="키보드 단축키 <kbd>Ctrl</kbd> + <kbd>S</kbd>를 사용하면 빠르게 저장됩니다!"
+                    class="mb-0">
+                </sf-notice>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <p class="text-muted mb-2 small"><strong>버전 정보</strong></p>
+                <sf-notice
+                    type="plain"
+                    title="업데이트"
+                    message="sfUI 라이브러리가 <strong>v1.0.0</strong>으로 업데이트되었습니다."
+                    class="mb-0">
+                </sf-notice>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <p class="text-muted mb-2 small"><strong>경고 메시지 (색상 테마 사용)</strong></p>
+                <sf-notice
+                    color="danger"
+                    title="⚠️ 주의"
+                    message="이 작업은 <strong>되돌릴 수 없습니다</strong>. 신중히 진행하세요."
+                    class="mb-0">
+                </sf-notice>
+            </div>
+        </div>
+    </div>
+
+    <div class="code-section">
+        <h6>HTML - Required Files</h6>
+        <pre><code class="language-html"><?php echo htmlspecialchars(<<<'EOD'
+<!-- sfUI CSS -->
+<link rel="stylesheet" href="/assets/libs/sfUI-1.0.0/dist/sfui.css">
+
+<!-- sfUI JavaScript (includes notice component) -->
+<script src="/assets/libs/sfUI-1.0.0/dist/sfui.js"></script>
+EOD);?></code></pre>
+        <h6>HTML - Basic Usage</h6>
+        <pre><code class="language-html"><?php echo htmlspecialchars(<<<'EOD'
+<!-- Type-based styles (notice, hint, plain) -->
+<sf-notice
+    type="notice"
+    title="공지"
+    message="이것은 공지사항 스타일입니다.">
+</sf-notice>
+
+<!-- Color-based themes (primary, success, danger, warning, info) -->
+<sf-notice
+    color="primary"
+    title="Primary"
+    message="Bootstrap 색상 테마를 사용합니다.">
+</sf-notice>
+
+<sf-notice
+    color="success"
+    title="Success"
+    message="성공 메시지입니다.">
+</sf-notice>
+
+<sf-notice
+    color="danger"
+    title="Danger"
+    message="위험 경고 메시지입니다.">
+</sf-notice>
+
+<sf-notice
+    color="warning"
+    title="Warning"
+    message="주의 메시지입니다.">
+</sf-notice>
+
+<sf-notice
+    color="info"
+    title="Info"
+    message="정보 메시지입니다.">
+</sf-notice>
+EOD);?></code></pre>
+        <h6>JavaScript - Dynamic Creation</h6>
+        <pre><code class="language-js"><?php echo htmlspecialchars(<<<'EOD'
+// Type-based style
+const notice1 = document.createElement('sf-notice');
+notice1.setAttribute('type', 'notice');
+notice1.setAttribute('title', '동적 공지');
+notice1.setAttribute('message', 'JavaScript로 생성된 공지입니다!');
+document.body.appendChild(notice1);
+
+// Color theme
+const notice2 = document.createElement('sf-notice');
+notice2.setAttribute('color', 'success');
+notice2.setAttribute('title', '성공');
+notice2.setAttribute('message', '작업이 완료되었습니다!');
+document.body.appendChild(notice2);
+
+// 또는 간단하게 innerHTML 사용
+const container = document.getElementById('notice-container');
+container.innerHTML = `
+    <sf-notice
+        color="danger"
+        title="오류"
+        message="문제가 발생했습니다.">
+    </sf-notice>
+`;
+EOD);?></code></pre>
+        <h6>Attributes</h6>
+        <div class="table-responsive">
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th>Attribute</th>
+                        <th>Type</th>
+                        <th>Default</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>type</code></td>
+                        <td>String</td>
+                        <td>"notice"</td>
+                        <td>스타일 타입: "notice", "hint", "plain" (color가 지정되면 무시됨)</td>
+                    </tr>
+                    <tr>
+                        <td><code>color</code></td>
+                        <td>String</td>
+                        <td>-</td>
+                        <td><span class="badge bg-success">NEW</span> Bootstrap 색상 테마: "primary", "success", "danger", "warning", "info"</td>
+                    </tr>
+                    <tr>
+                        <td><code>title</code></td>
+                        <td>String</td>
+                        <td>"Notice"</td>
+                        <td>제목 또는 배지 텍스트</td>
+                    </tr>
+                    <tr>
+                        <td><code>message</code></td>
+                        <td>String (HTML)</td>
+                        <td>""</td>
+                        <td>메시지 내용 (HTML 태그 사용 가능)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="alert alert-success mt-3 mb-0">
+            <small><strong><i class="bi bi-palette-fill"></i> Color Themes:</strong>
+            <code>color</code> 속성을 사용하면 Bootstrap의 색상 시스템과 동일한 스타일을 적용할 수 있습니다.
+            라이트/다크 테마 양쪽에서 자동으로 적절한 색상으로 조정됩니다!</small>
+        </div>
+        <div class="alert alert-info mt-3 mb-0">
+            <small><strong><i class="bi bi-lightbulb"></i> Tip:</strong>
+            Notice board는 자동으로 현재 테마(light/dark)를 감지하여 스타일을 적용합니다.
+            테마 전환 시 자동으로 업데이트됩니다.</small>
+        </div>
+        <div class="alert alert-warning mt-3 mb-0">
+            <small><strong><i class="bi bi-check-circle"></i> HTML Support:</strong>
+            <code>message</code> 속성에서 HTML 태그를 사용할 수 있습니다.
+            강조(<code>&lt;strong&gt;</code>), 이탤릭(<code>&lt;em&gt;</code>), 링크(<code>&lt;a&gt;</code>) 등을 자유롭게 사용하세요.</small>
+        </div>
+    </div>
+</div>
+
+<!-- 5. RangeSlider Component -->
+<div class="mb-5 p-3 rounded example-section">
+    <h5 class="mb-3"><i class="bi bi-sliders"></i> 5. RangeSlider Component</h5>
     <p>Interactive range slider for number inputs with dual handles and formatting options</p>
 
     <div class="row mb-3">
@@ -682,9 +970,9 @@ EOD);?></code></pre>
     </div>
 </div>
 
-<!-- 5. Utility Functions -->
+<!-- 6. Utility Functions -->
 <div class="mb-5 p-3 rounded example-section">
-    <h5 class="mb-3"><i class="bi bi-tools"></i> 5. Utility Functions</h5>
+    <h5 class="mb-3"><i class="bi bi-tools"></i> 6. Utility Functions</h5>
     <p>Helper functions for number formatting and theme management</p>
 
     <div class="mb-3">
@@ -927,6 +1215,71 @@ EOD);?></code></pre>
         </table>
     </div>
 
+    <h6 class="mt-4">Notice Board API</h6>
+    <div class="table-responsive">
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th>Component</th>
+                    <th>Attributes</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>&lt;sf-notice&gt;</code></td>
+                    <td>type, color, title, message</td>
+                    <td>Display notice board with different styles and colors</td>
+                </tr>
+                <tr>
+                    <td><code>type="notice"</code></td>
+                    <td>-</td>
+                    <td>Blue style for important notices (type-based)</td>
+                </tr>
+                <tr>
+                    <td><code>type="hint"</code></td>
+                    <td>-</td>
+                    <td>Cyan/teal style for hints and tips (type-based)</td>
+                </tr>
+                <tr>
+                    <td><code>type="plain"</code></td>
+                    <td>-</td>
+                    <td>Gray style for general information (type-based)</td>
+                </tr>
+                <tr>
+                    <td><code>color="primary"</code></td>
+                    <td>-</td>
+                    <td><span class="badge bg-success">NEW</span> Blue theme (Bootstrap color)</td>
+                </tr>
+                <tr>
+                    <td><code>color="success"</code></td>
+                    <td>-</td>
+                    <td><span class="badge bg-success">NEW</span> Green theme (Bootstrap color)</td>
+                </tr>
+                <tr>
+                    <td><code>color="danger"</code></td>
+                    <td>-</td>
+                    <td><span class="badge bg-success">NEW</span> Red theme (Bootstrap color)</td>
+                </tr>
+                <tr>
+                    <td><code>color="warning"</code></td>
+                    <td>-</td>
+                    <td><span class="badge bg-success">NEW</span> Yellow theme (Bootstrap color)</td>
+                </tr>
+                <tr>
+                    <td><code>color="info"</code></td>
+                    <td>-</td>
+                    <td><span class="badge bg-success">NEW</span> Cyan theme (Bootstrap color)</td>
+                </tr>
+                <tr>
+                    <td><code>updateTheme()</code></td>
+                    <td>-</td>
+                    <td>Method to manually update theme (auto-called)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
     <h6 class="mt-4">Utility API</h6>
     <div class="table-responsive">
         <table class="table table-sm">
@@ -1003,6 +1356,7 @@ EOD);?></code></pre>
         </div>
     </div>
 </div>
+
 
 <!-- Bootstrap Compatibility -->
 <div class="mb-5 p-3 rounded" style="background: var(--bs-warning-bg-subtle); border: 1px solid var(--bs-warning-border-subtle);">

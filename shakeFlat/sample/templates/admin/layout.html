@@ -58,6 +58,7 @@ $currentPath = '/' . ($router->module() ?? '') . '/' . ($router->fnc() ?? '');
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <?php
+    // config.ini의 font_loader 섹션에 정의된 웹폰트 로드
     $webFontLoader = shakeFlat\WebFontLoader::getInstance();
     echo $webFontLoader->generatePreload();
     echo $webFontLoader->generateStyle();
@@ -79,7 +80,6 @@ $currentPath = '/' . ($router->module() ?? '') . '/' . ($router->fnc() ?? '');
     <script src="/assets/js/template-admin.js?<?= sfCSSJSVer(); ?>"></script>
     <link rel="stylesheet" href="/assets/css/colors.css?<?= sfCSSJSVer(); ?>">
     <link rel="stylesheet" href="/assets/css/template-admin.css?<?= sfCSSJSVer(); ?>">
-
 </head>
 
 <body>
