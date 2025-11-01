@@ -115,7 +115,7 @@ class Param
                 $this->params[$k] = $v;
             }
         } else {
-            L::exit("[:Invalid parameter format. It must be an array.:]");
+            sfLogExit("[:Invalid parameter format. It must be an array.:]");
         }
     }
 
@@ -204,7 +204,7 @@ class Param
     public function checkKey($key, $type, $enum = null)
     {
         $this->_setTypeEnum($key, $type, $enum);
-        if (!$this->_existKey($key, $type)) L::exit("[:The parameter {$key} does not exist.:]");
+        if (!$this->_existKey($key, $type)) sfLogExit("[:The parameter {$key} does not exist.:]");
         if ($this->_existValue($key, $type)) $this->_checkType($key, $type, $enum);
     }
 
@@ -212,19 +212,19 @@ class Param
     public function checkKeyValue($key, $type, $enum = null)
     {
         $this->_setTypeEnum($key, $type, $enum);
-        if (!$this->_existKey($key, $type)) L::exit("[:The parameter {$key} does not exist.:]");
-        if (!$this->_existValue($key, $type)) L::exit("[:The value of parameter {$key} is empty.:]");
+        if (!$this->_existKey($key, $type)) sfLogExit("[:The parameter {$key} does not exist.:]");
+        if (!$this->_existValue($key, $type)) sfLogExit("[:The value of parameter {$key} is empty.:]");
         $this->_checkType($key, $type, $enum);
     }
 
     public function checkFileType($key, $type = SELF::FILE_ALL)
     {
-        if (!$this->_existKey($key, self::TYPE_FILE)) L::exit("[:The parameter {$key} does not exist.:]");
+        if (!$this->_existKey($key, self::TYPE_FILE)) sfLogExit("[:The parameter {$key} does not exist.:]");
         if (!$this->_existValue($key, SELF::TYPE_FILE)) return;
         switch($type) {
             case SELF::FILE_ALL : break;
             case SELF::FILE_IMAGE :
-                if (!exif_imagetype($_FILES[$key]["tmp_name"])) L::exit("[:The type of parameter {$key} is incorrect.:]");
+                if (!exif_imagetype($_FILES[$key]["tmp_name"])) sfLogExit("[:The type of parameter {$key} is incorrect.:]");
                 break;
         }
         return;
@@ -319,39 +319,39 @@ class Param
             // If encryption is enabled, check the decrypted parameters.
             $param = &$this->encryptParams;
         }
-        if ($enum !== null && is_array($enum) && !in_array($param[$key], $enum)) L::exit("[:The type of parameter {$key} is incorrect.:]");
+        if ($enum !== null && is_array($enum) && !in_array($param[$key], $enum)) sfLogExit("[:The type of parameter {$key} is incorrect.:]");
 
         switch($type) {
             case Param::TYPE_INT :
                 $val = strval(intval($param[$key]));
-                if ($val != $param[$key]) L::exit("[:The type of parameter {$key} is incorrect.:]");
+                if ($val != $param[$key]) sfLogExit("[:The type of parameter {$key} is incorrect.:]");
                 $param[$key] = intval($param[$key]);
                 return;
             case Param::TYPE_FLOAT :
                 $val = strval(floatval($param[$key]));
-                if ($val != $param[$key]) L::exit("[:The type of parameter {$key} is incorrect.:]");
+                if ($val != $param[$key]) sfLogExit("[:The type of parameter {$key} is incorrect.:]");
                 $param[$key] = floatval($param[$key]);
                 return;
             case Param::TYPE_STRING :
-                if (!is_string($param[$key])) L::exit("[:The type of parameter {$key} is incorrect.:]");
+                if (!is_string($param[$key])) sfLogExit("[:The type of parameter {$key} is incorrect.:]");
                 $param[$key] = strval($param[$key]);
                 return;
             case Param::TYPE_BOOLEAN :
                 if (strtolower($param[$key]) == "true") $param[$key] = true;
                 if (strtolower($param[$key]) == "false") $param[$key] = false;
-                if (!is_bool($param[$key])) L::exit("[:The type of parameter {$key} is incorrect.:]");
+                if (!is_bool($param[$key])) sfLogExit("[:The type of parameter {$key} is incorrect.:]");
                 return;
             case Param::TYPE_JSON :
                 if ($param[$key]) {
                     if (!is_array(json_decode($param[$key], true))) {
                         switch (json_last_error()) {
-                            case JSON_ERROR_NONE            : L::exit("[:{$key} Error in json format : No errors:]"); break;
-                            case JSON_ERROR_DEPTH           : L::exit("[:{$key} Error in json format : Maximum stack depth exceeded:]"); break;
-                            case JSON_ERROR_STATE_MISMATCH  : L::exit("[:{$key} Error in json format : Underflow or the modes mismatch:]"); break;
-                            case JSON_ERROR_CTRL_CHAR       : L::exit("[:{$key} Error in json format : Unexpected control character found:]"); break;
-                            case JSON_ERROR_SYNTAX          : L::exit("[:{$key} Error in json format : Syntax error, malformed JSON:]"); break;
-                            case JSON_ERROR_UTF8            : L::exit("[:{$key} Error in json format : Malformed UTF-8 characters, possibly incorrectly encoded:]"); break;
-                            default                         : L::exit("[:{$key} Error in json format : Unknown error:]"); break;
+                            case JSON_ERROR_NONE            : sfLogExit("[:{$key} Error in json format : No errors:]"); break;
+                            case JSON_ERROR_DEPTH           : sfLogExit("[:{$key} Error in json format : Maximum stack depth exceeded:]"); break;
+                            case JSON_ERROR_STATE_MISMATCH  : sfLogExit("[:{$key} Error in json format : Underflow or the modes mismatch:]"); break;
+                            case JSON_ERROR_CTRL_CHAR       : sfLogExit("[:{$key} Error in json format : Unexpected control character found:]"); break;
+                            case JSON_ERROR_SYNTAX          : sfLogExit("[:{$key} Error in json format : Syntax error, malformed JSON:]"); break;
+                            case JSON_ERROR_UTF8            : sfLogExit("[:{$key} Error in json format : Malformed UTF-8 characters, possibly incorrectly encoded:]"); break;
+                            default                         : sfLogExit("[:{$key} Error in json format : Unknown error:]"); break;
                         }
                     }
                     $param[$key] = json_decode($param[$key], true);
@@ -360,16 +360,16 @@ class Param
                 }
                 return;
 
-            case Param::TYPE_ARRAY       : if (!is_array($param[$key]))                                         L::exit("[:The type of parameter {$key} is incorrect.:]");  return;
-            case Param::TYPE_EMAIL       : if (filter_var($param[$key], FILTER_VALIDATE_EMAIL) === false)       L::exit("[:The type of parameter {$key} is incorrect.:]");  return;
-            case Param::TYPE_URL         : if (filter_var($param[$key], FILTER_VALIDATE_URL) === false)         L::exit("[:The type of parameter {$key} is incorrect.:]");  return;
-            case Param::TYPE_DOMAIN      : if (filter_var($param[$key], FILTER_VALIDATE_DOMAIN) === false)      L::exit("[:The type of parameter {$key} is incorrect.:]");  return;
-            case Param::TYPE_IP          : if (filter_var($param[$key], FILTER_VALIDATE_IP) === false)          L::exit("[:The type of parameter {$key} is incorrect.:]");  return;
-            case Param::TYPE_FILE        : if (!isset($_FILES[$key]) || ($_FILES[$key]["error"] ?? 100) != 0)   L::exit("[:The type of parameter {$key} is incorrect.:]");  return;
-            case Param::TYPE_DATETIME    : if (Util::validateDateTime($param[$key]) === false)                  L::exit("[:The type of parameter {$key} is incorrect.:]");  return;
-            case Param::TYPE_DATE        : if (Util::validateDate($param[$key]) === false)                      L::exit("[:The type of parameter {$key} is incorrect.:]");  return;
+            case Param::TYPE_ARRAY       : if (!is_array($param[$key]))                                         sfLogExit("[:The type of parameter {$key} is incorrect.:]");  return;
+            case Param::TYPE_EMAIL       : if (filter_var($param[$key], FILTER_VALIDATE_EMAIL) === false)       sfLogExit("[:The type of parameter {$key} is incorrect.:]");  return;
+            case Param::TYPE_URL         : if (filter_var($param[$key], FILTER_VALIDATE_URL) === false)         sfLogExit("[:The type of parameter {$key} is incorrect.:]");  return;
+            case Param::TYPE_DOMAIN      : if (filter_var($param[$key], FILTER_VALIDATE_DOMAIN) === false)      sfLogExit("[:The type of parameter {$key} is incorrect.:]");  return;
+            case Param::TYPE_IP          : if (filter_var($param[$key], FILTER_VALIDATE_IP) === false)          sfLogExit("[:The type of parameter {$key} is incorrect.:]");  return;
+            case Param::TYPE_FILE        : if (!isset($_FILES[$key]) || ($_FILES[$key]["error"] ?? 100) != 0)   sfLogExit("[:The type of parameter {$key} is incorrect.:]");  return;
+            case Param::TYPE_DATETIME    : if (Util::validateDateTime($param[$key]) === false)                  sfLogExit("[:The type of parameter {$key} is incorrect.:]");  return;
+            case Param::TYPE_DATE        : if (Util::validateDate($param[$key]) === false)                      sfLogExit("[:The type of parameter {$key} is incorrect.:]");  return;
         }
-        L::exit("[:The type of parameter {$key} is incorrect.:]");
+        sfLogExit("[:The type of parameter {$key} is incorrect.:]");
     }
 
     /**
@@ -416,7 +416,7 @@ class Param
                 "fileSize"          => $_FILES[$key]["size"],
             );
         } catch(Exception $e) {
-            L::exit("[:'{$key}' File upload error - {$e->getMessage()}:]", $e->getCode());
+            sfLogExit("[:'{$key}' File upload error - {$e->getMessage()}:]", $e->getCode());
         }
     }
 

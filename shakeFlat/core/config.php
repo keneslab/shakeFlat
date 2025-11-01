@@ -27,6 +27,7 @@ function __sfConfig__init()
 
     // debug mode
     define("IS_DEBUG", SHAKEFLAT_ENV["config"]["debug_mode"] ?? false);
+    define("IS_CLI", (php_sapi_name() === "cli" || defined("STDIN")));
 
     // Determining whether to output an error
     if (SHAKEFLAT_ENV["config"]["display_error"] ?? false) {

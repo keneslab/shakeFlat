@@ -36,7 +36,12 @@ class Router
 
     private function parseUrl()
     {
+        // Ignore requests from Chrome DevTools
+        $devtools_path = '/.well-known/appspecific/com.chrome.devtools.json';
+        if (strpos($_SERVER["REQUEST_URI"], $devtools_path) === 0) exit;
+
         $parseUrl = parse_url($_SERVER["REQUEST_URI"]);
+
         if (!isset($parseUrl["path"]) || $parseUrl["path"] == "/" || $parseUrl["path"] == "/index.php") {
             $mainPage = $this->welcomePage;
             $ml = explode("/", $mainPage);

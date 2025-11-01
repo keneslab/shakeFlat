@@ -62,7 +62,7 @@ class Translation
                 if ($arr) $this->allTable = array_merge($this->allTable, $arr);
             }
         } catch (\Exception $e) {
-            L::system($e->getMessage());
+            sfLogSystem($e->getMessage());
         }
     }
 

@@ -181,7 +181,7 @@ class DataTablesRenderButton
         $layoutHtml = "";
 
         $htmlItem = function($alias) use ($tableColumns) {
-            if (!array_key_exists($alias, $tableColumns)) L::system("[:dt:Column alias({$alias}) does not exist in tableColumns.:]");
+            if (!array_key_exists($alias, $tableColumns)) sfLogSystem("[:dt:Column alias({$alias}) does not exist in tableColumns.:]");
             return <<<EOD
                                     <div class="col-auto">
                                         <div class="sfdt-floating">
@@ -262,7 +262,7 @@ class DataTablesRenderButton
             $formatScript = "txt = escapeHtml(txt);\n";
         }
 
-        if (!$this->keyParams) L::system("[:dt:Parameter for detail view({$this->btnId}) is not defined.:]");
+        if (!$this->keyParams) sfLogSystem("[:dt:Parameter for detail view({$this->btnId}) is not defined.:]");
         $paramScript = "";
         foreach($this->keyParams as $alias) {
             $paramScript .= "param['{$alias}'] = $(this).data('{$alias}');\n        ";
@@ -312,7 +312,7 @@ class DataTablesRenderButton
                 {$this->customScript}
             EOD;
 
-        if (!$this->layout) L::system("[:dt:Layout for detail view({$this->btnId}) is not defined.:]");
+        if (!$this->layout) sfLogSystem("[:dt:Layout for detail view({$this->btnId}) is not defined.:]");
         $detailHtml = <<<EOD
             <!-- DataTable - Detail view modal for Table Id {$this->tableId} -->
             <div class="modal fade" tabindex="-1" id="sfdt-modal-{$this->tableId}-{$this->btnId}" aria-labelledby="Detail View" aria-describedby="Detail View" aria-hidden="true" aria-modal="true">
@@ -342,7 +342,7 @@ class DataTablesRenderButton
         // modify button
         $modifyScript = "";
         $modifyHtml = "";
-        if (!$this->keyParams) L::system("[:dt:Parameter for modify({$this->btnId}) is not defined.:]");
+        if (!$this->keyParams) sfLogSystem("[:dt:Parameter for modify({$this->btnId}) is not defined.:]");
         $paramScript = "";
         $submitScript = "";
         foreach($this->keyParams as $alias) {
@@ -364,7 +364,7 @@ class DataTablesRenderButton
 
         $columnAliases = [];
         $layoutHtml = "";
-        if (!$this->layout) L::system("[:dt:Layout for modify({$this->btnId}) is not defined.:]");
+        if (!$this->layout) sfLogSystem("[:dt:Layout for modify({$this->btnId}) is not defined.:]");
 
         $hiddenHtml = "";
         foreach($this->editColumn as $alias => $editColumn) {
@@ -375,7 +375,7 @@ class DataTablesRenderButton
         }
 
         $newCommentForFile = function($alias) use ($tableColumns) {
-            if (!array_key_exists($alias, $tableColumns) || !array_key_exists($alias, $this->editColumn)) L::system("[:dt:Column alias({$alias}) does not exist in tableColumns.:]");
+            if (!array_key_exists($alias, $tableColumns) || !array_key_exists($alias, $this->editColumn)) sfLogSystem("[:dt:Column alias({$alias}) does not exist in tableColumns.:]");
             if ($this->editColumn[$alias]->type() != "file") return false;
             $comment = $this->editColumn[$alias]->comment();
             $this->editColumn[$alias]->comment($comment . " <span class='sfdt-edit-{$this->tableId}-modify-{$alias}-oldfile'></span>");
@@ -564,7 +564,7 @@ class DataTablesRenderButton
 
     private function _codeDelete($ajaxUrl, $deliverParameters)
     {
-        if (!$this->keyParams) L::system("[:dt:Parameter for delete({$this->btnId}) is not defined.:]");
+        if (!$this->keyParams) sfLogSystem("[:dt:Parameter for delete({$this->btnId}) is not defined.:]");
         $paramScript = "";
         foreach($this->keyParams as $alias) {
             $paramScript .= "param['{$alias}'] = $(this).data('{$alias}');\n        ";
@@ -978,7 +978,7 @@ class DataTablesCustomSearch
 
     public function option($key, $value = null)
     {
-        if (!is_string($key) || !array_key_exists($key, $this->options)) L::system("[:dt:DataTablesCustomSearch option() parameter error.:]");
+        if (!is_string($key) || !array_key_exists($key, $this->options)) sfLogSystem("[:dt:DataTablesCustomSearch option() parameter error.:]");
         if ($value === null) return $this->options[$key];
         $this->options[$key] = $value;
         return $this;
@@ -1264,7 +1264,7 @@ class DataTablesEditColumn
 
     public function option($value, $text = null)
     {
-        if (!array_key_exists($value, $this->options)) L::system("[:dtedit:DataTablesEditColumn {$this->editId} option parameter error.:]");
+        if (!array_key_exists($value, $this->options)) sfLogSystem("[:dtedit:DataTablesEditColumn {$this->editId} option parameter error.:]");
         if ($text === null) return $this->options[$value];
         $this->options[$value] = $text;
         return $this;
@@ -1273,7 +1273,7 @@ class DataTablesEditColumn
     public function options($options = null)
     {
         if ($options === null) return $this->options;
-        if (!is_array($options)) L::system("[:dtedit:DataTablesEditColumn {$this->editId} options parameter error.:]");
+        if (!is_array($options)) sfLogSystem("[:dtedit:DataTablesEditColumn {$this->editId} options parameter error.:]");
 
         foreach($options as $value => $text) {
             $this->options[$value] = $text;
@@ -1366,7 +1366,7 @@ class DataTablesEditColumn
                 $htmlSub = "";
                 $disabled = ""; if ($this->readonly) $disabled = " disabled";
                 $idx = 1;
-                if (!is_array($this->options)) L::system("[:dtedit:DataTablesEditColumn {$this->editId} {$this->alias} checkbox options not defined.:]");
+                if (!is_array($this->options)) sfLogSystem("[:dtedit:DataTablesEditColumn {$this->editId} {$this->alias} checkbox options not defined.:]");
                 if (count($this->options) > 1) $name = "{$this->alias}[]"; else $name = "{$this->alias}";
                 foreach($this->options as $value => $text) {
                     if ($value == $this->defaultValue) $checked = " checked"; else $checked = "";
@@ -1394,7 +1394,7 @@ class DataTablesEditColumn
                 $htmlSub = "";
                 $disabled = ""; if ($this->readonly) $disabled = " disabled";
                 $idx = 1;
-                if (!is_array($this->options)) L::system("[:dtedit:DataTablesEditColumn {$this->editId} {$this->alias} radio options not defined.:]");
+                if (!is_array($this->options)) sfLogSystem("[:dtedit:DataTablesEditColumn {$this->editId} {$this->alias} radio options not defined.:]");
                 foreach($this->options as $value => $text) {
                     if ($value == $this->defaultValue) $checked = " checked"; else $checked = "";
                     $htmlSub .= <<<EOD
@@ -1418,7 +1418,7 @@ class DataTablesEditColumn
                     EOD;
                 break;
             case "select" :
-                if (!is_array($this->options)) L::system("[:dtedit:DataTablesEditColumn {$this->editId} {$this->alias} select options not defined.:]");
+                if (!is_array($this->options)) sfLogSystem("[:dtedit:DataTablesEditColumn {$this->editId} {$this->alias} select options not defined.:]");
                 $optionArr = [];
                 if ($this->defaultValue) {
                     $optionArr[] = "<option value=''>[:dtedit:Select:]</option>";
@@ -1528,8 +1528,8 @@ class DataTablesAddRecord
     public function html($tableColumns)
     {
         $controlHtml = "";
-        if (!$this->columns) L::system("[:dtaddrecord:No columns defined for DataTablesAddRecord.:]");
-        if (!$this->layout) L::system("[:dtaddrecord:No layout defined for DataTablesAddRecord.:]");
+        if (!$this->columns) sfLogSystem("[:dtaddrecord:No columns defined for DataTablesAddRecord.:]");
+        if (!$this->layout) sfLogSystem("[:dtaddrecord:No layout defined for DataTablesAddRecord.:]");
         $existFile = false;
         foreach($this->layout as $item) {
             if ($item === '---') {
@@ -1744,7 +1744,7 @@ class DataTables
     public function __construct($tableId)
     {
         $chk = preg_match("/^[a-z][a-z0-9]*$/", $tableId);
-        if (!$chk) L::system("[:dt:It must be made only of alphabet(lower case) and numbers (the first letter is an alphabet).:]");
+        if (!$chk) sfLogSystem("[:dt:It must be made only of alphabet(lower case) and numbers (the first letter is an alphabet).:]");
 
         $this->tableId = $tableId;
         $this->containerOption = "";
@@ -2142,7 +2142,7 @@ class DataTables
         if ($this->options["colReorder"]) {
             $serverSide = "false";
             if ($this->columnConfigLoadFunction && $this->columnConfigSaveFunction) {
-                if (!is_callable([ $this, $this->columnConfigLoadFunction ]) || !is_callable([ $this, $this->columnConfigSaveFunction ])) L::system("[:dt:Column config load/save function is not callable.:]");
+                if (!is_callable([ $this, $this->columnConfigLoadFunction ]) || !is_callable([ $this, $this->columnConfigSaveFunction ])) sfLogSystem("[:dt:Column config load/save function is not callable.:]");
                 $serverSide = "true";
             }
 
@@ -2267,7 +2267,7 @@ class DataTables
 
     private function makeCodeCustomSearchItem($alias)
     {
-        if (!array_key_exists($alias, $this->customSearch)) L::system("[:dt:Custom search item({$alias}) not found.:]");
+        if (!array_key_exists($alias, $this->customSearch)) sfLogSystem("[:dt:Custom search item({$alias}) not found.:]");
         $cs = $this->customSearch[$alias];
         $controlOption = ""; if ($cs->controlOption()) $controlOption = " " . implode(" ", $cs->controlOption());
         $controlStyle = ""; if ($cs->controlStyle()) $controlStyle = " style=\"" . implode("; ", $cs->controlStyle()) . "\"";
@@ -2278,7 +2278,7 @@ class DataTables
         if ($cs->exColumnQuery()) {
             $forEx = " data-sfdt-custom-search-ex='true'";
         } else {
-            if (!array_key_exists($alias, $this->columns)) L::system("[:dt:Column({$alias}) not found.:]");
+            if (!array_key_exists($alias, $this->columns)) sfLogSystem("[:dt:Column({$alias}) not found.:]");
             if (!$title) $title = $this->columns[$alias]->title();
             $sfdtDataAlias = " data-sfdt-alias=\"{$alias}\"";
         }
@@ -2676,10 +2676,10 @@ class DataTables
         foreach($this->columns as $ars => $column) {
             $crbs = $column->renderButtons();
             if (!$crbs || !array_key_exists($btnId, $crbs)) continue;
-            if (!$crbs[$btnId]) L::system("[:dt:Button {$btnId} is not defined.:]");
+            if (!$crbs[$btnId]) sfLogSystem("[:dt:Button {$btnId} is not defined.:]");
             $crb = $crbs[$btnId];
         }
-        if (!$crb) L::system("[:dt:Button {$btnId} is not defined.:]");
+        if (!$crb) sfLogSystem("[:dt:Button {$btnId} is not defined.:]");
         return $crb;
     }
 
@@ -2690,17 +2690,17 @@ class DataTables
         $param->checkKeyValue('sfdtBtnId', Param::TYPE_STRING);
 
         $crb = $this->opRenderButton($param->sfdtBtnId);
-        if (!$crb->queryFunction()) L::system("[:dt:Query function(queryFunction) for button {$param->sfdtBtnId} is not defined.:]");
-        if (!is_callable([ $this, $crb->queryFunction() ])) L::system("[:dt:Query function {$crb->queryFunction()} for button {$param->sfdtBtnId} is not callable.:]");
+        if (!$crb->queryFunction()) sfLogSystem("[:dt:Query function(queryFunction) for button {$param->sfdtBtnId} is not defined.:]");
+        if (!is_callable([ $this, $crb->queryFunction() ])) sfLogSystem("[:dt:Query function {$crb->queryFunction()} for button {$param->sfdtBtnId} is not callable.:]");
 
         $params = [];
         $kp = $crb->keyParams();
-        if (!$kp) L::system("[:dt:Key parameters for button {$param->sfdtBtnId} is not defined.:]");
+        if (!$kp) sfLogSystem("[:dt:Key parameters for button {$param->sfdtBtnId} is not defined.:]");
         foreach($kp as $alias) {
             $param->checkKeyValue($alias, Param::TYPE_STRING);
             $params[$alias] = $param->get($alias);
         }
-        if (!$params) L::system("[:dt:Button {$param->sfdtBtnId} is not defined.:]");
+        if (!$params) sfLogSystem("[:dt:Button {$param->sfdtBtnId} is not defined.:]");
 
         return [ $param->sfdtBtnId, $crb->queryFunction(), $params ];
     }
@@ -2773,8 +2773,8 @@ class DataTables
         $param->checkKeyValue('sfdtBtnId', Param::TYPE_STRING);
 
         $crb = $this->opRenderButton($param->sfdtBtnId);
-        if (!$crb->submitFunction()) L::system("[:dt:Submit function(submitFunction) for button {$param->sfdtBtnId} is not defined.:]");
-        if (!is_callable([ $this, $crb->submitFunction() ])) L::system("[:dt:Submit function {$crb->submitFunction()} for button {$param->sfdtBtnId} is not callable.:]");
+        if (!$crb->submitFunction()) sfLogSystem("[:dt:Submit function(submitFunction) for button {$param->sfdtBtnId} is not defined.:]");
+        if (!is_callable([ $this, $crb->submitFunction() ])) sfLogSystem("[:dt:Submit function {$crb->submitFunction()} for button {$param->sfdtBtnId} is not callable.:]");
 
         $result = call_user_func([ $this, $crb->submitFunction() ]);
 
@@ -2807,8 +2807,8 @@ class DataTables
         $param->checkKeyValue('sfdtBtnId', Param::TYPE_STRING);
 
         $crb = $this->opRenderButton($param->sfdtBtnId);
-        if (!$crb->submitFunction()) L::system("[:dt:Submit function(submitFunction) for button {$param->sfdtBtnId} is not defined.:]");
-        if (!is_callable([ $this, $crb->submitFunction() ])) L::system("[:dt:Submit function {$crb->submitFunction()} for button {$param->sfdtBtnId} is not callable.:]");
+        if (!$crb->submitFunction()) sfLogSystem("[:dt:Submit function(submitFunction) for button {$param->sfdtBtnId} is not defined.:]");
+        if (!is_callable([ $this, $crb->submitFunction() ])) sfLogSystem("[:dt:Submit function {$crb->submitFunction()} for button {$param->sfdtBtnId} is not callable.:]");
 
         $result = call_user_func([ $this, $crb->submitFunction() ]);
 
@@ -2842,9 +2842,9 @@ class DataTables
         $param = Param::getInstance();
         $param->checkKeyValue('sfdtBtnId', Param::TYPE_STRING);
         $btnId = $param->sfdtBtnId;
-        if (!isset($this->extraButtons[$btnId])) L::system("[:dtaddrecord:Extra button {$btnId} not found.:]");
-        if (!$this->extraButtons[$btnId]->isAddRecord()) L::system("[:dtaddrecord:Extra button {$btnId} is not AddRecord.:]");
-        if (!$this->extraButtons[$btnId]->AddRecord()->submitFunction() || !is_callable([ $this, $this->extraButtons[$btnId]->AddRecord()->submitFunction() ])) L::system("[:dtaddrecord:Extra button {$btnId} submitFunction is not callable.:]");
+        if (!isset($this->extraButtons[$btnId])) sfLogSystem("[:dtaddrecord:Extra button {$btnId} not found.:]");
+        if (!$this->extraButtons[$btnId]->isAddRecord()) sfLogSystem("[:dtaddrecord:Extra button {$btnId} is not AddRecord.:]");
+        if (!$this->extraButtons[$btnId]->AddRecord()->submitFunction() || !is_callable([ $this, $this->extraButtons[$btnId]->AddRecord()->submitFunction() ])) sfLogSystem("[:dtaddrecord:Extra button {$btnId} submitFunction is not callable.:]");
         $result = call_user_func([ $this, $this->extraButtons[$btnId]->AddRecord()->submitFunction() ]);
 
         $res = Response::getInstance();
@@ -2864,21 +2864,21 @@ class DataTables
     // Use it by overriding it in the inherited class.
     protected function opRecordsTotal()
     {
-        L::system("[:dt:Query for total number of records is not set.:]");
+        sfLogSystem("[:dt:Query for total number of records is not set.:]");
     }
 
     // Get the total number of records after filtering
     // Use it by overriding it in the inherited class.
     protected function opRecordsFiltered()
     {
-        L::system("[:dt:Query for total number of records after filtering is not set.:]");
+        sfLogSystem("[:dt:Query for total number of records after filtering is not set.:]");
     }
 
     // Get the data to be displayed
     // Use it by overriding it in the inherited class.
     protected function opListData()
     {
-        L::system("[:dt:Function(opListData) for data is not set.:]");
+        sfLogSystem("[:dt:Function(opListData) for data is not set.:]");
     }
 
     // SQL where statement and binding for search
@@ -2901,7 +2901,7 @@ class DataTables
             foreach($param->columns as $col) {
                 $alias = $col['name'];
                 $value = $col['search']['value'];
-                if (!array_key_exists($alias, $this->columns)) L::system("[:dt:Column({$alias}) not found.:]");
+                if (!array_key_exists($alias, $this->columns)) sfLogSystem("[:dt:Column({$alias}) not found.:]");
                 $searchColumn = $this->columns[$alias]->searchColumn();
                 if ($col['searchable'] === 'true') $searchableColumns[$alias] = $searchColumn;
                 if (!$this->columns[$alias]->searchable() || $value === "") continue;
@@ -3051,7 +3051,7 @@ class DataTables
         $param = Param::getInstance();
         $param->checkKeyValue('data', Param::TYPE_STRING);
 
-        if (!$this->columnConfigSaveFunction || !is_callable([ $this, $this->columnConfigSaveFunction ])) L::system("[:dt:Column config load/save function is not callable.:]");
+        if (!$this->columnConfigSaveFunction || !is_callable([ $this, $this->columnConfigSaveFunction ])) sfLogSystem("[:dt:Column config load/save function is not callable.:]");
         $result = call_user_func([ $this, $this->columnConfigSaveFunction ], $param->data);
 
         $res = Response::getInstance();
@@ -3079,7 +3079,7 @@ class DataTables
             }
         }
 
-        if (!$this->columnConfigLoadFunction || !is_callable([ $this, $this->columnConfigLoadFunction ])) L::system("[:dt:Column config load/save function is not callable.:]");
+        if (!$this->columnConfigLoadFunction || !is_callable([ $this, $this->columnConfigLoadFunction ])) sfLogSystem("[:dt:Column config load/save function is not callable.:]");
         $result = call_user_func([ $this, $this->columnConfigLoadFunction ]);
         if (!$result || $result == "undefined") $result = "";
 

@@ -85,12 +85,6 @@ function sfModeAjax()
     $template->setMode(shakeFlat\Template::MODE_AJAX);
 }
 
-function sfModeCLI()
-{
-    $template = shakeFlat\Template::getInstance();
-    $template->setMode(shakeFlat\Template::MODE_CLI);
-}
-
 function sfIsAjax()
 {
     $template = shakeFlat\Template::getInstance();
@@ -142,4 +136,138 @@ function sfLang($default = null)
     $lang = shakeFlat\Translation::getInstance()->getTranslationLang();
     if (!$lang) return $default;
     return $lang;
+}
+
+// Process accumulated logs with translation and display error, then terminate
+// Moved from L::_terminate() to make log.php independent from Template and Translation
+function sfLogTerminate($logMsg, $errCode = -1, $errUrl = null)
+{
+    // Apply translation to the message
+    $message = sfLogTranslate($logMsg["message"]);
+    $context = $logMsg["context"] ?? array();
+
+    if (SHAKEFLAT_ENV["config"]["display_error"] ?? false) {
+        if (SHAKEFLAT_ENV["display_error"]["tracing"] ?? false) {
+            $inPos = "";
+            if (isset($context["trace"][0]["file"]) && isset($context["trace"][0]["line"])) {
+                $inPos = ", passed in {$context["trace"][0]["file"]} on line {$context["trace"][0]["line"]}";
+            }
+            foreach(($context["trace"] ?? array()) as $errInfo) {
+                if (strpos($errInfo["file"], SHAKEFLAT_PATH . "core") === false) {
+                    $inPos = ", passed in {$errInfo["file"]} on line {$errInfo["line"]}";
+                    break;
+                }
+            }
+            if ($inPos) $message .= $inPos;
+        } else {
+            $context = null;
+        }
+    } else {
+        $message = sfLogTranslate(shakeFlat\L::defaultErrorMessage());
+        $context = null;
+    }
+
+    if (shakeFlat\Template::isCreated()) {
+        $template = shakeFlat\Template::getInstance();
+        $template->displayError($message, $context, $errCode, $errUrl);
+    } else {
+        if ($errUrl) echo "errorUrl : {$errUrl}<br>\n";
+        echo "errorCode : {$errCode}<br>\n";
+        echo "errorMessage : {$message}<br>\n";
+        sfWebDump($context);
+    }
+
+    exit;
+}
+
+// Translate log messages using Translation class
+// Returns array or string with translations applied
+function sfLogTranslate($output)
+{
+    $translation = shakeFlat\Translation::getInstance();
+    $lang = $translation->getTranslationLang();
+
+    if ($lang) {
+        if (is_array($output)) {
+            $output = json_decode($translation->convert(json_encode($output, JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE), $lang), true);
+        } else {
+            $output = $translation->convert($output, $lang);
+        }
+        $translation->updateCache($lang);
+        return $output;
+    }
+
+    if (is_array($output)) {
+        return json_decode($translation->passing(json_encode($output, JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE)), true);
+    } else {
+        return $translation->passing($output);
+    }
+}
+
+// Process all pending logs from L class
+// Call this function to handle exit/system logs that need termination
+function sfProcessPendingLogs()
+{
+    $pendingLogs = shakeFlat\L::getPendingLogs();
+
+    if (empty($pendingLogs)) return;
+
+    // Process the first termination log found
+    foreach ($pendingLogs as $log) {
+        if (in_array($log['type'], ['exit', 'exitUrl', 'exitCode', 'system'])) {
+            $logMsg = array(
+                'message' => $log['message'],
+                'context' => $log['context']
+            );
+
+            sfLogTerminate($logMsg, $log['code'], $log['errUrl']);      // This function will exit the process
+        }
+    }
+
+    shakeFlat\L::clearPendingLogs();
+}
+
+// Exit functions to replace L class exit methods
+// These functions accumulate logs and trigger termination
+
+// shakeFlat framework structure error. App developers will seldom use it.
+// Accumulate the log for later processing.
+function sfLogSystem($message, $context = array(), $exception = null)
+{
+    if ($exception !== null) {
+        if (!isset($context['exception'])) $context['exception'] = $exception;
+    }
+    $logMsg = shakeFlat\L::error($message, $context, $exception);
+    shakeFlat\L::addPendingLog('system', $logMsg["message"], $logMsg["context"], -1, null);
+    sfProcessPendingLogs();
+}
+
+// Terminates the process after logging. (exit)
+// In general, if a web process (each web page or API) encounters a (severe) error during its operation, all operations are stopped and the process is terminated.
+// For reference, when the process is terminated, the open db transaction is automatically rolled back.
+function sfLogExit($message, $context = array(), $exception = null)
+{
+    $logMsg = shakeFlat\L::error($message, $context, $exception);
+    shakeFlat\L::addPendingLog('exit', $logMsg["message"], $logMsg["context"], -1, null);
+    sfProcessPendingLogs();
+}
+
+// After displaying the error message, navigate to $errUrl.
+// Used in ajax mode, and the redirection is handled by the caller of the ajax.
+function sfLogExitUrl($message, $errUrl, $context = array(), $exception = null)
+{
+    $logMsg = shakeFlat\L::error($message, $context, $exception);
+    shakeFlat\L::addPendingLog('exitUrl', $logMsg["message"], $logMsg["context"], -1, $errUrl);
+    sfProcessPendingLogs();
+}
+
+// Terminates the process after logging with specific error code.
+// In general, if a web process (each web page or API) encounters a (severe) error during its operation, all operations are stopped and the process is terminated.
+// For reference, when the process is terminated, the open db transaction is automatically rolled back.
+// In addition to $message, displays files and lines where execution is suspended according to config settings.
+function sfLogExitCode($message, $code)
+{
+    $logMsg = shakeFlat\L::error($message, array(), null);
+    shakeFlat\L::addPendingLog('exitCode', $logMsg["message"], $logMsg["context"], $code, null);
+    sfProcessPendingLogs();
 }
