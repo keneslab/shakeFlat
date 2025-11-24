@@ -14,7 +14,7 @@
 class SfUICore {
     constructor() {
         this.config = {
-            zIndexBase: 10000,
+            zIndexBase: 100000,
             animationDuration: 300,
             language: 'ko',
             // Common default settings for components
@@ -149,7 +149,7 @@ class SfUICore {
      * Get next available z-index
      */
     getNextZIndex() {
-        const modals = document.querySelectorAll('.sfui-overlay, .sfui-modal, .modal-backdrop');
+        const modals = document.querySelectorAll('.sfui-overlay, .sfui-modal, .modal-backdrop, .modal, .sfui-alert-wrapper, .sfui-alert-overlay');
         let maxZ = this.config.zIndexBase;
 
         modals.forEach(modal => {
@@ -1606,13 +1606,16 @@ class SfUIAlert {
             className: 'sfui-alert-wrapper',
             attrs: {
                 'data-alert-id': alertId
+            },
+            styles: {
+                zIndex: zIndex
             }
         });
 
         // Create overlay (separate from modal)
         const overlay = sfUICore.createElement('div', {
             className: 'sfui-alert-overlay',
-            styles: { zIndex: zIndex - 1 }
+            styles: { zIndex: 1 }
         });
 
         // Create modal container
@@ -1623,7 +1626,7 @@ class SfUIAlert {
                 'aria-modal': 'true'
             },
             styles: {
-                zIndex: zIndex
+                zIndex: 2
             }
         });
 

@@ -193,7 +193,7 @@ const sfLeftMenuManager = {
                 top: '-1px',
                 right: '2px',
                 fontSize: '0.85rem',
-                color: 'var(--sf-topbar-text-color)',
+                color: 'var(--bs-secondary-color)',
                 zIndex: '10',
                 borderRadius: '3px',
                 padding: '1px 2px',

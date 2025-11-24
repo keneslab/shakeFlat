@@ -7,7 +7,7 @@
 class SfUICore {
     constructor() {
         this.config = {
-            zIndexBase: 10000,
+            zIndexBase: 100000,
             animationDuration: 300,
             language: 'ko',
             // Common default settings for components
@@ -142,7 +142,7 @@ class SfUICore {
      * Get next available z-index
      */
     getNextZIndex() {
-        const modals = document.querySelectorAll('.sfui-overlay, .sfui-modal, .modal-backdrop');
+        const modals = document.querySelectorAll('.sfui-overlay, .sfui-modal, .modal-backdrop, .modal, .sfui-alert-wrapper, .sfui-alert-overlay');
         let maxZ = this.config.zIndexBase;
 
         modals.forEach(modal => {

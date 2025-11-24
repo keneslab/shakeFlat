@@ -195,13 +195,16 @@ class SfUIAlert {
             className: 'sfui-alert-wrapper',
             attrs: {
                 'data-alert-id': alertId
+            },
+            styles: {
+                zIndex: zIndex
             }
         });
 
         // Create overlay (separate from modal)
         const overlay = sfUICore.createElement('div', {
             className: 'sfui-alert-overlay',
-            styles: { zIndex: zIndex - 1 }
+            styles: { zIndex: 1 }
         });
 
         // Create modal container
@@ -212,7 +215,7 @@ class SfUIAlert {
                 'aria-modal': 'true'
             },
             styles: {
-                zIndex: zIndex
+                zIndex: 2
             }
         });
 

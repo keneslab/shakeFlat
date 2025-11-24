@@ -1,187 +1,12 @@
 /* ==============================================
-   CSS VARIABLES & THEME DEFINITIONS
-   ============================================== */
-
-:root {
-    /* Common variables (theme-independent) */
-    --sf-server-comment-color: #ff0000;
-    --sf-left-scrollbar-color: #909090;
-    --sf-left-sidebar-blind-bg-color: #121212;
-
-    /* Dropdown active/focus states (shared across themes) */
-    --sf-dropdown-highlight-bg-color: #0d6efd;
-    --sf-dropdown-highlight-color: #fff;
-
-    /* Badge common colors */
-    --sf-plain-badge-bg-color: #a0a0a0;
-    --sf-hint-badge-bg-color: #ffcc00;
-    --sf-hint-badge-text-color: #000000;
-}
-
-/* Light theme variables */
-:root,
-[data-bs-theme=light] {
-    --sf-bg-color: #fefefe;
-    --sf-text-color: #000000;
-    --sf-modal-text-color: #000;
-    --sf-topbar-bg-color: #eaeaea;
-    --sf-topbar-text-color: #000000;
-    --sf-logobox-bg-color: #2a3042;
-    --sf-logobox-text-color: #fefefe;
-    --sf-logo-character-bg-color: #f0f0f0;
-    --sf-logo-character-text-color: #232323;
-    --sf-logo-text-color: #f0f0f0;
-    --sf-clock-date-color: #606060;
-    --sf-clock-time-color: #606060;
-    --sf-dropdown-bg-color: #fafafa;
-    --sf-dropdown-color: #000000;
-    --sf-left-bg-color: #2a3042;
-    --sf-left-text-color: #fefefe;
-    --sf-left-group-item-color: #bdbdbd;
-    --sf-left-group-item-active-color: #ffffff;
-    --sf-contents-bg-color: #fdfdfd;
-    --sf-contents-text-color: #000000;
-    --sf-contents-title-border-gradient-start: #343434;
-    --sf-contents-title-border-gradient-end: #ffffff;
-    --sf-footer-bg-color: #f1f1f1;
-    --sf-footer-text-color: #000000;
-    --sf-footer-border-color: #d0d0d0;
-    --sf-custom-search-bg-color: #eeeef3;
-    --sf-custom-search-text-color: #000000;
-    --bs-border-color: #aaa;
-}
-
-/* Dark theme variables */
-[data-bs-theme=dark] {
-    --sf-bg-color: #191919;
-    --sf-text-color: #c0c0c0;
-    --sf-modal-text-color: #fff;
-    --sf-topbar-bg-color: #101010;
-    --sf-topbar-text-color: #b0b0b0;
-    --sf-logobox-bg-color: #101010;
-    --sf-logobox-text-color: #b0b0b0;
-    --sf-logo-character-bg-color: #404040;
-    --sf-logo-character-text-color: #ffffff;
-    --sf-logo-text-color: #d0d0d0;
-    --sf-clock-date-color: #a0a0a0;
-    --sf-clock-time-color: #a0a0a0;
-    --sf-dropdown-bg-color: #3f3f3f;
-    --sf-dropdown-color: #c0c0c0;
-    --sf-left-bg-color: #101010;
-    --sf-left-text-color: #b0b0b0;
-    --sf-left-group-item-color: #b0b0b0;
-    --sf-left-group-item-active-color: #f0f0f0;
-    --sf-contents-bg-color: #191919;
-    --sf-contents-text-color: #c0c0c0;
-    --sf-contents-title-border-gradient-start: #e0e0e0;
-    --sf-contents-title-border-gradient-end: #707070;
-    --sf-footer-bg-color: #232323;
-    --sf-footer-text-color: #a0a0a0;
-    --sf-footer-border-color: #121212;
-    --sf-custom-search-bg-color: #343741;
-    --sf-custom-search-text-color: #fefefe;
-
-    /* Bootstrap dark theme variables */
-    color-scheme: dark;
-    --bs-body-color: #c0c0c0;
-    --bs-body-color-rgb: 192,192,192;
-    --bs-body-bg: #191919;
-    --bs-body-bg-rgb: 25,25,25;
-    --bs-emphasis-color: #fff;
-    --bs-emphasis-color-rgb: 255,255,255;
-    --bs-secondary-color: rgba(222, 226, 230, 0.75);
-    --bs-secondary-color-rgb: 222,226,230;
-    --bs-secondary-bg: #343a40;
-    --bs-secondary-bg-rgb: 52,58,64;
-    --bs-tertiary-color: rgba(222, 226, 230, 0.5);
-    --bs-tertiary-color-rgb: 222,226,230;
-    --bs-tertiary-bg: #2b3035;
-    --bs-tertiary-bg-rgb: 43,48,53;
-    --bs-primary-text-emphasis: #6ea8fe;
-    --bs-secondary-text-emphasis: #a7acb1;
-    --bs-success-text-emphasis: #75b798;
-    --bs-info-text-emphasis: #6edff6;
-    --bs-warning-text-emphasis: #ffda6a;
-    --bs-danger-text-emphasis: #ea868f;
-    --bs-light-text-emphasis: #f8f9fa;
-    --bs-dark-text-emphasis: #dee2e6;
-    --bs-primary-bg-subtle: #031633;
-    --bs-secondary-bg-subtle: #161719;
-    --bs-success-bg-subtle: #051b11;
-    --bs-info-bg-subtle: #032830;
-    --bs-warning-bg-subtle: #332701;
-    --bs-danger-bg-subtle: #2c0b0e;
-    --bs-light-bg-subtle: #343a40;
-    --bs-dark-bg-subtle: #1a1d20;
-    --bs-primary-border-subtle: #084298;
-    --bs-secondary-border-subtle: #41464b;
-    --bs-success-border-subtle: #0f5132;
-    --bs-info-border-subtle: #087990;
-    --bs-warning-border-subtle: #997404;
-    --bs-danger-border-subtle: #842029;
-    --bs-light-border-subtle: #495057;
-    --bs-dark-border-subtle: #343a40;
-    --bs-heading-color: inherit;
-    --bs-link-color: #6ea8fe;
-    --bs-link-hover-color: #8bb9fe;
-    --bs-link-color-rgb: 110,168,254;
-    --bs-link-hover-color-rgb: 139,185,254;
-    --bs-code-color: #e685b5;
-    --bs-highlight-color: #dee2e6;
-    --bs-highlight-bg: #664d03;
-    --bs-border-color: #495057;
-    --bs-border-color-translucent: rgba(255, 255, 255, 0.15);
-    --bs-form-valid-color: #75b798;
-    --bs-form-valid-border-color: #75b798;
-    --bs-form-invalid-color: #ea868f;
-    --bs-form-invalid-border-color: #ea868f;
-}
-
-/* Theme-specific component styles */
-:root,
-[data-bs-theme=light] {
-    .list-group {
-        --bs-list-group-bg: #2a3042;
-        --bs-list-group-active-bg: #2a3042;
-        --bs-list-group-active-border-color: #2a3042;
-    }
-
-    .modal-content .form-control-plaintext {
-        color: #000;
-    }
-}
-
-[data-bs-theme=dark] {
-    .list-group {
-        --bs-list-group-bg: #101010;
-        --bs-list-group-active-bg: #101010;
-        --bs-list-group-active-border-color: #101010;
-    }
-
-    .shakeflat-topbar,
-    .shakeflat-logo-box {
-        border-bottom: 1px solid #555555;
-    }
-
-    .modal-content {
-        --bs-modal-color: #eeeeee;
-        --bs-modal-border-color: #444;
-
-        .form-control-plaintext {
-            color: #fff;
-        }
-    }
-}
-
-/* ==============================================
    GLOBAL STYLES & LAYOUT
    ============================================== */
 
 body {
     font: 1rem/1.4 'Pretendard GOV Variable', sans-serif;
     overflow: hidden;
-    background-color: var(--sf-bg-color);
-    color: var(--sf-text-color);
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
 }
 
 /* Common link styles */
@@ -320,14 +145,19 @@ a:visited {
 }
 
 .shakeflat-topbar {
-    background-color: var(--sf-topbar-bg-color);
-    color: var(--sf-topbar-text-color);
+    background-color: var(--bs-secondary-bg);
+    color: var(--bs-secondary-color);
 }
 
 .shakeflat-logo-box {
     padding-top: 15px;
-    background-color: var(--sf-logobox-bg-color);
-    color: var(--sf-logobox-text-color);
+    background-color: #2a3042;
+    color: #fefefe;
+}
+
+[data-bs-theme="dark"] .shakeflat-logo-box {
+    background-color: #101010;
+    color: #b0b0b0;
 }
 
 .shakeflat-logo {
@@ -340,16 +170,25 @@ a:visited {
     height: 30px;
     border-radius: 50%;
     font: 800 20px/30px 'Times New Roman', Times, serif;
-    background-color: var(--sf-logo-character-bg-color);
-    color: var(--sf-logo-character-text-color);
+    background-color: #ffffff;
+    color: #2a3042;
+}
+
+[data-bs-theme="dark"] .shakeflat-logo-character {
+    background-color: #e0e0e0;
+    color: #101010;
 }
 
 .shakeflat-logo-text {
     font-size: 1.2rem;
     padding: 0;
-    color: var(--sf-logo-text-color);
+    color: #ffffff;
     line-height: 30px; /* Fixed line height to prevent layout shift */
     height: 30px; /* Fixed height */
+}
+
+[data-bs-theme="dark"] .shakeflat-logo-text {
+    color: #f0f0f0;
 }
 
 .shakeflat-server-comment {
@@ -357,7 +196,7 @@ a:visited {
     line-height: 30px;
     height: 30px; /* Fixed height */
     white-space: nowrap;
-    color: var(--sf-server-comment-color);
+    color: var(--bs-danger);
 }
 
 /* Dropdown components - Common styles */
@@ -385,8 +224,8 @@ a:visited {
 
 .shakeflat-theme-dropdown .dropdown-menu,
 .shakeflat-account-dropdown-menu {
-    background-color: var(--sf-dropdown-bg-color);
-    color: var(--sf-dropdown-color);
+    background-color: var(--bs-dropdown-bg);
+    color: var(--bs-dropdown-color);
 }
 
 .shakeflat-theme-dropdown .dropdown-menu {
@@ -399,8 +238,8 @@ a:visited {
 
 .shakeflat-theme-dropdown .dropdown-item.active,
 .shakeflat-theme-dropdown .dropdown-item:focus {
-    background-color: var(--sf-dropdown-highlight-bg-color);
-    color: var(--sf-dropdown-highlight-color);
+    background-color: var(--bs-primary);
+    color: var(--bs-light);
 }
 
 /* Clock */
@@ -419,7 +258,7 @@ a:visited {
     font-weight: 400;
     line-height: 1.2;
     margin-top: -3px;
-    color: var(--sf-clock-date-color);
+    color: var(--bs-secondary-text-emphasis);
 }
 
 .shakeflat-clock-time {
@@ -427,7 +266,7 @@ a:visited {
     font-weight: 500;
     line-height: 1.5;
     text-align: center;
-    color: var(--sf-clock-time-color);
+    color: var(--bs-tertiary-text-emphasis);
 }
 
 /* Hamburger button */
@@ -438,7 +277,7 @@ a:visited {
 #shakeflat-btn-left-menu .lock-icon {
     pointer-events: none;
     text-shadow: 0 0 3px rgba(255,255,255,0.8);
-    color: var(--sf-topbar-text-color);
+    color: var(--bs-secondary-color);
 }
 
 /* Account dropdown - removed duplicate, merged above */
@@ -461,8 +300,8 @@ sf-sidebar {
 /* Contents */
 .shakeflat-contents {
     overflow: auto;
-    background-color: var(--sf-contents-bg-color);
-    color: var(--sf-contents-text-color);
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
 }
 
 .shakeflat-contents-title {
@@ -472,7 +311,7 @@ sf-sidebar {
     padding-bottom: 10px;
     margin-bottom: 0.2rem;
     border-bottom: 3px solid transparent;
-    border-image: linear-gradient(0.49turn, var(--sf-contents-title-border-gradient-start), var(--sf-contents-title-border-gradient-end));
+    border-image: linear-gradient(0.49turn, var(--bs-border-color-translucent), var(--bs-light-border-subtle));
     border-image-slice: 1;
 }
 
@@ -498,10 +337,18 @@ footer {
 
 .shakeflat-copyright-box {
     font-size: 0.8rem;
-    background-color: var(--sf-footer-bg-color);
-    color: var(--sf-footer-text-color);
-    border-top: 1px solid var(--sf-footer-border-color);
+    background-color: var(--bs-dark-bg-subtle);
+    color: var(--bs-dark-text);
+    border-top: 1px solid var(--bs-dark-border-color);
 }
+
+[data-bs-theme="dark"] .shakeflat-copyright-box {
+    font-size: 0.8rem;
+    background-color: var(--bs-light-bg-subtle);
+    color: var(--bs-light-text);
+    border-top: 1px solid var(--bs-light-border-color);
+}
+
 
 .shakeflat-copyright-me {
     font-size: 0.6rem;
