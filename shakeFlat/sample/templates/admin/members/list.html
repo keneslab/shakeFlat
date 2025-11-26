@@ -54,15 +54,15 @@
                         <div class="col-auto">
                             <div class="sfdt-search-item">
                                 <label class="form-label" for="sfdt-memberslisttable-search-search_status">상태</label>
-                                <div class="btn-group sfdt-search-control" role="group" data-search-name="search_status">
+                                <div class="sfdt-btn-radio-group sfdt-search-control" role="group" data-search-name="search_status">
                                     <input type="radio" class="btn-check" name="search_status" id="sfdt-memberslisttable-search-search_status-" value="" autocomplete="off" checked>
-                                    <label class="btn btn-outline-secondary" for="sfdt-memberslisttable-search-search_status-">전체</label>
+                                    <label class="sfdt-radio-btn" for="sfdt-memberslisttable-search-search_status-">전체</label>
                                     <input type="radio" class="btn-check" name="search_status" id="sfdt-memberslisttable-search-search_status-active" value="active" autocomplete="off">
-                                    <label class="btn btn-outline-secondary" for="sfdt-memberslisttable-search-search_status-active">활성</label>
+                                    <label class="sfdt-radio-btn" for="sfdt-memberslisttable-search-search_status-active">활성</label>
                                     <input type="radio" class="btn-check" name="search_status" id="sfdt-memberslisttable-search-search_status-inactive" value="inactive" autocomplete="off">
-                                    <label class="btn btn-outline-secondary" for="sfdt-memberslisttable-search-search_status-inactive">비활성</label>
+                                    <label class="sfdt-radio-btn" for="sfdt-memberslisttable-search-search_status-inactive">비활성</label>
                                     <input type="radio" class="btn-check" name="search_status" id="sfdt-memberslisttable-search-search_status-banned" value="banned" autocomplete="off">
-                                    <label class="btn btn-outline-secondary" for="sfdt-memberslisttable-search-search_status-banned">차단</label>
+                                    <label class="sfdt-radio-btn" for="sfdt-memberslisttable-search-search_status-banned">차단</label>
                                 </div>
                             </div>
                         </div>
@@ -137,9 +137,24 @@
                     </div>
                         </div>
                     </div>
-                    <h6 class="mt-3 mb-2">추가 정보</h6>
+                    <h6 class="sfdt-section-title mt-4 mb-3 pb-2 border-bottom">추가 정보</h6>
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-auto">
+                    <div class="mb-3">
+                        <label for="sfdt-memberslisttable-add-gender" class="form-label">성별</label>
+                        <div class="d-flex flex-wrap" style="gap: 1.5rem;">
+                            <div class="sfdt-form-check">
+                                <input class="sfdt-form-check-input" type="radio" name="gender" id="sfdt-memberslisttable-add-gender-M" value="M" checked >
+                                <label class="sfdt-form-check-label" for="sfdt-memberslisttable-add-gender-M">남성</label>
+                            </div>
+                            <div class="sfdt-form-check">
+                                <input class="sfdt-form-check-input" type="radio" name="gender" id="sfdt-memberslisttable-add-gender-F" value="F"  >
+                                <label class="sfdt-form-check-label" for="sfdt-memberslisttable-add-gender-F">여성</label>
+                            </div>
+                        </div>
+                    </div>
+                        </div>
+                        <div class="col-md-auto">
                     <div class="mb-3">
                         <label for="sfdt-memberslisttable-add-status" class="form-label">상태 <span class="text-danger">*</span></label>
                         <select name="status" id="sfdt-memberslisttable-add-status" class="sfdt-form-select" required >
@@ -149,17 +164,64 @@
                         </select>
                     </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-auto">
                     <div class="mb-3">
                         <label for="sfdt-memberslisttable-add-city" class="form-label">도시</label>
                         <input type="text" name="city" id="sfdt-memberslisttable-add-city" class="sfdt-form-control"  >
                     </div>
                         </div>
-                        <div class="col-md-4">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-auto">
+                    <div class="mb-3">
+                        <label for="sfdt-memberslisttable-add-interests" class="form-label">관심사</label>
+                        <div class="d-flex flex-wrap" style="gap: 1rem;">
+                            <div class="sfdt-form-check">
+                                <input class="sfdt-form-check-input" type="checkbox" name="interests[]" id="sfdt-memberslisttable-add-interests-sports" value="sports"  >
+                                <label class="sfdt-form-check-label" for="sfdt-memberslisttable-add-interests-sports">스포츠</label>
+                            </div>
+                            <div class="sfdt-form-check">
+                                <input class="sfdt-form-check-input" type="checkbox" name="interests[]" id="sfdt-memberslisttable-add-interests-music" value="music"  >
+                                <label class="sfdt-form-check-label" for="sfdt-memberslisttable-add-interests-music">음악</label>
+                            </div>
+                            <div class="sfdt-form-check">
+                                <input class="sfdt-form-check-input" type="checkbox" name="interests[]" id="sfdt-memberslisttable-add-interests-movie" value="movie"  >
+                                <label class="sfdt-form-check-label" for="sfdt-memberslisttable-add-interests-movie">영화</label>
+                            </div>
+                            <div class="sfdt-form-check">
+                                <input class="sfdt-form-check-input" type="checkbox" name="interests[]" id="sfdt-memberslisttable-add-interests-book" value="book"  >
+                                <label class="sfdt-form-check-label" for="sfdt-memberslisttable-add-interests-book">독서</label>
+                            </div>
+                        </div>
+                    </div>
+                        </div>
+                        <div class="col-md-auto">
+                    <div class="mb-3">
+                        <label for="sfdt-memberslisttable-add-notification" class="form-label">알림 수신</label>
+                        <div>
+                            <div class="sfdt-btn-radio-group" role="group" data-field-name="notification">
+                                <input type="radio" class="btn-check" name="notification" id="sfdt-memberslisttable-add-notification-Y" value="Y" autocomplete="off" checked >
+                                <label class="sfdt-radio-btn" for="sfdt-memberslisttable-add-notification-Y">수신</label>
+                                <input type="radio" class="btn-check" name="notification" id="sfdt-memberslisttable-add-notification-N" value="N" autocomplete="off"  >
+                                <label class="sfdt-radio-btn" for="sfdt-memberslisttable-add-notification-N">거부</label>
+                            </div>
+                        </div>
+                    </div>
+                        </div>
+                        <div class="col-md-auto">
                     <div class="mb-3">
                         <label for="sfdt-memberslisttable-add-postal_code" class="form-label">우편번호</label>
                         <input type="text" name="postal_code" id="sfdt-memberslisttable-add-postal_code" class="sfdt-form-control"  >
                     </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="sfdt-memberslisttable-add-agree_privacy" class="form-label">개인정보 수집 및 이용 동의 <span class="text-danger">*</span></label>
+                        <div class="sfdt-form-check">
+                            <input class="sfdt-form-check-input" type="checkbox" name="agree_privacy" id="sfdt-memberslisttable-add-agree_privacy" value="1" required >
+                            <label class="sfdt-form-check-label" for="sfdt-memberslisttable-add-agree_privacy">
+                                개인정보 수집 및 이용에 동의합니다
+                            </label>
                         </div>
                     </div>
                     <hr class="my-4">
@@ -233,7 +295,7 @@
                     </div>
                     <div class="row">
                     </div>
-                    <h6 class="mt-3 mb-2">추가 정보</h6>
+                    <h6 class="sfdt-section-title mt-4 mb-3 pb-2 border-bottom">추가 정보</h6>
                     <div class="row">
                         <div class="col-md-4">
                     <div class="mb-3">
@@ -253,6 +315,28 @@
                         <div class="sfdt-view-field" id="sfdt-memberslisttable-view-postal_code"></div>
                     </div>
                         </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">성별</label>
+                        <div class="sfdt-view-field" id="sfdt-memberslisttable-view-gender" data-type="select" data-options='{&quot;M&quot;:&quot;남성&quot;,&quot;F&quot;:&quot;여성&quot;}'></div>
+                    </div>
+                        </div>
+                        <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">알림 수신</label>
+                        <div class="sfdt-view-field" id="sfdt-memberslisttable-view-notification" data-type="select" data-options='{&quot;Y&quot;:&quot;수신&quot;,&quot;N&quot;:&quot;거부&quot;}'></div>
+                    </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">관심사</label>
+                        <div class="sfdt-view-field" id="sfdt-memberslisttable-view-interests" data-type="checkbox" data-options='{&quot;sports&quot;:&quot;스포츠&quot;,&quot;music&quot;:&quot;음악&quot;,&quot;movie&quot;:&quot;영화&quot;,&quot;book&quot;:&quot;독서&quot;}'></div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">개인정보 수집 및 이용 동의</label>
+                        <div class="sfdt-view-field" id="sfdt-memberslisttable-view-agree_privacy" data-type="checkbox"></div>
                     </div>
                     <hr class="my-4">
                     <div class="alert alert-info"><i class="bi bi-info-circle"></i> 아래 정보는 선택사항입니다.</div>
@@ -325,7 +409,7 @@
                     </div>
                     <div class="row">
                     </div>
-                    <h6 class="mt-3 mb-2">추가 정보</h6>
+                    <h6 class="sfdt-section-title mt-4 mb-3 pb-2 border-bottom">추가 정보</h6>
                     <div class="row">
                         <div class="col-md-4">
                     <div class="mb-3">
@@ -348,6 +432,66 @@
                         <label for="sfdt-memberslisttable-modify-postal_code" class="form-label">우편번호</label>
                         <input type="text" name="postal_code" id="sfdt-memberslisttable-modify-postal_code" class="sfdt-form-control"  >
                     </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="sfdt-memberslisttable-modify-gender" class="form-label">성별</label>
+                        <div class="d-flex flex-wrap align-items-center" style="gap: 1rem;">
+                            <div class="sfdt-form-check sfdt-form-check-inline">
+                                <input class="sfdt-form-check-input" type="radio" name="gender" id="sfdt-memberslisttable-modify-gender-M" value="M" checked >
+                                <label class="sfdt-form-check-label" for="sfdt-memberslisttable-modify-gender-M">남성</label>
+                            </div>
+                            <div class="sfdt-form-check sfdt-form-check-inline">
+                                <input class="sfdt-form-check-input" type="radio" name="gender" id="sfdt-memberslisttable-modify-gender-F" value="F"  >
+                                <label class="sfdt-form-check-label" for="sfdt-memberslisttable-modify-gender-F">여성</label>
+                            </div>
+                        </div>
+                    </div>
+                        </div>
+                        <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="sfdt-memberslisttable-modify-notification" class="form-label">알림 수신</label>
+                        <div>
+                            <div class="sfdt-btn-radio-group" role="group" data-field-name="notification">
+                                <input type="radio" class="btn-check" name="notification" id="sfdt-memberslisttable-modify-notification-Y" value="Y" autocomplete="off" checked >
+                                <label class="sfdt-radio-btn" for="sfdt-memberslisttable-modify-notification-Y">수신</label>
+                                <input type="radio" class="btn-check" name="notification" id="sfdt-memberslisttable-modify-notification-N" value="N" autocomplete="off"  >
+                                <label class="sfdt-radio-btn" for="sfdt-memberslisttable-modify-notification-N">거부</label>
+                            </div>
+                        </div>
+                    </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="sfdt-memberslisttable-modify-interests" class="form-label">관심사</label>
+                        <div class="d-flex flex-wrap align-items-center" style="gap: 0.75rem;">
+                            <div class="sfdt-form-check sfdt-form-check-inline">
+                                <input class="sfdt-form-check-input" type="checkbox" name="interests[]" id="sfdt-memberslisttable-modify-interests-sports" value="sports"  >
+                                <label class="sfdt-form-check-label" for="sfdt-memberslisttable-modify-interests-sports">스포츠</label>
+                            </div>
+                            <div class="sfdt-form-check sfdt-form-check-inline">
+                                <input class="sfdt-form-check-input" type="checkbox" name="interests[]" id="sfdt-memberslisttable-modify-interests-music" value="music"  >
+                                <label class="sfdt-form-check-label" for="sfdt-memberslisttable-modify-interests-music">음악</label>
+                            </div>
+                            <div class="sfdt-form-check sfdt-form-check-inline">
+                                <input class="sfdt-form-check-input" type="checkbox" name="interests[]" id="sfdt-memberslisttable-modify-interests-movie" value="movie"  >
+                                <label class="sfdt-form-check-label" for="sfdt-memberslisttable-modify-interests-movie">영화</label>
+                            </div>
+                            <div class="sfdt-form-check sfdt-form-check-inline">
+                                <input class="sfdt-form-check-input" type="checkbox" name="interests[]" id="sfdt-memberslisttable-modify-interests-book" value="book"  >
+                                <label class="sfdt-form-check-label" for="sfdt-memberslisttable-modify-interests-book">독서</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="sfdt-memberslisttable-modify-agree_privacy" class="form-label">개인정보 수집 및 이용 동의</label>
+                        <div class="sfdt-form-check">
+                            <input class="sfdt-form-check-input" type="checkbox" name="agree_privacy" id="sfdt-memberslisttable-modify-agree_privacy" value="1"  >
+                            <label class="sfdt-form-check-label" for="sfdt-memberslisttable-modify-agree_privacy">
+                                개인정보 수집 및 이용에 동의합니다
+                            </label>
                         </div>
                     </div>
                     <hr class="my-4">
@@ -409,7 +553,7 @@ $(document).ready(function() {
             const customSearch = {};
             $('#sfdt-memberslisttable-custom-search .sfdt-search-control').each(function() {
                 let name, value;
-                if ($(this).hasClass('btn-group')) {
+                if ($(this).hasClass('sfdt-btn-radio-group')) {
                     // Radio button group
                     name = $(this).data('search-name');
                     value = $(this).find('input[type=\"radio\"]:checked').val();
@@ -654,6 +798,10 @@ $(document).ready(function() {
                 const $field_status = $('#sfdt-memberslisttable-view-status');
                 const options_status = $field_status.data('options');
                 $field_status.text(options_status[data.status] || data.status || '-');
+                $('#sfdt-memberslisttable-view-gender').text(data.gender || '-');
+                $('#sfdt-memberslisttable-view-notification').text(data.notification || '-');
+                $('#sfdt-memberslisttable-view-interests').text(data.interests || '-');
+                $('#sfdt-memberslisttable-view-agree_privacy').text(data.agree_privacy || '-');
                 $('#sfdt-memberslisttable-view-city').text(data.city || '-');
                 $('#sfdt-memberslisttable-view-postal_code').text(data.postal_code || '-');
                 $('#sfdt-memberslisttable-view-country').text(data.country || '-');
@@ -696,6 +844,10 @@ $(document).ready(function() {
                 $('#sfdt-memberslisttable-modify-email').val(data.email ?? '');
                 $('#sfdt-memberslisttable-modify-phone').val(data.phone ?? '');
                 $('#sfdt-memberslisttable-modify-status').val(data.status ?? '');
+                $('#sfdt-memberslisttable-modify-gender').val(data.gender ?? '');
+                $('#sfdt-memberslisttable-modify-notification').val(data.notification ?? '');
+                $('#sfdt-memberslisttable-modify-interests').val(data.interests ?? '');
+                $('#sfdt-memberslisttable-modify-agree_privacy').val(data.agree_privacy ?? '');
                 $('#sfdt-memberslisttable-modify-city').val(data.city ?? '');
                 $('#sfdt-memberslisttable-modify-postal_code').val(data.postal_code ?? '');
                 $('#sfdt-memberslisttable-modify-country').val(data.country ?? '');

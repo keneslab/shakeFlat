@@ -260,6 +260,62 @@ return [
             ],
         ],
 
+        // 성별 (Radio - 일반 스타일)
+        [
+            'alias'         => 'gender',
+            'title'         => '성별',
+            'type'          => 'radio',
+            'required'      => false,
+            'default'       => 'M',
+            'radio_type'    => 'default',       // 'default' 또는 'group'
+            'layout'        => 'horizontal',    // 'vertical'(기본값), 'horizontal', 'inline'
+            'gap'           => '1.5rem',        // CSS gap 값 (예: '10px', '1rem', '0.5rem')
+            'options'       => [                // radio 타입일 때 필수
+                'M'         => '남성',
+                'F'         => '여성',
+            ],
+        ],
+
+        // 알림 수신 동의 (Radio - 버튼 그룹 스타일)
+        [
+            'alias'         => 'notification',
+            'title'         => '알림 수신',
+            'type'          => 'radio',
+            'required'      => false,
+            'default'       => 'Y',
+            'radio_type'    => 'group',         // 버튼 그룹 스타일
+            'options'       => [
+                'Y'         => '수신',
+                'N'         => '거부',
+            ],
+        ],
+
+        // 관심사 (Checkbox - 다중 선택)
+        [
+            'alias'         => 'interests',
+            'title'         => '관심사',
+            'type'          => 'checkbox',
+            'required'      => false,
+            'layout'        => 'horizontal',    // 'vertical'(기본값), 'horizontal', 'inline'
+            'gap'           => '1rem',          // CSS gap 값
+            'options'       => [                // checkbox 다중 선택
+                'sports'    => '스포츠',
+                'music'     => '음악',
+                'movie'     => '영화',
+                'book'      => '독서',
+            ],
+        ],
+
+        // 개인정보 동의 (Checkbox - 단일)
+        [
+            'alias'         => 'agree_privacy',
+            'title'         => '개인정보 수집 및 이용 동의',
+            'type'          => 'checkbox',
+            'required'      => true,
+            'validate_required' => true,        // required일 때 체크 검증 여부 (기본값: true)
+            'checkbox_label' => '개인정보 수집 및 이용에 동의합니다',  // 단일 checkbox 레이블
+        ],
+
         // 도시
         [
             'alias'         => 'city',
@@ -367,9 +423,19 @@ return [
         // Row 그룹 (3개 필드)
         [
             'type' => 'row',
-            'col_class' => 'col-md-4',
-            'fields' => ['status', 'city', 'postal_code'],
+            'col_class' => 'col-md-auto',
+            'fields' => ['gender', 'status', 'city', ],
         ],
+
+        // Row 그룹 (gender, notification)
+        [
+            'type' => 'row',
+            'col_class' => 'col-md-auto',
+            'fields' => ['interests', 'notification','postal_code'],
+        ],
+
+
+        'agree_privacy',
 
         // 구분선
         ['type' => 'divider'],
@@ -442,6 +508,62 @@ return [
                 'inactive'  => '비활성',
                 'banned'    => '차단',
             ],
+        ],
+
+        // 성별 (Radio - 일반 스타일)
+        [
+            'alias'         => 'gender',
+            'title'         => '성별',
+            'type'          => 'radio',
+            'required'      => false,
+            'default'       => 'M',
+            'radio_type'    => 'default',       // 'default' 또는 'group'
+            'layout'        => 'inline',        // 'vertical'(기본값), 'horizontal', 'inline'
+            'gap'           => '1rem',          // CSS gap 값
+            'options'       => [                // radio 타입일 때 필수
+                'M'         => '남성',
+                'F'         => '여성',
+            ],
+        ],
+
+        // 알림 수신 동의 (Radio - 버튼 그룹 스타일)
+        [
+            'alias'         => 'notification',
+            'title'         => '알림 수신',
+            'type'          => 'radio',
+            'required'      => false,
+            'default'       => 'Y',
+            'radio_type'    => 'group',         // 버튼 그룹 스타일
+            'options'       => [
+                'Y'         => '수신',
+                'N'         => '거부',
+            ],
+        ],
+
+        // 관심사 (Checkbox - 다중 선택)
+        [
+            'alias'         => 'interests',
+            'title'         => '관심사',
+            'type'          => 'checkbox',
+            'required'      => false,
+            'layout'        => 'inline',        // 'vertical'(기본값), 'horizontal', 'inline'
+            'gap'           => '0.75rem',       // CSS gap 값
+            'options'       => [                // checkbox 다중 선택
+                'sports'    => '스포츠',
+                'music'     => '음악',
+                'movie'     => '영화',
+                'book'      => '독서',
+            ],
+        ],
+
+        // 개인정보 동의 (Checkbox - 단일)
+        [
+            'alias'         => 'agree_privacy',
+            'title'         => '개인정보 수집 및 이용 동의',
+            'type'          => 'checkbox',
+            'required'      => false,
+            'validate_required' => false,       // required일 때 체크 검증 여부 (기본값: true)
+            'checkbox_label' => '개인정보 수집 및 이용에 동의합니다',  // 단일 checkbox 레이블
         ],
 
         // 도시
@@ -554,6 +676,16 @@ return [
             'col_class' => 'col-md-4',
             'fields' => ['status', 'city', 'postal_code'],
         ],
+
+        // Row 그룹 (Radio 예제)
+        [
+            'type' => 'row',
+            'col_class' => 'col-md-6',
+            'fields' => ['gender', 'notification'],
+        ],
+
+        'interests',
+        'agree_privacy',
 
         // 구분선
         ['type' => 'divider'],

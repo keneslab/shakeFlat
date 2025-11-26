@@ -214,6 +214,15 @@ function handleAddAction()
     $param->checkKey('phone', Param::TYPE_STRING);
     $param->checkKey('password', Param::TYPE_STRING);
     $param->checkKeyValue('status', Param::TYPE_STRING, [ 'active', 'inactive', 'banned' ]);
+    $param->checkKey('gender', Param::TYPE_STRING, [ 'M', 'F' ]);
+    $param->checkKey('notification', Param::TYPE_STRING, [ 'Y', 'N' ]);
+    $param->check('interests', Param::TYPE_ARRAY);
+    if (!empty($param->interests)) {
+        foreach ($param->interests as $val) {
+            if (!in_array($val, ['sports', 'music', 'movie', 'book'])) sfLogExit("[:The value of parameter interests is invalid:]");
+        }
+    }
+    $param->checkKeyValue('agree_privacy', Param::TYPE_STRING);
     $param->checkKey('city', Param::TYPE_STRING);
     $param->checkKey('postal_code', Param::TYPE_STRING);
     $param->checkKey('country', Param::TYPE_STRING);
@@ -224,6 +233,9 @@ function handleAddAction()
     $param->checkKey('notes', Param::TYPE_STRING);
 
     /*
+    // interests 배열을 JSON 문자열로 변환
+    $interests_value = !empty($param->interests) && is_array($param->interests) ? json_encode($param->interests) : null;
+
     $sql = "
         INSERT INTO sf_sample_members (
             name,
@@ -231,6 +243,10 @@ function handleAddAction()
             phone,
             password,
             status,
+            gender,
+            notification,
+            interests,
+            agree_privacy,
             city,
             postal_code,
             country,
@@ -245,6 +261,10 @@ function handleAddAction()
             :phone,
             :password,
             :status,
+            :gender,
+            :notification,
+            :interests,
+            :agree_privacy,
             :city,
             :postal_code,
             :country,
@@ -261,6 +281,10 @@ function handleAddAction()
         'phone' => $param->phone ?? null,
         'password' => $param->password ?? null,
         'status' => $param->status ?? 'active',
+        'gender' => $param->gender ?? 'M',
+        'notification' => $param->notification ?? 'Y',
+        'interests' => $interests_value,
+        'agree_privacy' => $param->agree_privacy ?? null,
         'city' => $param->city ?? null,
         'postal_code' => $param->postal_code ?? null,
         'country' => $param->country ?? 'KR',
@@ -296,6 +320,15 @@ function handleModifyAction()
     $param->checkKeyValue('email', Param::TYPE_EMAIL);
     $param->checkKey('phone', Param::TYPE_STRING);
     $param->checkKeyValue('status', Param::TYPE_STRING, [ 'active', 'inactive', 'banned' ]);
+    $param->checkKey('gender', Param::TYPE_STRING, [ 'M', 'F' ]);
+    $param->checkKey('notification', Param::TYPE_STRING, [ 'Y', 'N' ]);
+    $param->check('interests', Param::TYPE_ARRAY);
+    if (!empty($param->interests)) {
+        foreach ($param->interests as $val) {
+            if (!in_array($val, ['sports', 'music', 'movie', 'book'])) sfLogExit("[:The value of parameter interests is invalid:]");
+        }
+    }
+    $param->checkKey('agree_privacy', Param::TYPE_STRING);
     $param->checkKey('city', Param::TYPE_STRING);
     $param->checkKey('postal_code', Param::TYPE_STRING);
     $param->checkKey('country', Param::TYPE_STRING);
@@ -306,6 +339,9 @@ function handleModifyAction()
     $param->checkKey('notes', Param::TYPE_STRING);
 
     /*
+    // interests 배열을 JSON 문자열로 변환
+    $interests_value = !empty($param->interests) && is_array($param->interests) ? json_encode($param->interests) : null;
+
     $sql = "
         UPDATE sf_sample_members
         SET
@@ -313,6 +349,10 @@ function handleModifyAction()
             email = :email,
             phone = :phone,
             status = :status,
+            gender = :gender,
+            notification = :notification,
+            interests = :interests,
+            agree_privacy = :agree_privacy,
             city = :city,
             postal_code = :postal_code,
             country = :country,
@@ -329,6 +369,10 @@ function handleModifyAction()
         'email' => $param->email,
         'phone' => $param->phone,
         'status' => $param->status,
+        'gender' => $param->gender,
+        'notification' => $param->notification,
+        'interests' => $interests_value,
+        'agree_privacy' => $param->agree_privacy,
         'city' => $param->city,
         'postal_code' => $param->postal_code,
         'country' => $param->country,

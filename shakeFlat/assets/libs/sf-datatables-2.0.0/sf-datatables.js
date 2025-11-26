@@ -179,11 +179,14 @@ function sfdtSendAjax(action, data, successMsg, onSuccess, table) {
                 if (onSuccess) onSuccess();
                 if (table) table.ajax.reload();
             } else {
+                console.log('AJAX error response:', response);
                 alert(resData.message || action + ' 실패');
             }
         },
-        error: function() {
+        error: function(jqXHR, textStatus, errorThrown) {
             alert('서버 오류가 발생했습니다.');
+            console.error("AJAX error:", textStatus, errorThrown);
+            console.log("jqXHR:", jqXHR);
         }
     });
 }

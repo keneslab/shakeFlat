@@ -3,38 +3,23 @@
  * Version: 2.0.0
  */
 
-/* CSS Variables */
+/* ==========================
+   CSS Variables
+   ========================== */
 :root {
     --sfdt-border-color: #aaa;
+    --sfdt-input-border: #666;
+    --sfdt-focus-border: #86b7fe;
+    --sfdt-focus-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
 }
 
 [data-bs-theme="dark"] {
     --sfdt-border-color: #888;
 }
 
-/* Search Item Styles */
-.sfdt-search-item {
-    margin-bottom: 0;
-}
-
-.sfdt-search-item label {
-    font-weight: 500;
-    margin-bottom: 0.25rem;
-    padding-left: 0.5rem;
-    font-size: 0.875rem;
-}
-
-.sfdt-search-item input,
-.sfdt-search-item select,
-.sfdt-search-item textarea {
-    border: 1px solid #666!important;
-    font-size: 0.875rem!important;
-    padding-top: 0.32rem!important;
-    padding-bottom: 0.28rem!important;
-    height: auto!important;
-}
-
-/* Form Control Styles */
+/* ==========================
+   Form Controls - Basic Input/Select
+   ========================== */
 .sfdt-form-control {
     display: block;
     width: 100%;
@@ -45,7 +30,7 @@
     color: var(--bs-body-color);
     background-color: var(--bs-body-bg);
     background-clip: padding-box;
-    border: var(--bs-border-width) solid var(--bs-border-color);
+    border: 1px solid var(--sfdt-input-border) !important;
     appearance: none;
     border-radius: var(--bs-border-radius-sm);
     transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
@@ -54,9 +39,9 @@
 .sfdt-form-control:focus {
     color: var(--bs-body-color);
     background-color: var(--bs-body-bg);
-    border-color: #86b7fe;
+    border-color: var(--sfdt-focus-border);
     outline: 0;
-    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    box-shadow: var(--sfdt-focus-shadow);
 }
 
 .sfdt-form-control:disabled,
@@ -87,16 +72,16 @@ textarea.sfdt-form-control {
     background-repeat: no-repeat;
     background-position: right 0.625rem center;
     background-size: 16px 12px;
-    border: var(--bs-border-width) solid var(--bs-border-color);
+    border: 1px solid var(--sfdt-input-border) !important;
     border-radius: var(--bs-border-radius-sm);
     appearance: none;
     transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
 
 .sfdt-form-select:focus {
-    border-color: #86b7fe;
+    border-color: var(--sfdt-focus-border);
     outline: 0;
-    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    box-shadow: var(--sfdt-focus-shadow);
 }
 
 .sfdt-form-select:disabled {
@@ -108,15 +93,175 @@ textarea.sfdt-form-control {
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23dee2e6' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
 }
 
-/* Radio Button Group */
-.sfdt-search-item .btn-group {
+/* ==========================
+   Form Controls - Radio/Checkbox
+   ========================== */
+.sfdt-form-check {
+    min-height: calc(1.2em + 0.75rem + 2px);
     display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    padding-left: 1.5em;
 }
 
-.sfdt-search-item .btn-group .btn {
+.sfdt-form-check-inline {
+    min-height: calc(1.2em + 0.75rem + 2px);
+    display: inline-flex;
+    align-items: center;
+    margin-right: 1rem;
+    padding-left: 1.5em;
+}
+
+.sfdt-form-check-input {
+    width: 1em;
+    height: 1em;
+    margin-top: 0;
+    margin-left: -1.5em;
+    vertical-align: top;
+    appearance: none;
+    background-color: var(--bs-body-bg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    border: 1px solid var(--sfdt-input-border);
+    print-color-adjust: exact;
+    cursor: pointer;
+}
+
+.sfdt-form-check-input[type="checkbox"] {
+    border-radius: 0.25em;
+}
+
+.sfdt-form-check-input[type="radio"] {
+    border-radius: 50%;
+}
+
+.sfdt-form-check-input:checked[type="checkbox"],
+.sfdt-form-check-input:checked[type="radio"] {
+    background-color: var(--sfdt-input-border);
+    border-color: var(--sfdt-input-border);
+}
+
+.sfdt-form-check-input:checked[type="checkbox"] {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e");
+}
+
+.sfdt-form-check-input:checked[type="radio"] {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2' fill='%23fff'/%3e%3c/svg%3e");
+}
+
+.sfdt-form-check-input:focus {
+    border-color: var(--sfdt-focus-border);
+    outline: 0;
+    box-shadow: var(--sfdt-focus-shadow);
+}
+
+.sfdt-form-check-input:disabled {
+    pointer-events: none;
+    filter: none;
+    opacity: 0.5;
+}
+
+.sfdt-form-check-label {
+    cursor: pointer;
+    margin-left: 0.25rem;
+}
+
+/* ==========================
+   Form Controls - Radio Button Group
+   ========================== */
+.sfdt-btn-radio-group {
+    display: inline-flex;
+    vertical-align: middle;
+}
+
+.sfdt-radio-btn {
+    padding: 0.26rem 0.625rem;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    font-weight: 400;
+    color: var(--bs-secondary-color);
+    background-color: var(--bs-body-bg);
+    border: 1px solid var(--sfdt-input-border) !important;
+    border-radius: 0;
+    appearance: none;
+    cursor: pointer;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out;
+    margin-left: -1px;
+}
+
+.sfdt-radio-btn:hover {
+    color: var(--bs-body-color);
+    background-color: var(--bs-tertiary-bg);
+}
+
+.btn-check:checked + .sfdt-radio-btn {
+    color: var(--bs-body-color);
+    background-color: var(--bs-secondary-bg);
+    border-color: var(--sfdt-input-border) !important;
+}
+
+.sfdt-btn-radio-group > .btn-check:first-child + .sfdt-radio-btn {
+    border-top-left-radius: var(--bs-border-radius-sm) !important;
+    border-bottom-left-radius: var(--bs-border-radius-sm) !important;
+    margin-left: 0;
+}
+
+.sfdt-btn-radio-group > .sfdt-radio-btn:last-child {
+    border-top-right-radius: var(--bs-border-radius-sm) !important;
+    border-bottom-right-radius: var(--bs-border-radius-sm) !important;
+}
+
+/* ==========================
+   Form Layout - Section Title
+   ========================== */
+.sfdt-section-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+    border-bottom: 2px solid #e0e0e0 !important;
+}
+
+[data-bs-theme="dark"] .sfdt-section-title {
+    color: #e0e0e0;
+    border-bottom-color: #555 !important;
+}
+
+/* ==========================
+   Search Item Styles
+   ========================== */
+.sfdt-search-item {
+    margin-bottom: 0;
+}
+
+.sfdt-search-item label {
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+    padding-left: 0.5rem;
     font-size: 0.875rem;
-    padding: 0.32rem 0.75rem;
-    border-color: #666;
+}
+
+.sfdt-search-item input,
+.sfdt-search-item select,
+.sfdt-search-item textarea {
+    border: 1px solid var(--sfdt-input-border) !important;
+    font-size: 0.875rem !important;
+    padding-top: 0.32rem !important;
+    padding-bottom: 0.28rem !important;
+    height: auto !important;
+}
+
+.sfdt-search-item .sfdt-btn-radio-group {
+    display: flex;
+    width: 100%;
+}
+
+.sfdt-search-item .sfdt-radio-btn {
+    border-color: var(--sfdt-input-border);
+}
+
+.sfdt-search-item .btn-check:checked + .sfdt-radio-btn {
+    border-color: var(--sfdt-input-border);
 }
 
 .sfdt-search-item input[type="search"]::-webkit-search-cancel-button {
@@ -124,7 +269,37 @@ textarea.sfdt-form-control {
     right: -6px;
 }
 
-/* Card Styles */
+/* Legacy support */
+.sfdt-search-item .btn-group {
+    display: flex;
+}
+
+.sfdt-search-item .btn-group .btn {
+    font-size: 0.875rem;
+    padding: 0.32rem 0.75rem;
+    border-color: var(--bs-border-color);
+}
+
+/* ==========================
+   View Field Styles
+   ========================== */
+.sfdt-view-field {
+    padding: 0.5rem 0.75rem;
+    background-color: var(--bs-secondary-bg);
+    border-radius: var(--bs-border-radius);
+    min-height: 2.5rem;
+    line-height: 1.5;
+    color: var(--bs-body-color);
+}
+
+.sfdt-view-field:empty::before {
+    content: '-';
+    color: var(--bs-secondary-color);
+}
+
+/* ==========================
+   Card Styles
+   ========================== */
 .sfdt-card {
     background-color: #e7e7e7;
     border: 1px solid var(--sfdt-border-color);
@@ -139,17 +314,21 @@ textarea.sfdt-form-control {
     padding: 0.7rem 1rem 1rem 1rem;
 }
 
+/* ==========================
+   Button Styles
+   ========================== */
 .sfdt-btn-xs {
     padding: 0.050rem 0.375rem;
     font-size: 0.75rem;
     border-radius: 0.25rem;
-    i {
-        font-size: 0.70rem;
-        line-height: 1.5;
-    }
 }
 
-/* Button Colors - colors.css 의 스타일을 sfdt- 접두어로 사용 */
+.sfdt-btn-xs i {
+    font-size: 0.70rem;
+    line-height: 1.5;
+}
+
+/* Button Color Variants */
 .sfdt-btn-color-add {
     --bs-btn-color: #fff;
     --bs-btn-bg: #28a745;
@@ -218,71 +397,58 @@ textarea.sfdt-form-control {
     --bs-btn-disabled-border-color: #dc3545;
 }
 
-/* Modal Header Background Colors */
-.sfdt-background-color-add {
-    background-color: #28a745 !important;
+/* ==========================
+   Modal Header Background Colors
+   ========================== */
+.sfdt-background-color-add,
+.sfdt-background-color-view,
+.sfdt-background-color-modify,
+.sfdt-background-color-delete {
     color: #fff !important;
 }
 
-.sfdt-background-color-add .btn-close {
-    filter: brightness(0) invert(1);
+.sfdt-background-color-add {
+    background-color: #28a745 !important;
 }
 
 .sfdt-background-color-view {
     background-color: #17a2b8 !important;
-    color: #fff !important;
-}
-
-.sfdt-background-color-view .btn-close {
-    filter: brightness(0) invert(1);
 }
 
 .sfdt-background-color-modify {
     background-color: #1976d2 !important;
-    color: #fff !important;
-}
-
-.sfdt-background-color-modify .btn-close {
-    filter: brightness(0) invert(1);
 }
 
 .sfdt-background-color-delete {
     background-color: #dc3545 !important;
-    color: #fff !important;
 }
 
+.sfdt-background-color-add .btn-close,
+.sfdt-background-color-view .btn-close,
+.sfdt-background-color-modify .btn-close,
 .sfdt-background-color-delete .btn-close {
     filter: brightness(0) invert(1);
 }
 
-/* View Field Styles */
-.sfdt-view-field {
-    padding: 0.5rem 0.75rem;
-    background-color: var(--bs-secondary-bg);
-    border-radius: var(--bs-border-radius);
-    min-height: 2.5rem;
-    line-height: 1.5;
-    color: var(--bs-body-color);
-}
-
-.sfdt-view-field:empty::before {
-    content: '-';
-    color: var(--bs-secondary-color);
-}
-
-/* Header Border */
+/* ==========================
+   DataTables - Table Styles
+   ========================== */
 table.dataTable thead th,
 table.dataTable tfoot th {
-    border-top: 2px solid var(--sfdt-border-color)!important;
-    border-bottom: 2px solid var(--sfdt-border-color)!important;
+    border-top: 2px solid var(--sfdt-border-color) !important;
+    border-bottom: 2px solid var(--sfdt-border-color) !important;
 }
 
-table.dataTable>tbody>tr:last-child>*,
-div.dt-container.dt-empty-footer tbody>tr:last-child>* {
+table.dataTable > tbody > tr:last-child > *,
+div.dt-container.dt-empty-footer tbody > tr:last-child > * {
     border-bottom: 2px solid var(--sfdt-border-color);
 }
 
-/* DataTables Sorting Icon Alignment */
+table.dataTable > thead > tr > th:hover {
+    background-color: var(--bs-tertiary-bg);
+}
+
+/* Sorting Icon Alignment */
 table.dataTable th.dt-type-numeric div.dt-column-header,
 table.dataTable th.dt-type-numeric div.dt-column-footer,
 table.dataTable th.dt-type-date div.dt-column-header,
@@ -291,25 +457,27 @@ table.dataTable td.dt-type-numeric div.dt-column-header,
 table.dataTable td.dt-type-numeric div.dt-column-footer,
 table.dataTable td.dt-type-date div.dt-column-header,
 table.dataTable td.dt-type-date div.dt-column-footer {
-    flex-direction: row!important;
+    flex-direction: row !important;
 }
 
 /* Center-aligned columns with sorting icons */
-table.dataTable thead>tr>th.text-center:not(.dt-orderable-none) div.dt-column-header span.dt-column-title,
-table.dataTable thead>tr>th.text-center:not(.dt-orderable-none) div.dt-column-footer span.dt-column-title,
-table.dataTable thead>tr>td.text-center:not(.dt-orderable-none) div.dt-column-header span.dt-column-title,
-table.dataTable thead>tr>td.text-center:not(.dt-orderable-none) div.dt-column-footer span.dt-column-title,
-table.dataTable tfoot>tr>th.text-center:not(.dt-orderable-none) div.dt-column-header span.dt-column-title,
-table.dataTable tfoot>tr>th.text-center:not(.dt-orderable-none) div.dt-column-footer span.dt-column-title,
-table.dataTable tfoot>tr>td.text-center:not(.dt-orderable-none) div.dt-column-header span.dt-column-title,
-table.dataTable tfoot>tr>td.text-center:not(.dt-orderable-none) div.dt-column-footer span.dt-column-title {
+table.dataTable thead > tr > th.text-center:not(.dt-orderable-none) div.dt-column-header span.dt-column-title,
+table.dataTable thead > tr > th.text-center:not(.dt-orderable-none) div.dt-column-footer span.dt-column-title,
+table.dataTable thead > tr > td.text-center:not(.dt-orderable-none) div.dt-column-header span.dt-column-title,
+table.dataTable thead > tr > td.text-center:not(.dt-orderable-none) div.dt-column-footer span.dt-column-title,
+table.dataTable tfoot > tr > th.text-center:not(.dt-orderable-none) div.dt-column-header span.dt-column-title,
+table.dataTable tfoot > tr > th.text-center:not(.dt-orderable-none) div.dt-column-footer span.dt-column-title,
+table.dataTable tfoot > tr > td.text-center:not(.dt-orderable-none) div.dt-column-header span.dt-column-title,
+table.dataTable tfoot > tr > td.text-center:not(.dt-orderable-none) div.dt-column-footer span.dt-column-title {
     position: relative;
     left: 0.3rem;
 }
 
-/* DataTables Container Styles */
+/* ==========================
+   DataTables - Container Styles
+   ========================== */
 .dt-container {
-    /* Layout Buttons */
+    /* Buttons */
     .dt-buttons {
         display: inline-flex;
         vertical-align: middle;
@@ -319,19 +487,16 @@ table.dataTable tfoot>tr>td.text-center:not(.dt-orderable-none) div.dt-column-fo
         padding: 0.26rem 0.5rem;
         font-size: 0.85rem;
         line-height: 1.5;
+    }
 
-        i.bi {
-            font-size: 0.80rem;
-            line-height: 1.5;
-            position: relative;
-            top: 1px;
-        }
+    .btn.sfdt-btn-sm i.bi {
+        font-size: 0.80rem;
+        line-height: 1.5;
+        position: relative;
+        top: 1px;
     }
 
     .dt-buttons button.dt-button {
-        --bs-btn-padding-y: 0.26rem;
-        --bs-btn-padding-x: 0.75rem;
-        --bs-btn-font-size: 0.85rem;
         background-color: var(--bs-secondary-bg);
         color: var(--bs-body-color);
         border: 1px solid var(--sfdt-border-color);
@@ -348,16 +513,6 @@ table.dataTable tfoot>tr>td.text-center:not(.dt-orderable-none) div.dt-column-fo
         margin-left: calc(var(--bs-border-width) * -1);
     }
 
-    .dt-buttons button.dt-button:not(:last-child):not(.dropdown-toggle) {
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-    }
-
-    .dt-buttons button.dt-button:nth-child(n+3),
-    .dt-buttons button.dt-button:not(:first-child):not(:last-child):not(.dropdown-toggle) {
-        border-radius: 0;
-    }
-
     .dt-buttons button.dt-button:first-child {
         border-top-left-radius: var(--bs-border-radius);
         border-bottom-left-radius: var(--bs-border-radius);
@@ -368,36 +523,22 @@ table.dataTable tfoot>tr>td.text-center:not(.dt-orderable-none) div.dt-column-fo
         border-bottom-right-radius: var(--bs-border-radius);
     }
 
+    .dt-buttons button.dt-button:not(:last-child):not(.dropdown-toggle) {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    .dt-buttons button.dt-button:nth-child(n+3),
+    .dt-buttons button.dt-button:not(:first-child):not(:last-child):not(.dropdown-toggle) {
+        border-radius: 0;
+    }
+
     .dt-buttons button.dt-button:hover {
         background-color: var(--bs-tertiary-bg);
         z-index: 1;
     }
 
-    /* Page Jump Button */
-    .sfdt-btn-pagejump {
-        background-color: var(--bs-secondary-bg);
-        color: var(--bs-body-color);
-        border-color: var(--bs-border-color);
-    }
-
-    .sfdt-btn-pagejump:hover {
-        background-color: var(--bs-tertiary-bg);
-    }
-
-    /* Search Reset Button */
-    .btn-sfdt-search-reset {
-        font-size: 1.2rem;
-        --bs-btn-padding-x: 0.5rem !important;
-        --bs-btn-padding-y: 0 !important;
-        padding-top: 3px;
-    }
-
-    /* Table Header */
-    table.dataTable > thead > tr > th:hover {
-        background-color: var(--bs-tertiary-bg);
-    }
-
-    /* Search Input */
+    /* Search */
     .dt-search {
         margin-right: 0.3rem !important;
     }
@@ -408,15 +549,24 @@ table.dataTable tfoot>tr>td.text-center:not(.dt-orderable-none) div.dt-column-fo
         font-size: 0.85rem;
     }
 
+    /* Length Select */
+    .dt-length select {
+        margin-right: 0.3rem;
+        background-color: var(--bs-body-bg);
+        color: var(--bs-body-color) !important;
+        border-color: var(--bs-border-color);
+    }
+
     /* Pagination */
     .dt-paging {
         display: inline-flex;
         vertical-align: middle;
     }
 
-    .sfdt-btn-pagejump, .dt-paging button.dt-paging-button {
+    .sfdt-btn-pagejump,
+    .dt-paging button.dt-paging-button {
         background-color: var(--bs-secondary-bg);
-        color: var(--bs-body-color)!important;
+        color: var(--bs-body-color) !important;
         border: 1px solid var(--sfdt-border-color);
         border-radius: var(--bs-border-radius);
         position: relative;
@@ -427,25 +577,8 @@ table.dataTable tfoot>tr>td.text-center:not(.dt-orderable-none) div.dt-column-fo
         margin-right: 0;
     }
 
-    .dt-paging button.dt-paging-button.disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-        background-color: var(--bs-secondary-bg);
-        color: var(--bs-body-color)!important;
-        border: 1px solid var(--sfdt-border-color);
-    }
-
     .dt-paging button.dt-paging-button:not(:first-child) {
         margin-left: calc(var(--bs-border-width) * -1);
-    }
-
-    .dt-paging button.dt-paging-button:not(:last-child) {
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-    }
-
-    .dt-paging button.dt-paging-button:nth-child(n+3):not(:last-child) {
-        border-radius: 0;
     }
 
     .dt-paging button.dt-paging-button:first-child {
@@ -458,12 +591,53 @@ table.dataTable tfoot>tr>td.text-center:not(.dt-orderable-none) div.dt-column-fo
         border-bottom-right-radius: var(--bs-border-radius);
     }
 
+    .dt-paging button.dt-paging-button:not(:last-child) {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    .dt-paging button.dt-paging-button:nth-child(n+3):not(:last-child) {
+        border-radius: 0;
+    }
+
     .dt-paging button.dt-paging-button:hover:not(.current) {
         background-color: var(--bs-tertiary-bg);
         background-image: none;
         border: 1px solid var(--sfdt-border-color);
-        color: var(--bs-body-color)!important;
+        color: var(--bs-body-color) !important;
         z-index: 1;
+    }
+
+    .dt-paging button.dt-paging-button.disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        background-color: var(--bs-secondary-bg);
+        color: var(--bs-body-color) !important;
+        border: 1px solid var(--sfdt-border-color);
+    }
+
+    /* Page Jump */
+    .sfdt-btn-pagejump {
+        background-color: var(--bs-secondary-bg);
+        color: var(--bs-body-color);
+        border-color: var(--bs-border-color);
+    }
+
+    .sfdt-btn-pagejump:hover {
+        background-color: var(--bs-tertiary-bg);
+    }
+
+    input.sfdt-page-jump {
+        width: 55px;
+        margin-right: 0.3rem;
+    }
+
+    /* Search Reset Button */
+    .btn-sfdt-search-reset {
+        font-size: 1.2rem;
+        --bs-btn-padding-x: 0.5rem !important;
+        --bs-btn-padding-y: 0 !important;
+        padding-top: 3px;
     }
 
     /* Table Borders */
@@ -474,22 +648,11 @@ table.dataTable tfoot>tr>td.text-center:not(.dt-orderable-none) div.dt-column-fo
         padding-top: 0.4rem;
         padding-bottom: 0.4rem;
     }
-
-    .dt-length select {
-        margin-right: 0.3rem;
-        background-color: var(--bs-body-bg);
-        color: var(--bs-body-color)!important;
-        border-color: var(--bs-border-color);
-    }
-
-    /* Page Jump Input */
-    input.sfdt-page-jump {
-        width: 55px;
-        margin-right: 0.3rem;
-    }
 }
 
-/* Dark Theme */
+/* ==========================
+   DataTables - Dark Theme
+   ========================== */
 [data-bs-theme="dark"] .dt-container {
     /* Striped Table */
     table.table.table-striped > tbody > tr:nth-of-type(2n+1) > * {
@@ -522,7 +685,9 @@ table.dataTable tfoot>tr>td.text-center:not(.dt-orderable-none) div.dt-column-fo
     }
 }
 
-/* Flatpickr Styles */
+/* ==========================
+   Flatpickr Integration
+   ========================== */
 .flatpickr-range,
 .flatpickr-datetime-range {
     background-position: right 8px center;
@@ -531,21 +696,13 @@ table.dataTable tfoot>tr>td.text-center:not(.dt-orderable-none) div.dt-column-fo
     padding-right: 32px !important;
 }
 
-/* Flatpickr 월 선택 영역 조정 */
-.flatpickr-months {
-    overflow: visible !important;
-}
-
-.flatpickr-current-month {
+.flatpickr-months,
+.flatpickr-current-month,
+.flatpickr-month {
     overflow: visible !important;
 }
 
 .flatpickr-monthDropdown-months {
     position: relative;
     z-index: 1;
-}
-
-/* 월 선택 박스의 outline이 잘리지 않도록 */
-.flatpickr-month {
-    overflow: visible !important;
 }

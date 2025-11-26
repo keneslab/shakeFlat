@@ -198,28 +198,45 @@ class CodeGenerator
             }
 
             $alias = $field['alias'];
-            $paramType = $this->getParamType($field['type']);
+            $paramType = $this->getParamType($field['type'], $field);
 
-            // options가 있으면 enum으로 전달
-            $enumPart = '';
-            if (!empty($field['options']) && is_array($field['options'])) {
+            // checkbox 배열 타입 처리 (하나도 체크 안 되면 파라미터가 전달되지 않음)
+            $isCheckboxArray = ($field['type'] === 'checkbox' && !empty($field['options']));
+
+            if ($isCheckboxArray) {
+                // checkbox 배열: 파라미터가 없어도 통과 (아무것도 체크 안 한 경우)
+                $validations[] = "    \$param->check('{$alias}', Param::TYPE_ARRAY);";
+
+                // 배열 요소가 허용된 값인지 검증
                 $enumValues = array_map(function($val) {
                     return "'{$val}'";
                 }, array_keys($field['options']));
-                $enumPart = ', [ ' . implode(', ', $enumValues) . ' ]';
-            }
-
-            if ($field['required']) {
-                $validations[] = "    \$param->checkKeyValue('{$alias}', Param::{$paramType}{$enumPart});";
+                $enumList = implode(', ', $enumValues);
+                $validations[] = "    if (!empty(\$param->{$alias})) {";
+                $validations[] = "        foreach (\$param->{$alias} as \$val) {";
+                $validations[] = "            if (!in_array(\$val, [{$enumList}])) sfLogExit(\"[:The value of parameter {$alias} is invalid:]\");";
+                $validations[] = "        }";
+                $validations[] = "    }";
             } else {
-                $validations[] = "    \$param->checkKey('{$alias}', Param::{$paramType}{$enumPart});";
+                // 일반 필드: options가 있으면 enum으로 전달
+                $enumPart = '';
+                if (!empty($field['options']) && is_array($field['options'])) {
+                    $enumValues = array_map(function($val) {
+                        return "'{$val}'";
+                    }, array_keys($field['options']));
+                    $enumPart = ', [ ' . implode(', ', $enumValues) . ' ]';
+                }
+
+                if ($field['required']) {
+                    $validations[] = "    \$param->checkKeyValue('{$alias}', Param::{$paramType}{$enumPart});";
+                } else {
+                    $validations[] = "    \$param->checkKey('{$alias}', Param::{$paramType}{$enumPart});";
+                }
             }
         }
 
         return implode("\n", $validations);
-    }
-
-    /**
+    }    /**
      * Modify Action 의 Param Validation 코드 생성
      */
     private function generateModifyValidation(): string
@@ -228,32 +245,58 @@ class CodeGenerator
 
         foreach ($this->config['form_fields_modify'] ?? [] as $field) {
             $alias = $field['alias'];
-            $paramType = $this->getParamType($field['type']);
+            $paramType = $this->getParamType($field['type'], $field);
 
-            // options가 있으면 enum으로 전달
-            $enumPart = '';
-            if (!empty($field['options']) && is_array($field['options'])) {
+            // checkbox 배열 타입 처리 (하나도 체크 안 되면 파라미터가 전달되지 않음)
+            $isCheckboxArray = ($field['type'] === 'checkbox' && !empty($field['options']));
+
+            if ($isCheckboxArray) {
+                // checkbox 배열: 파라미터가 없어도 통과 (아무것도 체크 안 한 경우)
+                $validations[] = "    \$param->check('{$alias}', Param::TYPE_ARRAY);";
+
+                // 배열 요소가 허용된 값인지 검증
                 $enumValues = array_map(function($val) {
                     return "'{$val}'";
                 }, array_keys($field['options']));
-                $enumPart = ', [ ' . implode(', ', $enumValues) . ' ]';
-            }
-
-            if ($field['required']) {
-                $validations[] = "    \$param->checkKeyValue('{$alias}', Param::{$paramType}{$enumPart});";
+                $enumList = implode(', ', $enumValues);
+                $validations[] = "    if (!empty(\$param->{$alias})) {";
+                $validations[] = "        foreach (\$param->{$alias} as \$val) {";
+                $validations[] = "            if (!in_array(\$val, [{$enumList}])) sfLogExit(\"[:The value of parameter {$alias} is invalid:]\");";
+                $validations[] = "        }";
+                $validations[] = "    }";
             } else {
-                $validations[] = "    \$param->checkKey('{$alias}', Param::{$paramType}{$enumPart});";
-            }
-        }
+                // 일반 필드: options가 있으면 enum으로 전달
+                $enumPart = '';
+                if (!empty($field['options']) && is_array($field['options'])) {
+                    $enumValues = array_map(function($val) {
+                        return "'{$val}'";
+                    }, array_keys($field['options']));
+                    $enumPart = ', [ ' . implode(', ', $enumValues) . ' ]';
+                }
 
-        return implode("\n", $validations);
+                if ($field['required']) {
+                    $validations[] = "    \$param->checkKeyValue('{$alias}', Param::{$paramType}{$enumPart});";
+                } else {
+                    $validations[] = "    \$param->checkKey('{$alias}', Param::{$paramType}{$enumPart});";
+                }
+            }
+        }        return implode("\n", $validations);
     }
 
     /**
      * 필드 타입을 Param 타입으로 변환
      */
-    private function getParamType(string $fieldType): string
+    private function getParamType(string $fieldType, array $field = []): string
     {
+        // checkbox가 options 배열을 가지면 다중 선택 = TYPE_ARRAY
+        if ($fieldType === 'checkbox' && !empty($field['options'])) {
+            return 'TYPE_ARRAY';
+        }
+        // radio도 options를 가지지만 단일 선택이므로 TYPE_STRING
+        if ($fieldType === 'radio' && !empty($field['options'])) {
+            return 'TYPE_STRING';
+        }
+
         $typeMap = [
             'text' => 'TYPE_STRING',
             'email' => 'TYPE_EMAIL',
@@ -263,6 +306,8 @@ class CodeGenerator
             'select' => 'TYPE_STRING',
             'textarea' => 'TYPE_STRING',
             'hidden' => 'TYPE_STRING',
+            'checkbox' => 'TYPE_STRING',  // 단일 checkbox
+            'radio' => 'TYPE_STRING',
         ];
 
         return $typeMap[$fieldType] ?? 'TYPE_STRING';
@@ -292,6 +337,7 @@ class CodeGenerator
         $columns = [];
         $params = [];
         $bindEntries = [];
+        $arrayProcessing = []; // checkbox 배열 처리 코드
 
         foreach ($insertFields as $field) {
             $columns[] = $field['alias'];
@@ -306,16 +352,25 @@ class CodeGenerator
                 }
             }
 
-            $bindEntries[] = "        '{$field['alias']}' => \$param->{$field['alias']} ?? {$defaultValue}";
+            // checkbox 배열 처리
+            if ($field['type'] === 'checkbox' && !empty($field['options'])) {
+                // 배열을 JSON 문자열로 변환 (또는 쉼표로 구분된 문자열)
+                $arrayProcessing[] = "    // {$field['alias']} 배열을 JSON 문자열로 변환";
+                $arrayProcessing[] = "    \${$field['alias']}_value = !empty(\$param->{$field['alias']}) && is_array(\$param->{$field['alias']}) ? json_encode(\$param->{$field['alias']}) : {$defaultValue};";
+                $bindEntries[] = "        '{$field['alias']}' => \${$field['alias']}_value";
+            } else {
+                $bindEntries[] = "        '{$field['alias']}' => \$param->{$field['alias']} ?? {$defaultValue}";
+            }
         }
 
         // SQL pretty formatting
         $columnsIndented = "            " . implode(",\n            ", $columns);
         $paramsIndented = "            " . implode(",\n            ", $params);
         $bindCode = implode(",\n", $bindEntries);
+        $arrayProcessingCode = !empty($arrayProcessing) ? "\n" . implode("\n", $arrayProcessing) . "\n" : "";
 
         return <<<PHP
-    /*
+    /*{$arrayProcessingCode}
     \$sql = "
         INSERT INTO {$dbTable} (
 {$columnsIndented}
@@ -350,18 +405,29 @@ PHP;
         $setEntries = [];
         $bindEntries = [];
         $bindEntries[] = "        'id' => \$id";
+        $arrayProcessing = []; // checkbox 배열 처리 코드
 
         foreach ($fields as $field) {
             $setEntries[] = "{$field['alias']} = :{$field['alias']}";
-            $bindEntries[] = "        '{$field['alias']}' => \$param->{$field['alias']}";
+
+            // checkbox 배열 처리
+            if ($field['type'] === 'checkbox' && !empty($field['options'])) {
+                // 배열을 JSON 문자열로 변환
+                $arrayProcessing[] = "    // {$field['alias']} 배열을 JSON 문자열로 변환";
+                $arrayProcessing[] = "    \${$field['alias']}_value = !empty(\$param->{$field['alias']}) && is_array(\$param->{$field['alias']}) ? json_encode(\$param->{$field['alias']}) : null;";
+                $bindEntries[] = "        '{$field['alias']}' => \${$field['alias']}_value";
+            } else {
+                $bindEntries[] = "        '{$field['alias']}' => \$param->{$field['alias']}";
+            }
         }
 
         // SQL pretty formatting
         $setIndented = "            " . implode(",\n            ", $setEntries);
         $bindCode = implode(",\n", $bindEntries);
+        $arrayProcessingCode = !empty($arrayProcessing) ? "\n" . implode("\n", $arrayProcessing) . "\n" : "";
 
         return <<<PHP
-    /*
+    /*{$arrayProcessingCode}
     \$sql = "
         UPDATE {$dbTable}
         SET
@@ -448,12 +514,12 @@ PHP;
                 }
                 $html .= '                                </select>' . "\n";
             } elseif ($field['type'] === 'radio') {
-                $html .= '                                <div class="btn-group sfdt-search-control" role="group" data-search-name="' . $field['alias'] . '">' . "\n";
+                $html .= '                                <div class="sfdt-btn-radio-group sfdt-search-control" role="group" data-search-name="' . $field['alias'] . '">' . "\n";
                 $isFirst = true;
                 if (!empty($field['options']) && is_array($field['options'])) {
                     foreach ($field['options'] as $value => $label) {
                         $html .= '                                    <input type="radio" class="btn-check" name="' . $field['alias'] . '" id="sfdt-' . $tableId . '-search-' . $field['alias'] . '-' . $value . '" value="' . $value . '" autocomplete="off"' . ($isFirst ? ' checked' : '') . '>' . "\n";
-                        $html .= '                                    <label class="btn btn-outline-secondary" for="sfdt-' . $tableId . '-search-' . $field['alias'] . '-' . $value . '">' . $label . '</label>' . "\n";
+                        $html .= '                                    <label class="sfdt-radio-btn" for="sfdt-' . $tableId . '-search-' . $field['alias'] . '-' . $value . '">' . $label . '</label>' . "\n";
                         $isFirst = false;
                     }
                 }
@@ -671,7 +737,7 @@ PHP;
                     $html .= '                    ' . $item['content'] . "\n";
                 } elseif ($item['type'] === 'heading') {
                     // 소제목
-                    $html .= '                    <h6 class="mt-3 mb-2">' . $item['title'] . '</h6>' . "\n";
+                    $html .= '                    <h6 class="sfdt-section-title mt-4 mb-3 pb-2 border-bottom">' . $item['title'] . '</h6>' . "\n";
                 }
             } else {
                 // 단일 필드 (alias만 있는 경우)
@@ -728,6 +794,126 @@ PHP;
                 }
             }
             $html .= '                        </select>' . "\n";
+        } elseif ($field['type'] === 'radio') {
+            // Radio 타입 - radio_type로 구분 (group 또는 default)
+            $radioType = $field['radio_type'] ?? 'default';
+
+            if ($radioType === 'group') {
+                // 버튼 그룹 스타일 - label 아래에 control 표시
+                $html .= '                        <div>' . "\n";
+                $html .= '                            <div class="sfdt-btn-radio-group" role="group" data-field-name="' . $field['alias'] . '">' . "\n";
+                if (!empty($field['options']) && is_array($field['options'])) {
+                    foreach ($field['options'] as $value => $label) {
+                        $radioId = $fieldId . '-' . $value;
+                        $checked = (isset($field['default']) && $field['default'] == $value) ? 'checked' : '';
+                        $html .= '                                <input type="radio" class="btn-check" name="' . $field['alias'] . '" id="' . $radioId . '" value="' . $value . '" autocomplete="off" ' . $checked . ' ' . $disabled . '>' . "\n";
+                        $html .= '                                <label class="sfdt-radio-btn" for="' . $radioId . '">' . $label . '</label>' . "\n";
+                    }
+                }
+                $html .= '                            </div>' . "\n";
+                $html .= '                        </div>' . "\n";
+            } else {
+                // 일반 라디오 버튼 스타일
+                // layout 옵션: vertical(기본값), horizontal, inline
+                $layout = $field['layout'] ?? 'vertical';
+                // gap 옵션: CSS gap 값 (예: '10px', '1rem', '0.5rem')
+                $gap = $field['gap'] ?? null;
+
+                $containerClass = '';
+                $containerStyle = '';
+
+                if ($layout === 'horizontal') {
+                    $containerClass = 'd-flex flex-wrap';
+                    $containerStyle = $gap ? 'gap: ' . $gap . ';' : 'gap: 1rem;';
+                } elseif ($layout === 'inline') {
+                    $containerClass = 'd-flex flex-wrap align-items-center';
+                    $containerStyle = $gap ? 'gap: ' . $gap . ';' : 'gap: 0.75rem;';
+                } else {
+                    // vertical (기본값)
+                    $containerStyle = $gap ? 'display: flex; flex-direction: column; gap: ' . $gap . ';' : '';
+                }
+
+                $html .= '                        <div class="' . $containerClass . '"';
+                if ($containerStyle) {
+                    $html .= ' style="' . $containerStyle . '"';
+                }
+                $html .= '>' . "\n";
+
+                if (!empty($field['options']) && is_array($field['options'])) {
+                    foreach ($field['options'] as $value => $label) {
+                        $radioId = $fieldId . '-' . $value;
+                        $checked = (isset($field['default']) && $field['default'] == $value) ? 'checked' : '';
+
+                        if ($layout === 'inline') {
+                            $html .= '                            <div class="sfdt-form-check sfdt-form-check-inline">' . "\n";
+                        } else {
+                            $html .= '                            <div class="sfdt-form-check">' . "\n";
+                        }
+                        $html .= '                                <input class="sfdt-form-check-input" type="radio" name="' . $field['alias'] . '" id="' . $radioId . '" value="' . $value . '" ' . $checked . ' ' . $disabled . '>' . "\n";
+                        $html .= '                                <label class="sfdt-form-check-label" for="' . $radioId . '">' . $label . '</label>' . "\n";
+                        $html .= '                            </div>' . "\n";
+                    }
+                }
+                $html .= '                        </div>' . "\n";
+            }
+        } elseif ($field['type'] === 'checkbox') {
+            // Checkbox 타입 - 단일 또는 다중 선택
+            // validate_required: required일 때 실제로 체크 검증 여부 (기본값: true)
+            $validateRequired = $field['validate_required'] ?? true;
+            $requiredAttr = ($field['required'] && $validateRequired && $mode !== 'view') ? 'required' : '';
+
+            // layout 옵션: vertical(기본값), horizontal, inline
+            $layout = $field['layout'] ?? 'vertical';
+            // gap 옵션: CSS gap 값 (예: '10px', '1rem', '0.5rem')
+            $gap = $field['gap'] ?? null;
+
+            if (!empty($field['options']) && is_array($field['options'])) {
+                // 다중 체크박스 (options가 있는 경우)
+                $containerClass = '';
+                $containerStyle = '';
+
+                if ($layout === 'horizontal') {
+                    $containerClass = 'd-flex flex-wrap';
+                    $containerStyle = $gap ? 'gap: ' . $gap . ';' : 'gap: 1rem;';
+                } elseif ($layout === 'inline') {
+                    $containerClass = 'd-flex flex-wrap align-items-center';
+                    $containerStyle = $gap ? 'gap: ' . $gap . ';' : 'gap: 0.75rem;';
+                } else {
+                    // vertical (기본값)
+                    $containerStyle = $gap ? 'display: flex; flex-direction: column; gap: ' . $gap . ';' : '';
+                }
+
+                $html .= '                        <div class="' . $containerClass . '"';
+                if ($containerStyle) {
+                    $html .= ' style="' . $containerStyle . '"';
+                }
+                $html .= '>' . "\n";
+
+                $firstCheckbox = true;
+                foreach ($field['options'] as $value => $label) {
+                    $checkboxId = $fieldId . '-' . $value;
+                    $checkboxRequired = ($firstCheckbox && $requiredAttr) ? $requiredAttr : '';
+                    $firstCheckbox = false;
+
+                    if ($layout === 'inline') {
+                        $html .= '                            <div class="sfdt-form-check sfdt-form-check-inline">' . "\n";
+                    } else {
+                        $html .= '                            <div class="sfdt-form-check">' . "\n";
+                    }
+                    $html .= '                                <input class="sfdt-form-check-input" type="checkbox" name="' . $field['alias'] . '[]" id="' . $checkboxId . '" value="' . $value . '" ' . $checkboxRequired . ' ' . $disabled . '>' . "\n";
+                    $html .= '                                <label class="sfdt-form-check-label" for="' . $checkboxId . '">' . $label . '</label>' . "\n";
+                    $html .= '                            </div>' . "\n";
+                }
+                $html .= '                        </div>' . "\n";
+            } else {
+                // 단일 체크박스
+                $html .= '                        <div class="sfdt-form-check">' . "\n";
+                $html .= '                            <input class="sfdt-form-check-input" type="checkbox" name="' . $field['alias'] . '" id="' . $fieldId . '" value="1" ' . $requiredAttr . ' ' . $disabled . '>' . "\n";
+                $html .= '                            <label class="sfdt-form-check-label" for="' . $fieldId . '">' . "\n";
+                $html .= '                                ' . ($field['checkbox_label'] ?? '동의합니다') . "\n";
+                $html .= '                            </label>' . "\n";
+                $html .= '                        </div>' . "\n";
+            }
         } elseif ($field['type'] === 'textarea') {
             $html .= '                        <textarea name="' . $field['alias'] . '" id="' . $fieldId . '" class="sfdt-form-control" rows="3" ' . $required . ' ' . $readonly . '></textarea>' . "\n";
         }
@@ -773,7 +959,7 @@ PHP;
                     $html .= '                    ' . $item['content'] . "\n";
                 } elseif ($item['type'] === 'heading') {
                     // 소제목
-                    $html .= '                    <h6 class="mt-3 mb-2">' . $item['title'] . '</h6>' . "\n";
+                    $html .= '                    <h6 class="sfdt-section-title mt-4 mb-3 pb-2 border-bottom">' . $item['title'] . '</h6>' . "\n";
                 }
             } else {
                 // 단일 필드 (alias만 있는 경우)
@@ -813,8 +999,16 @@ PHP;
 
         if ($field['type'] === 'textarea') {
             $html .= '                        <div class="sfdt-view-field" id="' . $fieldId . '" style="white-space: pre-wrap;"></div>' . "\n";
-        } elseif ($field['type'] === 'select') {
+        } elseif ($field['type'] === 'select' || $field['type'] === 'radio') {
             $html .= '                        <div class="sfdt-view-field" id="' . $fieldId . '" data-type="select"';
+            if (!empty($field['options'])) {
+                $optionsJson = htmlspecialchars(json_encode($field['options'], JSON_UNESCAPED_UNICODE), ENT_QUOTES, 'UTF-8');
+                $html .= ' data-options=\'' . $optionsJson . '\'';
+            }
+            $html .= '></div>' . "\n";
+        } elseif ($field['type'] === 'checkbox') {
+            // checkbox는 배열이나 단일 값으로 저장될 수 있음
+            $html .= '                        <div class="sfdt-view-field" id="' . $fieldId . '" data-type="checkbox"';
             if (!empty($field['options'])) {
                 $optionsJson = htmlspecialchars(json_encode($field['options'], JSON_UNESCAPED_UNICODE), ENT_QUOTES, 'UTF-8');
                 $html .= ' data-options=\'' . $optionsJson . '\'';
@@ -844,7 +1038,7 @@ PHP;
         $code .= '            const customSearch = {};' . "\n";
         $code .= '            $(\'#sfdt-' . $tableId . '-custom-search .sfdt-search-control\').each(function() {' . "\n";
         $code .= '                let name, value;' . "\n";
-        $code .= '                if ($(this).hasClass(\'btn-group\')) {' . "\n";
+        $code .= '                if ($(this).hasClass(\'sfdt-btn-radio-group\')) {' . "\n";
         $code .= '                    // Radio button group' . "\n";
         $code .= '                    name = $(this).data(\'search-name\');' . "\n";
         $code .= '                    value = $(this).find(\'input[type=\"radio\"]:checked\').val();' . "\n";
