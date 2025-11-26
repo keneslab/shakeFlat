@@ -27,12 +27,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/umuusf/shakeFlat"
+    "url": "https://github.com/keneslab/shakeFlat"
   },
   "bugs": {
-    "url": "https://github.com/umuusf/shakeFlat/issues"
+    "url": "https://github.com/keneslab/shakeFlat/issues"
   },
-  "homepage": "https://github.com/umuusf/shakeFlat#readme",
+  "homepage": "https://github.com/keneslab/shakeFlat#readme",
   "files": [
     "dist/",
     "src/",

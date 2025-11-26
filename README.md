@@ -9,7 +9,7 @@ shakeFlat은 PHP 기반의 경량 웹 애플리케이션 프레임워크입니�
 - **라우팅 시스템**: 유연한 URL 라우팅 및 요청 처리
 - **템플릿 엔진**: 효율적인 뷰 렌더링 시스템
 - **다국어 지원**: 번역 시스템을 통한 국제화 지원
-- **보안**: AES-256 암호화, 토큰 인증, CSRF 방어
+- **보안**: AES-256 암호화, 토큰 인증
 - **데이터베이스**: PDO 기반 안전한 데이터베이스 연결
 
 ## 디렉토리 구조
@@ -31,7 +31,7 @@ shakeFlat/
 ### 요구사항
 
 - PHP 7.4 이상
-- MySQL 5.7 이상 또는 MariaDB 10.2 이상
+- MySQL 5.7 이상 또는 MariaDB 10.2 이상, MS-SQL 지원
 - Apache 또는 Nginx 웹서버
 
 ### 설치
@@ -95,10 +95,13 @@ shakeFlat은 다음과 같은 강력한 라이브러리를 포함하고 있습�
 `config.ini` 파일에서 디버그 모드를 활성화할 수 있습니다:
 
 ```ini
-[debug]
-enabled = true
+[config]
+debug_mode = true
 display_errors = true
-log_errors = true
+
+[display_error]
+tracing = true
+database = true
 ```
 
 ### 로그
