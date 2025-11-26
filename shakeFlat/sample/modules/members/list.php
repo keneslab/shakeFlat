@@ -220,7 +220,7 @@ function handleAddAction()
     $param->checkKey('address', Param::TYPE_STRING);
     $param->checkKey('birth_date', Param::TYPE_DATE);
     $param->checkKey('join_date', Param::TYPE_DATE);
-    $param->checkKey('salary', Param::TYPE_INT);
+    $param->checkKey('salary', Param::TYPE_STRING);
     $param->checkKey('notes', Param::TYPE_STRING);
 
     /*
@@ -302,7 +302,7 @@ function handleModifyAction()
     $param->checkKey('address', Param::TYPE_STRING);
     $param->checkKey('birth_date', Param::TYPE_DATE);
     $param->checkKeyValue('join_date', Param::TYPE_DATE);
-    $param->checkKey('salary', Param::TYPE_INT);
+    $param->checkKey('salary', Param::TYPE_STRING);
     $param->checkKey('notes', Param::TYPE_STRING);
 
     /*

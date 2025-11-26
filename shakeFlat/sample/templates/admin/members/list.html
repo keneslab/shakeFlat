@@ -19,6 +19,10 @@
 <script src="/assets/libs/flatpickr-4.6.13/flatpickr.min.js"></script>
 <script src="/assets/libs/flatpickr-4.6.13/l10n/ko.js"></script>
 
+<!-- Inputmask -->
+<script src="/assets/libs/inputmask-5.0.10-beta.11/inputmask.min.js"></script>
+
+
 <!-- DataTables CSS/JS -->
 <link rel="stylesheet" href="/assets/libs/datatables-2.3.4/datatables.min.css">
 <script src="/assets/libs/datatables-2.3.4/datatables.min.js"></script>
@@ -186,7 +190,7 @@
                         <div class="col-md-6">
                     <div class="mb-3">
                         <label for="sfdt-memberslisttable-add-salary" class="form-label">연봉</label>
-                        <input type="number" name="salary" id="sfdt-memberslisttable-add-salary" class="sfdt-form-control"  >
+                        <input type="text" name="salary" id="sfdt-memberslisttable-add-salary" class="sfdt-form-control"  >
                     </div>
                         </div>
                         <div class="col-md-6">
@@ -374,7 +378,7 @@
                         <div class="col-md-6">
                     <div class="mb-3">
                         <label for="sfdt-memberslisttable-modify-salary" class="form-label">연봉</label>
-                        <input type="number" name="salary" id="sfdt-memberslisttable-modify-salary" class="sfdt-form-control"  >
+                        <input type="text" name="salary" id="sfdt-memberslisttable-modify-salary" class="sfdt-form-control"  >
                     </div>
                         </div>
                         <div class="col-md-6">
@@ -471,7 +475,7 @@ $(document).ready(function() {
                     },
                     {
                         extend: 'pdf',
-                        filename: '샘플 회원 목록(2025-11-24)',
+                        filename: '샘플 회원 목록(2025-11-26)',
                         action: sfdtExportAction,
                         title: '샘플 회원 목록',
                         exportOptions: { columns: ':visible:not(.sfdt-no-export)' },
@@ -508,7 +512,7 @@ $(document).ready(function() {
                     },
                     {
                         extend: 'excel',
-                        filename: '샘플 회원 목록(2025-11-24)',
+                        filename: '샘플 회원 목록(2025-11-26)',
                         action: sfdtExportAction,
                         title: '',
                         exportOptions: { columns: ':visible:not(.sfdt-no-export)' }
@@ -730,5 +734,15 @@ $(document).ready(function() {
         const sfdtData = window.sfdtTables['memberslisttable'].row($(this).parents('tr')).data();
         sfdtSendAjax('delete', {member_id: sfdtData.member_id}, '삭제되었습니다.', null, window.sfdtTables['memberslisttable']);
     });
+    
+    // Inputmask 초기화
+    Inputmask('999-9999-9999').mask('#sfdt-memberslisttable-add-phone');
+    Inputmask('99999').mask('#sfdt-memberslisttable-add-postal_code');
+    Inputmask('AA').mask('#sfdt-memberslisttable-add-country');
+    Inputmask('currency', { prefix: '', suffix: '원', groupSeparator: ',', digits: 0, autoGroup: true, rightAlign: false }).mask('#sfdt-memberslisttable-add-salary');
+    Inputmask('999-9999-9999').mask('#sfdt-memberslisttable-modify-phone');
+    Inputmask('99999').mask('#sfdt-memberslisttable-modify-postal_code');
+    Inputmask('AA').mask('#sfdt-memberslisttable-modify-country');
+    Inputmask('currency', { prefix: '', suffix: '원', groupSeparator: ',', digits: 0, autoGroup: true, rightAlign: false }).mask('#sfdt-memberslisttable-modify-salary');
 });
 </script>

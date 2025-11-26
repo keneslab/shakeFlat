@@ -135,6 +135,7 @@ class ConfigCollector
         $config['load_sfui'] = $config['libraries']['sfui'];
         $config['load_choices'] = $config['libraries']['choices'];
         $config['load_flatpickr'] = $config['libraries']['flatpickr'];
+        $config['load_inputmask'] = $config['libraries']['inputmask'] ?? false;
 
         // DataTables 옵션 플래그
         $config['dt_stateSave'] = $config['datatables_options']['stateSave'];

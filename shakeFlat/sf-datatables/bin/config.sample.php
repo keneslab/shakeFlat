@@ -118,8 +118,9 @@ return [
             'title'         => '이름',
             'type'          => 'string',        // Param 타입: int, integer, float, string, bool, boolean, datetime, date, timestamp, array, json, email, url, domain, ip
                                                 // 범위 타입: dateRange, datetimeRange, numberRange
-            'db_column'     => 'name',          // DB 컨럼명 (WHERE 조건에 사용)
+            'db_column'     => 'name',          // DB 컬럼명 (WHERE 조건에 사용)
             'width'         => null,            // 입력 필드 너비 (CSS 값: '200px', '15rem' 등, null이면 auto)
+            'mask'          => null,            // Inputmask 형식 (선택, libraries['inputmask']=true 필요)
         ],
 
         // 이메일 검색 (텍스트)
@@ -129,6 +130,7 @@ return [
             'type'          => 'string',
             'db_column'     => 'email',
             'width'         => '20rem',
+            'mask'          => null,            // Inputmask 형식 (예: 'email')
         ],
 
         // 상태 검색 (셀렉트)
@@ -200,6 +202,7 @@ return [
             'required'      => false,
             'default'       => null,
             'description'   => '회원의 실명을 입력하세요.',  // 필드 아래에 표시될 설명 (선택)
+            'mask'          => null,            // Inputmask 형식 (선택, libraries['inputmask']=true 필요)
         ],
 
         // 이메일
@@ -210,6 +213,7 @@ return [
             'required'      => false,
             'default'       => null,
             'description'   => '유효한 이메일 주소를 입력하세요.',
+            'mask'          => null,            // Inputmask 형식 (예: 'email')
         ],
 
         // 전화번호
@@ -219,6 +223,7 @@ return [
             'type'          => 'text',
             'required'      => false,
             'default'       => null,
+            'mask'          => '999-9999-9999',     // Inputmask 형식 (선택, libraries['inputmask']=true 필요)
         ],
 
         // 비밀번호
@@ -262,6 +267,7 @@ return [
             'type'          => 'text',
             'required'      => false,
             'default'       => null,
+            'mask'          => null,            // Inputmask 형식 (선택)
         ],
 
         // 우편번호
@@ -271,6 +277,7 @@ return [
             'type'          => 'text',
             'required'      => false,
             'default'       => null,
+            'mask'          => '99999',             // Inputmask 형식 (선택)
         ],
 
         // 국가 코드
@@ -280,6 +287,7 @@ return [
             'type'          => 'text',
             'required'      => false,
             'default'       => 'KR',
+            'mask'          => 'AA',                // Inputmask 형식 (대문자 2자리)
         ],
 
         // 주소
@@ -289,6 +297,7 @@ return [
             'type'          => 'textarea',
             'required'      => false,
             'default'       => null,
+            'mask'          => null,            // textarea는 mask 미지원
         ],
 
         // 생년월일
@@ -298,6 +307,7 @@ return [
             'type'          => 'date',
             'required'      => false,
             'default'       => null,
+            'mask'          => null,            // date 타입은 flatpickr 사용
         ],
 
         // 가입일
@@ -307,15 +317,17 @@ return [
             'type'          => 'date',
             'required'      => false,
             'default'       => null,
+            'mask'          => null,            // date 타입은 flatpickr 사용
         ],
 
         // 연봉
         [
             'alias'         => 'salary',
             'title'         => '연봉',
-            'type'          => 'number',
+            'type'          => 'text',
             'required'      => false,
             'default'       => 0,
+            'mask'          => 'currency',      // Inputmask 통화 형식 (예: 1,234,567원)
         ],
 
         // 메모
@@ -325,6 +337,7 @@ return [
             'type'          => 'textarea',
             'required'      => false,
             'default'       => null,
+            'mask'          => null,            // textarea는 mask 미지원
         ],
     ],
 
@@ -394,6 +407,7 @@ return [
             'type'          => 'text',
             'required'      => true,
             'default'       => null,
+            'mask'          => null,            // Inputmask 형식 (선택, libraries['inputmask']=true 필요)
         ],
 
         // 이메일
@@ -403,6 +417,7 @@ return [
             'type'          => 'email',
             'required'      => true,
             'default'       => null,
+            'mask'          => null,            // Inputmask 형식 (예: 'email')
         ],
 
         // 전화번호
@@ -412,6 +427,7 @@ return [
             'type'          => 'text',
             'required'      => false,
             'default'       => null,
+            'mask'          => '999-9999-9999',     // Inputmask 형식 (선택, libraries['inputmask']=true 필요)
         ],
 
         // 상태
@@ -435,6 +451,7 @@ return [
             'type'          => 'text',
             'required'      => false,
             'default'       => null,
+            'mask'          => null,            // Inputmask 형식 (선택)
         ],
 
         // 우편번호
@@ -444,6 +461,7 @@ return [
             'type'          => 'text',
             'required'      => false,
             'default'       => null,
+            'mask'          => '99999',             // Inputmask 형식 (선택)
         ],
 
         // 국가 코드
@@ -453,6 +471,7 @@ return [
             'type'          => 'text',
             'required'      => false,
             'default'       => 'KR',
+            'mask'          => 'AA',                // Inputmask 형식 (대문자 2자리)
         ],
 
         // 주소
@@ -462,6 +481,7 @@ return [
             'type'          => 'textarea',
             'required'      => false,
             'default'       => null,
+            'mask'          => null,            // textarea는 mask 미지원
         ],
 
         // 생년월일
@@ -471,6 +491,7 @@ return [
             'type'          => 'date',
             'required'      => false,
             'default'       => null,
+            'mask'          => null,            // date 타입은 flatpickr 사용
         ],
 
         // 가입일
@@ -480,15 +501,17 @@ return [
             'type'          => 'date',
             'required'      => true,
             'default'       => null,
+            'mask'          => null,            // date 타입은 flatpickr 사용
         ],
 
         // 연봉
         [
             'alias'         => 'salary',
             'title'         => '연봉',
-            'type'          => 'number',
+            'type'          => 'text',
             'required'      => false,
             'default'       => 0,
+            'mask'          => 'currency',      // Inputmask 통화 형식 (예: 1,234,567원)
         ],
 
         // 메모
@@ -498,6 +521,7 @@ return [
             'type'          => 'textarea',
             'required'      => false,
             'default'       => null,
+            'mask'          => null,            // textarea는 mask 미지원
         ],
     ],
 
@@ -625,6 +649,7 @@ return [
         'sfui'      => false,                   // sfUI (layout.html에서 이미 로딩하면 false) - numberRange 타입 검색시 필요
         'choices'   => true,                    // Choices.js (select 검색/폼에 필요)
         'flatpickr' => true,                    // Flatpickr (날짜 선택에 필요)
+        'inputmask' => true,                    // Inputmask (mask 옵션 사용시 필요)
     ],
 
     // ============================================================

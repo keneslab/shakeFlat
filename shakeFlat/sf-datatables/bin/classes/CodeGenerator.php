@@ -441,17 +441,21 @@ PHP;
                 $html .= '                                <input type="search" id="sfdt-' . $tableId . '-search-' . $field['alias'] . '" name="' . $field['alias'] . '" class="sfdt-form-control sfdt-search-control" placeholder="' . $field['title'] . ' 검색">' . "\n";
             } elseif ($field['type'] === 'select') {
                 $html .= '                                <select id="sfdt-' . $tableId . '-search-' . $field['alias'] . '" name="' . $field['alias'] . '" class="sfdt-form-select sfdt-search-control">' . "\n";
-                foreach ($field['options'] ?? [] as $value => $label) {
-                    $html .= '                                    <option value="' . $value . '">' . $label . '</option>' . "\n";
+                if (!empty($field['options']) && is_array($field['options'])) {
+                    foreach ($field['options'] as $value => $label) {
+                        $html .= '                                    <option value="' . $value . '">' . $label . '</option>' . "\n";
+                    }
                 }
                 $html .= '                                </select>' . "\n";
             } elseif ($field['type'] === 'radio') {
                 $html .= '                                <div class="btn-group sfdt-search-control" role="group" data-search-name="' . $field['alias'] . '">' . "\n";
                 $isFirst = true;
-                foreach ($field['options'] ?? [] as $value => $label) {
-                    $html .= '                                    <input type="radio" class="btn-check" name="' . $field['alias'] . '" id="sfdt-' . $tableId . '-search-' . $field['alias'] . '-' . $value . '" value="' . $value . '" autocomplete="off"' . ($isFirst ? ' checked' : '') . '>' . "\n";
-                    $html .= '                                    <label class="btn btn-outline-secondary" for="sfdt-' . $tableId . '-search-' . $field['alias'] . '-' . $value . '">' . $label . '</label>' . "\n";
-                    $isFirst = false;
+                if (!empty($field['options']) && is_array($field['options'])) {
+                    foreach ($field['options'] as $value => $label) {
+                        $html .= '                                    <input type="radio" class="btn-check" name="' . $field['alias'] . '" id="sfdt-' . $tableId . '-search-' . $field['alias'] . '-' . $value . '" value="' . $value . '" autocomplete="off"' . ($isFirst ? ' checked' : '') . '>' . "\n";
+                        $html .= '                                    <label class="btn btn-outline-secondary" for="sfdt-' . $tableId . '-search-' . $field['alias'] . '-' . $value . '">' . $label . '</label>' . "\n";
+                        $isFirst = false;
+                    }
                 }
                 $html .= '                                </div>' . "\n";
             } elseif ($field['type'] === 'dateRange') {
@@ -718,8 +722,10 @@ PHP;
             $html .= '                        <input type="' . $inputType . '" name="' . $field['alias'] . '" id="' . $fieldId . '" class="sfdt-form-control" ' . $required . ' ' . $readonly . '>' . "\n";
         } elseif ($field['type'] === 'select') {
             $html .= '                        <select name="' . $field['alias'] . '" id="' . $fieldId . '" class="sfdt-form-select" ' . $required . ' ' . $disabled . '>' . "\n";
-            foreach ($field['options'] ?? [] as $value => $label) {
-                $html .= '                            <option value="' . $value . '">' . $label . '</option>' . "\n";
+            if (!empty($field['options']) && is_array($field['options'])) {
+                foreach ($field['options'] as $value => $label) {
+                    $html .= '                            <option value="' . $value . '">' . $label . '</option>' . "\n";
+                }
             }
             $html .= '                        </select>' . "\n";
         } elseif ($field['type'] === 'textarea') {
@@ -1033,6 +1039,14 @@ PHP;
             $scripts[] = $this->generateDeleteScript();
         }
 
+        // Inputmask 초기화 스크립트 추가
+        if ($this->config['load_inputmask']) {
+            $inputmaskScript = $this->generateInputmaskScript();
+            if (!empty($inputmaskScript)) {
+                $scripts[] = $inputmaskScript;
+            }
+        }
+
         return implode("\n    \n", $scripts);
     }
 
@@ -1260,6 +1274,68 @@ JS;
     }
 
     /**
+     * Inputmask 초기화 스크립트 생성
+     */
+    private function generateInputmaskScript(): string
+    {
+        $tableId = strtolower($this->config['basic']['table_id']);
+        $maskFields = [];
+
+        // custom_search에서 mask 필드 수집
+        foreach ($this->config['custom_search'] ?? [] as $field) {
+            if (!empty($field['mask'])) {
+                $maskFields[] = [
+                    'selector' => "#sfdt-{$tableId}-search-{$field['alias']}",
+                    'mask' => $field['mask']
+                ];
+            }
+        }
+
+        // form_fields_add에서 mask 필드 수집
+        foreach ($this->config['form_fields_add'] ?? [] as $field) {
+            if (!empty($field['mask'])) {
+                $maskFields[] = [
+                    'selector' => "#sfdt-{$tableId}-add-{$field['alias']}",
+                    'mask' => $field['mask']
+                ];
+            }
+        }
+
+        // form_fields_modify에서 mask 필드 수집
+        foreach ($this->config['form_fields_modify'] ?? [] as $field) {
+            if (!empty($field['mask'])) {
+                $maskFields[] = [
+                    'selector' => "#sfdt-{$tableId}-modify-{$field['alias']}",
+                    'mask' => $field['mask']
+                ];
+            }
+        }
+
+        if (empty($maskFields)) {
+            return '';
+        }
+
+        $maskInitCode = [];
+        foreach ($maskFields as $field) {
+            $mask = $field['mask'];
+            if ($mask === 'currency') {
+                $maskInitCode[] = "    Inputmask('currency', { prefix: '', suffix: '원', groupSeparator: ',', digits: 0, autoGroup: true, rightAlign: false }).mask('{$field['selector']}');";
+            } elseif ($mask === 'email') {
+                $maskInitCode[] = "    Inputmask('email').mask('{$field['selector']}');";
+            } else {
+                $maskInitCode[] = "    Inputmask('{$mask}').mask('{$field['selector']}');";
+            }
+        }
+
+        $maskCode = implode("\n", $maskInitCode);
+
+        return <<<JS
+    // Inputmask 초기화
+{$maskCode}
+JS;
+    }
+
+    /**
      * Template 파일 생성 - HTML + JS + CSS 직접 생성
      */
     private function generateTemplateFile(): string
@@ -1281,6 +1357,9 @@ JS;
         }
         if ($this->config['load_flatpickr']) {
             $libraries[] = file_get_contents($this->templateDir . '/lib_flatpickr.html.tpl');
+        }
+        if ($this->config['load_inputmask']) {
+            $libraries[] = file_get_contents($this->templateDir . '/lib_inputmask.html.tpl');
         }
         if ($this->config['load_sfui']) {
             $libraries[] = file_get_contents($this->templateDir . '/lib_sfui.html.tpl');
