@@ -432,6 +432,7 @@ function handleGetAction()
     // 데이터 조회
     $sql = "
         SELECT
+            sf_sample_members.member_id,
             sf_sample_members.name,
             sf_sample_members.email,
             sf_sample_members.phone,

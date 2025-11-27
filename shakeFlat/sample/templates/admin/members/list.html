@@ -891,7 +891,7 @@ $(document).ready(function() {
     // 삭제 버튼 클릭
     $(document).on('click', '#memberslisttable .sfdt-btn-delete-memberslisttable', function() {
         const sfdtData = window.sfdtTables['memberslisttable'].row($(this).parents('tr')).data();
-        
+
         sfui.confirm({
             title: '삭제 확인',
             content: '정말 삭제하시겠습니까?',

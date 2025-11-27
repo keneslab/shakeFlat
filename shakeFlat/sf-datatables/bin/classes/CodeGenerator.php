@@ -482,6 +482,9 @@ PHP;
         // 컬럼 중복 제거를 위한 배열
         $columnsMap = [];
 
+        // Primary Key는 항상 먼저 추가
+        $columnsMap[$primaryKey] = $primaryKey;
+
         // view_fields의 컬럼 추가
         foreach ($viewFields as $field) {
             $alias = $field['alias'];
@@ -1547,22 +1550,12 @@ JS;
     $(document).on('click', '#{$tableId} .sfdt-btn-delete-{$tableId}', function() {
         const sfdtData = window.sfdtTables['{$tableId}'].row($(this).parents('tr')).data();
 
-        sfui.confirm({
-            title: '삭제 확인',
-            content: '정말 삭제하시겠습니까?',
-            buttons: {
-                confirm: {
-                    text: '삭제',
-                    btnClass: 'btn-danger',
-                    action: function() {
-                        sfdtSendAjax('delete', {{$primaryKey}: sfdtData.{$primaryKey}}, '삭제되었습니다.', null, window.sfdtTables['{$tableId}']);
-                    }
-                },
-                cancel: {
-                    text: '취소'
-                }
+        confirm(
+            '정말 삭제하시겠습니까?',
+            function() {
+                sfdtSendAjax('delete', {{$primaryKey}: sfdtData.{$primaryKey}}, '삭제되었습니다.', null, window.sfdtTables['{$tableId}']);
             }
-        });
+        );
     });
 JS;
     }
