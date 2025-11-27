@@ -292,11 +292,6 @@ textarea.sfdt-form-control {
     color: var(--bs-body-color);
 }
 
-.sfdt-view-field:empty::before {
-    content: '-';
-    color: var(--bs-secondary-color);
-}
-
 /* ==========================
    Card Styles
    ========================== */

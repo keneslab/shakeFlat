@@ -93,6 +93,21 @@ return [
         ],
         // column 옵션 사용 예시:
         // ['alias' => 'full_name', 'column' => "CONCAT(first_name, ' ', last_name)", 'title' => '전체이름'],  // 표현식
+
+        // render 옵션 사용 예시 (한 줄):
+        // ['alias' => 'status', 'title' => '상태', 'render' => 'function(data, type, row) { return data === "active" ? "<span class=\"badge bg-success\">활성</span>" : "<span class=\"badge bg-secondary\">비활성</span>"; }'],
+
+        // render 옵션 사용 예시 (여러 줄):
+        // ['alias' => 'status', 'title' => '상태', 'render' => 'function(data, type, row) {
+        //     if (data === "active") return "<span class=\"badge bg-success\">활성</span>";
+        //     if (data === "inactive") return "<span class=\"badge bg-secondary\">비활성</span>";
+        //     return "<span class=\"badge bg-danger\">차단</span>";
+        // }'],
+
+        // ['alias' => 'profile_image', 'title' => '프로필', 'render' => 'function(data, type, row) {
+        //     if (!data) return "";
+        //     return "<img src=\"" + data + "\" style=\"width:50px;height:50px;border-radius:50%;object-fit:cover\">";
+        // }'],
     ],
 
     // ============================================================
@@ -199,10 +214,6 @@ return [
             'alias'         => 'name',
             'title'         => '이름',
             'type'          => 'text',          // text, email, number, date, select, textarea, hidden
-            'required'      => false,
-            'default'       => null,
-            'description'   => '회원의 실명을 입력하세요.',  // 필드 아래에 표시될 설명 (선택)
-            'mask'          => null,            // Inputmask 형식 (선택, libraries['inputmask']=true 필요)
         ],
 
         // 이메일
@@ -212,6 +223,7 @@ return [
             'type'          => 'email',
             'required'      => false,
             'default'       => null,
+            'width'         => '400px',         // 입력 필드 너비
             'description'   => '유효한 이메일 주소를 입력하세요.',
             'mask'          => null,            // Inputmask 형식 (예: 'email')
         ],
@@ -483,6 +495,7 @@ return [
             'type'          => 'email',
             'required'      => true,
             'default'       => null,
+            'width'         => '400px',         // 상세보기의 min-width로도 적용됨
             'mask'          => null,            // Inputmask 형식 (예: 'email')
         ],
 
@@ -493,6 +506,7 @@ return [
             'type'          => 'text',
             'required'      => false,
             'default'       => null,
+            'width'         => '200px',         // 상세보기의 min-width로도 적용됨
             'mask'          => '999-9999-9999',     // Inputmask 형식 (선택, libraries['inputmask']=true 필요)
         ],
 

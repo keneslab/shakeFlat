@@ -111,11 +111,10 @@
                     <div class="mb-3">
                         <label for="sfdt-memberslisttable-add-name" class="form-label">이름</label>
                         <input type="text" name="name" id="sfdt-memberslisttable-add-name" class="sfdt-form-control"  >
-                        <small class="text-muted">회원의 실명을 입력하세요.</small>
                     </div>
                     <div class="mb-3">
                         <label for="sfdt-memberslisttable-add-email" class="form-label">이메일</label>
-                        <input type="email" name="email" id="sfdt-memberslisttable-add-email" class="sfdt-form-control"  >
+                        <input type="email" name="email" id="sfdt-memberslisttable-add-email" class="sfdt-form-control" style="width: 400px;"  >
                         <small class="text-muted">유효한 이메일 주소를 입력하세요.</small>
                     </div>
                     <div class="mb-3">
@@ -283,15 +282,15 @@
             <div class="modal-body" id="sfdt-memberslisttable-view-content">
                     <div class="mb-3">
                         <label class="form-label fw-bold">이름</label>
-                        <div class="sfdt-view-field" id="sfdt-memberslisttable-view-name"></div>
+                        <div class="sfdt-view-field" id="sfdt-memberslisttable-view-name" style="min-width: 100%;"></div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label fw-bold">이메일</label>
-                        <div class="sfdt-view-field" id="sfdt-memberslisttable-view-email"></div>
+                        <div class="sfdt-view-field" id="sfdt-memberslisttable-view-email" style="min-width: 400px;"></div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label fw-bold">전화번호</label>
-                        <div class="sfdt-view-field" id="sfdt-memberslisttable-view-phone"></div>
+                        <div class="sfdt-view-field" id="sfdt-memberslisttable-view-phone" style="min-width: 200px;"></div>
                     </div>
                     <div class="row">
                     </div>
@@ -300,19 +299,19 @@
                         <div class="col-md-4">
                     <div class="mb-3">
                         <label class="form-label fw-bold">상태</label>
-                        <div class="sfdt-view-field" id="sfdt-memberslisttable-view-status" data-type="select" data-options='{&quot;active&quot;:&quot;활성&quot;,&quot;inactive&quot;:&quot;비활성&quot;,&quot;banned&quot;:&quot;차단&quot;}'></div>
+                        <div class="sfdt-view-field" id="sfdt-memberslisttable-view-status" data-type="select" data-options='{&quot;active&quot;:&quot;활성&quot;,&quot;inactive&quot;:&quot;비활성&quot;,&quot;banned&quot;:&quot;차단&quot;}' style="min-width: 100%;"></div>
                     </div>
                         </div>
                         <div class="col-md-4">
                     <div class="mb-3">
                         <label class="form-label fw-bold">도시</label>
-                        <div class="sfdt-view-field" id="sfdt-memberslisttable-view-city"></div>
+                        <div class="sfdt-view-field" id="sfdt-memberslisttable-view-city" style="min-width: 100%;"></div>
                     </div>
                         </div>
                         <div class="col-md-4">
                     <div class="mb-3">
                         <label class="form-label fw-bold">우편번호</label>
-                        <div class="sfdt-view-field" id="sfdt-memberslisttable-view-postal_code"></div>
+                        <div class="sfdt-view-field" id="sfdt-memberslisttable-view-postal_code" style="min-width: 100%;"></div>
                     </div>
                         </div>
                     </div>
@@ -320,45 +319,45 @@
                         <div class="col-md-6">
                     <div class="mb-3">
                         <label class="form-label fw-bold">성별</label>
-                        <div class="sfdt-view-field" id="sfdt-memberslisttable-view-gender" data-type="select" data-options='{&quot;M&quot;:&quot;남성&quot;,&quot;F&quot;:&quot;여성&quot;}'></div>
+                        <div class="sfdt-view-field" id="sfdt-memberslisttable-view-gender" data-type="select" data-options='{&quot;M&quot;:&quot;남성&quot;,&quot;F&quot;:&quot;여성&quot;}' style="min-width: 100%;"></div>
                     </div>
                         </div>
                         <div class="col-md-6">
                     <div class="mb-3">
                         <label class="form-label fw-bold">알림 수신</label>
-                        <div class="sfdt-view-field" id="sfdt-memberslisttable-view-notification" data-type="select" data-options='{&quot;Y&quot;:&quot;수신&quot;,&quot;N&quot;:&quot;거부&quot;}'></div>
+                        <div class="sfdt-view-field" id="sfdt-memberslisttable-view-notification" data-type="select" data-options='{&quot;Y&quot;:&quot;수신&quot;,&quot;N&quot;:&quot;거부&quot;}' style="min-width: 100%;"></div>
                     </div>
                         </div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label fw-bold">관심사</label>
-                        <div class="sfdt-view-field" id="sfdt-memberslisttable-view-interests" data-type="checkbox" data-options='{&quot;sports&quot;:&quot;스포츠&quot;,&quot;music&quot;:&quot;음악&quot;,&quot;movie&quot;:&quot;영화&quot;,&quot;book&quot;:&quot;독서&quot;}'></div>
+                        <div class="sfdt-view-field" id="sfdt-memberslisttable-view-interests" data-type="checkbox" data-options='{&quot;sports&quot;:&quot;스포츠&quot;,&quot;music&quot;:&quot;음악&quot;,&quot;movie&quot;:&quot;영화&quot;,&quot;book&quot;:&quot;독서&quot;}' style="min-width: 100%;"></div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label fw-bold">개인정보 수집 및 이용 동의</label>
-                        <div class="sfdt-view-field" id="sfdt-memberslisttable-view-agree_privacy" data-type="checkbox"></div>
+                        <div class="sfdt-view-field" id="sfdt-memberslisttable-view-agree_privacy" data-type="checkbox" style="min-width: 100%;"></div>
                     </div>
                     <hr class="my-4">
                     <div class="alert alert-info"><i class="bi bi-info-circle"></i> 아래 정보는 선택사항입니다.</div>
                     <div class="mb-3">
                         <label class="form-label fw-bold">국가</label>
-                        <div class="sfdt-view-field" id="sfdt-memberslisttable-view-country"></div>
+                        <div class="sfdt-view-field" id="sfdt-memberslisttable-view-country" style="min-width: 100%;"></div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label fw-bold">주소</label>
-                        <div class="sfdt-view-field" id="sfdt-memberslisttable-view-address" style="white-space: pre-wrap;"></div>
+                        <div class="sfdt-view-field" id="sfdt-memberslisttable-view-address" style="white-space: pre-wrap; min-width: 100%;"></div>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
                     <div class="mb-3">
                         <label class="form-label fw-bold">생년월일</label>
-                        <div class="sfdt-view-field" id="sfdt-memberslisttable-view-birth_date"></div>
+                        <div class="sfdt-view-field" id="sfdt-memberslisttable-view-birth_date" style="min-width: 100%;"></div>
                     </div>
                         </div>
                         <div class="col-md-6">
                     <div class="mb-3">
                         <label class="form-label fw-bold">가입일</label>
-                        <div class="sfdt-view-field" id="sfdt-memberslisttable-view-join_date"></div>
+                        <div class="sfdt-view-field" id="sfdt-memberslisttable-view-join_date" style="min-width: 100%;"></div>
                     </div>
                         </div>
                     </div>
@@ -366,13 +365,13 @@
                         <div class="col-md-6">
                     <div class="mb-3">
                         <label class="form-label fw-bold">연봉</label>
-                        <div class="sfdt-view-field" id="sfdt-memberslisttable-view-salary"></div>
+                        <div class="sfdt-view-field" id="sfdt-memberslisttable-view-salary" style="min-width: 100%;"></div>
                     </div>
                         </div>
                         <div class="col-md-6">
                     <div class="mb-3">
                         <label class="form-label fw-bold">메모</label>
-                        <div class="sfdt-view-field" id="sfdt-memberslisttable-view-notes" style="white-space: pre-wrap;"></div>
+                        <div class="sfdt-view-field" id="sfdt-memberslisttable-view-notes" style="white-space: pre-wrap; min-width: 100%;"></div>
                     </div>
                         </div>
                     </div>
@@ -401,11 +400,11 @@
                     </div>
                     <div class="mb-3">
                         <label for="sfdt-memberslisttable-modify-email" class="form-label">이메일 <span class="text-danger">*</span></label>
-                        <input type="email" name="email" id="sfdt-memberslisttable-modify-email" class="sfdt-form-control" required >
+                        <input type="email" name="email" id="sfdt-memberslisttable-modify-email" class="sfdt-form-control" style="width: 400px;" required >
                     </div>
                     <div class="mb-3">
                         <label for="sfdt-memberslisttable-modify-phone" class="form-label">전화번호</label>
-                        <input type="text" name="phone" id="sfdt-memberslisttable-modify-phone" class="sfdt-form-control"  >
+                        <input type="text" name="phone" id="sfdt-memberslisttable-modify-phone" class="sfdt-form-control" style="width: 200px;"  >
                     </div>
                     <div class="row">
                     </div>
@@ -619,7 +618,7 @@ $(document).ready(function() {
                     },
                     {
                         extend: 'pdf',
-                        filename: '샘플 회원 목록(2025-11-26)',
+                        filename: '샘플 회원 목록(2025-11-27)',
                         action: sfdtExportAction,
                         title: '샘플 회원 목록',
                         exportOptions: { columns: ':visible:not(.sfdt-no-export)' },
@@ -656,7 +655,7 @@ $(document).ready(function() {
                     },
                     {
                         extend: 'excel',
-                        filename: '샘플 회원 목록(2025-11-26)',
+                        filename: '샘플 회원 목록(2025-11-27)',
                         action: sfdtExportAction,
                         title: '',
                         exportOptions: { columns: ':visible:not(.sfdt-no-export)' }
@@ -792,24 +791,24 @@ $(document).ready(function() {
             if (response && response.data && response.data.success && response.data.success === true && response.data.data) {
                 const data = response.data.data;
                 // 컨텐츠에 데이터 표시
-                $('#sfdt-memberslisttable-view-name').text(data.name || '-');
-                $('#sfdt-memberslisttable-view-email').text(data.email || '-');
-                $('#sfdt-memberslisttable-view-phone').text(data.phone || '-');
+                $('#sfdt-memberslisttable-view-name').text(data.name || '');
+                $('#sfdt-memberslisttable-view-email').text(data.email || '');
+                $('#sfdt-memberslisttable-view-phone').text(data.phone || '');
                 const $field_status = $('#sfdt-memberslisttable-view-status');
                 const options_status = $field_status.data('options');
-                $field_status.text(options_status[data.status] || data.status || '-');
-                $('#sfdt-memberslisttable-view-gender').text(data.gender || '-');
-                $('#sfdt-memberslisttable-view-notification').text(data.notification || '-');
-                $('#sfdt-memberslisttable-view-interests').text(data.interests || '-');
-                $('#sfdt-memberslisttable-view-agree_privacy').text(data.agree_privacy || '-');
-                $('#sfdt-memberslisttable-view-city').text(data.city || '-');
-                $('#sfdt-memberslisttable-view-postal_code').text(data.postal_code || '-');
-                $('#sfdt-memberslisttable-view-country').text(data.country || '-');
-                $('#sfdt-memberslisttable-view-address').text(data.address || '-');
-                $('#sfdt-memberslisttable-view-birth_date').text(data.birth_date || '-');
-                $('#sfdt-memberslisttable-view-join_date').text(data.join_date || '-');
-                $('#sfdt-memberslisttable-view-salary').text(data.salary || '-');
-                $('#sfdt-memberslisttable-view-notes').text(data.notes || '-');
+                $field_status.text(options_status[data.status] || data.status || '');
+                $('#sfdt-memberslisttable-view-gender').text(data.gender || '');
+                $('#sfdt-memberslisttable-view-notification').text(data.notification || '');
+                $('#sfdt-memberslisttable-view-interests').text(data.interests || '');
+                $('#sfdt-memberslisttable-view-agree_privacy').text(data.agree_privacy || '');
+                $('#sfdt-memberslisttable-view-city').text(data.city || '');
+                $('#sfdt-memberslisttable-view-postal_code').text(data.postal_code || '');
+                $('#sfdt-memberslisttable-view-country').text(data.country || '');
+                $('#sfdt-memberslisttable-view-address').text(data.address || '');
+                $('#sfdt-memberslisttable-view-birth_date').text(data.birth_date || '');
+                $('#sfdt-memberslisttable-view-join_date').text(data.join_date || '');
+                $('#sfdt-memberslisttable-view-salary').text(data.salary || '');
+                $('#sfdt-memberslisttable-view-notes').text(data.notes || '');
 
                 $('#sfdt-memberslisttable-modal-view').modal('show');
             } else {

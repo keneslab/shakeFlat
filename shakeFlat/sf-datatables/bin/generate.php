@@ -48,8 +48,18 @@ if (php_sapi_name() !== 'cli') {
     die("This script must be run from the command line.\n");
 }
 
+// 옵션 파싱
+$options = getopt('y', ['yes']);
+$autoYes = isset($options['y']) || isset($options['yes']);
+
 // Config 파일 경로 확인
-$configFile = $argv[1] ?? null;
+$configFile = null;
+foreach ($argv as $arg) {
+    if ($arg !== basename(__FILE__) && !in_array($arg, ['-y', '--yes'])) {
+        $configFile = $arg;
+        break;
+    }
+}
 
 if (!$configFile) {
     echo "\n";
@@ -57,10 +67,14 @@ if (!$configFile) {
     echo "║         ShakeFlat DataTables Code Generator v1.0.0         ║\n";
     echo "╚════════════════════════════════════════════════════════════╝\n";
     echo "\n";
-    echo "Usage: php generate.php <config-file>\n";
+    echo "Usage: php generate.php [options] <config-file>\n";
+    echo "\n";
+    echo "Options:\n";
+    echo "  -y, --yes    파일 덮어쓰기 확인을 자동으로 y로 응답\n";
     echo "\n";
     echo "Example:\n";
     echo "  php generate.php members_list.config.php\n";
+    echo "  php generate.php -y members_list.config.php\n";
     echo "\n";
     echo "Config 파일 작성 방법:\n";
     echo "  1. config.sample.php 파일을 복사하세요\n";
@@ -105,7 +119,7 @@ try {
 
     // 4. 파일 저장
     $writer = new FileWriter($config);
-    $writer->write($code);
+    $writer->write($code, $autoYes);
 
     echo "\n";
     echo "╔════════════════════════════════════════════════════════════╗\n";

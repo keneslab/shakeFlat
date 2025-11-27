@@ -17,7 +17,7 @@ class FileWriter
     /**
      * 생성된 코드를 파일로 저장
      */
-    public function write(array $code): void
+    public function write(array $code, bool $autoYes = false): void
     {
         foreach ($this->config['paths'] as $key => $path) {
             if (!isset($code[$key])) {
@@ -32,13 +32,17 @@ class FileWriter
 
             // 파일 존재 확인
             if (file_exists($path)) {
-                echo "\n⚠ 파일이 이미 존재합니다: {$path}\n";
-                echo "덮어쓰시겠습니까? [y/N]: ";
-                $input = strtolower(trim(fgets(STDIN)));
+                if ($autoYes) {
+                    echo "⚠ 파일이 이미 존재합니다: {$path} (자동 덮어쓰기)\n";
+                } else {
+                    echo "\n⚠ 파일이 이미 존재합니다: {$path}\n";
+                    echo "덮어쓰시겠습니까? [y/N]: ";
+                    $input = strtolower(trim(fgets(STDIN)));
 
-                if (!in_array($input, ['y', 'yes', 'ㅛ', '예'])) {
-                    echo "→ 건너뜁니다.\n";
-                    continue;
+                    if (!in_array($input, ['y', 'yes', 'ㅛ', '예'])) {
+                        echo "→ 건너뜁니다.\n";
+                        continue;
+                    }
                 }
             }
 

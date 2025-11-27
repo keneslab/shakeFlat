@@ -227,7 +227,7 @@ class CodeGenerator
                     $enumPart = ', [ ' . implode(', ', $enumValues) . ' ]';
                 }
 
-                if ($field['required']) {
+                if (!empty($field['required'])) {
                     $validations[] = "    \$param->checkKeyValue('{$alias}', Param::{$paramType}{$enumPart});";
                 } else {
                     $validations[] = "    \$param->checkKey('{$alias}', Param::{$paramType}{$enumPart});";
@@ -274,7 +274,7 @@ class CodeGenerator
                     $enumPart = ', [ ' . implode(', ', $enumValues) . ' ]';
                 }
 
-                if ($field['required']) {
+                if (!empty($field['required'])) {
                     $validations[] = "    \$param->checkKeyValue('{$alias}', Param::{$paramType}{$enumPart});";
                 } else {
                     $validations[] = "    \$param->checkKey('{$alias}', Param::{$paramType}{$enumPart});";
@@ -359,7 +359,13 @@ class CodeGenerator
                 $arrayProcessing[] = "    \${$field['alias']}_value = !empty(\$param->{$field['alias']}) && is_array(\$param->{$field['alias']}) ? json_encode(\$param->{$field['alias']}) : {$defaultValue};";
                 $bindEntries[] = "        '{$field['alias']}' => \${$field['alias']}_value";
             } else {
-                $bindEntries[] = "        '{$field['alias']}' => \$param->{$field['alias']} ?? {$defaultValue}";
+                // checkKeyValue로 검증된 필드는 무조건 값이 있으므로 ?? 제거
+                $isRequired = !empty($field['required']);
+                if ($isRequired) {
+                    $bindEntries[] = "        '{$field['alias']}' => \$param->{$field['alias']}";
+                } else {
+                    $bindEntries[] = "        '{$field['alias']}' => \$param->{$field['alias']} ?? {$defaultValue}";
+                }
             }
         }
 
@@ -772,22 +778,24 @@ PHP;
     {
         $tableId = strtolower($this->config['basic']['table_id']);
         $fieldId = 'sfdt-' . $tableId . '-' . $mode . '-' . $field['alias'];
-        $required = $field['required'] ? 'required' : '';
+        $required = !empty($field['required']) ? 'required' : '';
         $readonly = ($mode === 'view') ? 'readonly' : '';
         $disabled = ($mode === 'view') ? 'disabled' : '';
 
         $html = '                    <div class="mb-3">' . "\n";
         $html .= '                        <label for="' . $fieldId . '" class="form-label">' . $field['title'];
-        if ($field['required'] && $mode !== 'view') {
+        if (!empty($field['required']) && $mode !== 'view') {
             $html .= ' <span class="text-danger">*</span>';
         }
         $html .= '</label>' . "\n";
 
         if ($field['type'] === 'text' || $field['type'] === 'email' || $field['type'] === 'number' || $field['type'] === 'date' || $field['type'] === 'password') {
             $inputType = $field['type'];
-            $html .= '                        <input type="' . $inputType . '" name="' . $field['alias'] . '" id="' . $fieldId . '" class="sfdt-form-control" ' . $required . ' ' . $readonly . '>' . "\n";
+            $styleAttr = !empty($field['width']) ? ' style="width: ' . $field['width'] . ';"' : '';
+            $html .= '                        <input type="' . $inputType . '" name="' . $field['alias'] . '" id="' . $fieldId . '" class="sfdt-form-control"' . $styleAttr . ' ' . $required . ' ' . $readonly . '>' . "\n";
         } elseif ($field['type'] === 'select') {
-            $html .= '                        <select name="' . $field['alias'] . '" id="' . $fieldId . '" class="sfdt-form-select" ' . $required . ' ' . $disabled . '>' . "\n";
+            $styleAttr = !empty($field['width']) ? ' style="width: ' . $field['width'] . ';"' : '';
+            $html .= '                        <select name="' . $field['alias'] . '" id="' . $fieldId . '" class="sfdt-form-select"' . $styleAttr . ' ' . $required . ' ' . $disabled . '>' . "\n";
             if (!empty($field['options']) && is_array($field['options'])) {
                 foreach ($field['options'] as $value => $label) {
                     $html .= '                            <option value="' . $value . '">' . $label . '</option>' . "\n";
@@ -860,7 +868,7 @@ PHP;
             // Checkbox 타입 - 단일 또는 다중 선택
             // validate_required: required일 때 실제로 체크 검증 여부 (기본값: true)
             $validateRequired = $field['validate_required'] ?? true;
-            $requiredAttr = ($field['required'] && $validateRequired && $mode !== 'view') ? 'required' : '';
+            $requiredAttr = (!empty($field['required']) && $validateRequired && $mode !== 'view') ? 'required' : '';
 
             // layout 옵션: vertical(기본값), horizontal, inline
             $layout = $field['layout'] ?? 'vertical';
@@ -915,7 +923,8 @@ PHP;
                 $html .= '                        </div>' . "\n";
             }
         } elseif ($field['type'] === 'textarea') {
-            $html .= '                        <textarea name="' . $field['alias'] . '" id="' . $fieldId . '" class="sfdt-form-control" rows="3" ' . $required . ' ' . $readonly . '></textarea>' . "\n";
+            $styleAttr = !empty($field['width']) ? ' style="width: ' . $field['width'] . ';"' : '';
+            $html .= '                        <textarea name="' . $field['alias'] . '" id="' . $fieldId . '" class="sfdt-form-control"' . $styleAttr . ' rows="3" ' . $required . ' ' . $readonly . '></textarea>' . "\n";
         }
 
         // description이 있으면 출력 (view 모드에서는 제외)
@@ -997,14 +1006,19 @@ PHP;
         $html = '                    <div class="mb-3">' . "\n";
         $html .= '                        <label class="form-label fw-bold">' . $field['title'] . '</label>' . "\n";
 
+        // width 설정이 있으면 min-width로 적용, 없으면 100% 기본값
+        $minWidthStyle = !empty($field['width']) ? 'min-width: ' . $field['width'] . ';' : 'min-width: 100%;';
+
         if ($field['type'] === 'textarea') {
-            $html .= '                        <div class="sfdt-view-field" id="' . $fieldId . '" style="white-space: pre-wrap;"></div>' . "\n";
+            $style = 'white-space: pre-wrap; ' . $minWidthStyle;
+            $html .= '                        <div class="sfdt-view-field" id="' . $fieldId . '" style="' . $style . '"></div>' . "\n";
         } elseif ($field['type'] === 'select' || $field['type'] === 'radio') {
             $html .= '                        <div class="sfdt-view-field" id="' . $fieldId . '" data-type="select"';
             if (!empty($field['options'])) {
                 $optionsJson = htmlspecialchars(json_encode($field['options'], JSON_UNESCAPED_UNICODE), ENT_QUOTES, 'UTF-8');
                 $html .= ' data-options=\'' . $optionsJson . '\'';
             }
+            $html .= ' style="' . $minWidthStyle . '"';
             $html .= '></div>' . "\n";
         } elseif ($field['type'] === 'checkbox') {
             // checkbox는 배열이나 단일 값으로 저장될 수 있음
@@ -1013,9 +1027,10 @@ PHP;
                 $optionsJson = htmlspecialchars(json_encode($field['options'], JSON_UNESCAPED_UNICODE), ENT_QUOTES, 'UTF-8');
                 $html .= ' data-options=\'' . $optionsJson . '\'';
             }
+            $html .= ' style="' . $minWidthStyle . '"';
             $html .= '></div>' . "\n";
         } else {
-            $html .= '                        <div class="sfdt-view-field" id="' . $fieldId . '"></div>' . "\n";
+            $html .= '                        <div class="sfdt-view-field" id="' . $fieldId . '" style="' . $minWidthStyle . '"></div>' . "\n";
         }
 
         $html .= '                    </div>' . "\n";
@@ -1161,6 +1176,26 @@ PHP;
                 }
             }';
                 }
+                continue;
+            }
+
+            // 커스텀 render 함수가 있으면 우선 적용
+            if (!empty($col['render'])) {
+                $renderCode = trim($col['render']);
+                // 여러 줄 render 함수인 경우 들여쓰기 처리
+                $lines = explode("\n", $renderCode);
+                if (count($lines) > 1) {
+                    // 첫 줄 이후의 모든 줄에 들여쓰기 추가
+                    $indentedLines = [$lines[0]];
+                    for ($i = 1; $i < count($lines); $i++) {
+                        $indentedLines[] = '                ' . $lines[$i];
+                    }
+                    $renderCode = implode("\n", $indentedLines);
+                }
+                $defs[] = '            {
+                targets: ' . $index . ',
+                render: ' . $renderCode . '
+            }';
                 continue;
             }
 
@@ -1344,10 +1379,10 @@ JS;
                 // select 필드는 options에서 label 찾기
                 $formFields[] = "                const \$field_{$field['alias']} = $('#sfdt-{$tableId}-view-{$field['alias']}');\n" .
                                "                const options_{$field['alias']} = \$field_{$field['alias']}.data('options');\n" .
-                               "                \$field_{$field['alias']}.text(options_{$field['alias']}[data.{$field['alias']}] || data.{$field['alias']} || '-');";
+                               "                \$field_{$field['alias']}.text(options_{$field['alias']}[data.{$field['alias']}] || data.{$field['alias']} || '');";
             } else {
                 // 일반 필드
-                $formFields[] = "                $('#sfdt-{$tableId}-view-{$field['alias']}').text(data.{$field['alias']} || '-');";
+                $formFields[] = "                $('#sfdt-{$tableId}-view-{$field['alias']}').text(data.{$field['alias']} || '');";
             }
         }
 
