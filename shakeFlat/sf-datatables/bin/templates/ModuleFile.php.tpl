@@ -65,7 +65,7 @@ function handleListAction()
         }
     }
     if (empty($orderClause)) {
-        $orderClause = 'ORDER BY {{PRIMARY_KEY}} DESC';
+        $orderClause = 'ORDER BY {{PRIMARY_KEY_WITH_TABLE}} DESC';
     }
 
     // 전체 레코드 수
@@ -154,6 +154,7 @@ function handleDeleteAction()
     $param->checkKeyValue('{{PRIMARY_KEY}}', Param::TYPE_INT);
     $id = $param->{{PRIMARY_KEY}};
 
+    /*
     // DELETE 쿼리 실행
     $sql = "DELETE FROM {{DB_TABLE}} WHERE {{PRIMARY_KEY}} = :id";
     $bind = ['id' => $id];
@@ -161,6 +162,10 @@ function handleDeleteAction()
 
     $res->success = ($result !== false);
     $res->message = ($result !== false) ? '삭제되었습니다.' : '삭제 실패';
+    */
+
+    $res->success = false;
+    $res->message = 'TODO: DELETE 쿼리를 작성하세요';
 }
 
 /**

@@ -64,6 +64,7 @@ class CodeGenerator
             '{{DB_TABLE}}' => $basic['db_table'],
             '{{SEARCH_HANDLING}}' => $this->generateSearchHandlingCode(),
             '{{PRIMARY_KEY}}' => $this->getPrimaryKeyField(),
+            '{{PRIMARY_KEY_WITH_TABLE}}' => $this->getPrimaryKeyFieldWithTable(),
             '{{COLUMNS_ARRAY}}' => $this->generateColumnsArray(),
             '{{SELECT_COLUMNS}}' => $this->generateSelectColumns(),
             '{{SELECT_COLUMNS_INDENTED}}' => $this->generateSelectColumnsIndented(),
@@ -83,12 +84,23 @@ class CodeGenerator
      */
     private function generateColumnsArray(): string
     {
+        $dbTable = $this->config['basic']['db_table'];
         $columns = [];
         foreach ($this->config['columns'] as $col) {
             if (!empty($col['is_button'])) {
                 $columns[] = 'null';
             } else {
-                $columns[] = "'{$col['alias']}'";
+                // column 옵션이 있으면 그것을 사용, 없으면 테이블.컬럼 형태
+                if (isset($col['column']) && $col['column'] !== '') {
+                    // column에 AS가 있는 경우 AS 앞부분만 사용
+                    $column = $col['column'];
+                    if (stripos($column, ' as ') !== false) {
+                        $column = trim(preg_split('/ as /i', $column)[0]);
+                    }
+                    $columns[] = "'{$column}'";
+                } else {
+                    $columns[] = "'{$dbTable}.{$col['alias']}'";
+                }
             }
         }
         return '[' . implode(', ', $columns) . ']';
@@ -100,6 +112,7 @@ class CodeGenerator
     private function generateSelectColumns(): string
     {
         $selectColumns = [];
+        $dbTable = $this->config['basic']['db_table'];
 
         foreach ($this->config['columns'] as $col) {
             // 버튼 컬럼은 제외
@@ -119,7 +132,8 @@ class CodeGenerator
                     $selectColumns[] = "{$column} AS {$alias}";
                 }
             } else {
-                $selectColumns[] = $alias;
+                // 테이블명.컬럼명 형태로 추가
+                $selectColumns[] = "{$dbTable}.{$alias}";
             }
         }
 
@@ -132,6 +146,7 @@ class CodeGenerator
     private function generateSelectColumnsIndented(): string
     {
         $selectColumns = [];
+        $dbTable = $this->config['basic']['db_table'];
 
         foreach ($this->config['columns'] as $col) {
             // 버튼 컬럼은 제외
@@ -151,7 +166,8 @@ class CodeGenerator
                     $selectColumns[] = "{$column} AS {$alias}";
                 }
             } else {
-                $selectColumns[] = $alias;
+                // 테이블명.컬럼명 형태로 추가
+                $selectColumns[] = "{$dbTable}.{$alias}";
             }
         }
 
@@ -457,16 +473,41 @@ PHP;
     {
         $dbTable = $this->config['basic']['db_table'];
         $primaryKey = $this->getPrimaryKeyField();
-        $selectColumns = $this->generateSelectColumnsIndented();
         $leftJoinClause = $this->generateLeftJoinClause();
+
+        // view_fields와 form_fields_modify의 모든 컬럼 수집
+        $viewFields = $this->config['view_fields'] ?? $this->config['form_fields_modify'] ?? [];
+        $modifyFields = $this->config['form_fields_modify'] ?? [];
+
+        // 컬럼 중복 제거를 위한 배열
+        $columnsMap = [];
+
+        // view_fields의 컬럼 추가
+        foreach ($viewFields as $field) {
+            $alias = $field['alias'];
+            $columnsMap[$alias] = $alias;
+        }
+
+        // form_fields_modify의 컬럼 추가 (중복 제거)
+        foreach ($modifyFields as $field) {
+            $alias = $field['alias'];
+            $columnsMap[$alias] = $alias;
+        }
+
+        // 컬럼 목록 생성 (들여쓰기 포함, 테이블명 prefix 추가)
+        $selectColumns = [];
+        foreach ($columnsMap as $alias) {
+            $selectColumns[] = '            ' . $dbTable . '.' . $alias;
+        }
+        $selectColumnsStr = implode(",\n", $selectColumns);
 
         return <<<PHP
     \$sql = "
         SELECT
-{$selectColumns}
+{$selectColumnsStr}
         FROM {$dbTable}
 {$leftJoinClause}
-        WHERE {$primaryKey} = :id
+        WHERE {$dbTable}.{$primaryKey} = :id
     ";
     \$bind = ['id' => \$id];
     \$rs = \$db->query(\$sql, \$bind);
@@ -1411,10 +1452,15 @@ JS;
 
                 $('#sfdt-{$tableId}-modal-view').modal('show');
             } else {
+                console.log('Ajax 응답 (success=false):', response);
+                if (response.error && response.error.errMsg) {
+                    console.error('에러 메시지:', response.error.errMsg);
+                }
                 alert(response.data.message || '데이터를 불러오는데 실패했습니다.');
             }
         }).fail(function(jqXHR, textStatus, errorThrown) {
             alert('데이터 조회 중 오류가 발생했습니다.');
+            console.log('Ajax 전체 응답:', jqXHR.responseJSON || jqXHR.responseText);
             console.error('Ajax error:', textStatus, errorThrown);
         });
     });
@@ -1461,10 +1507,15 @@ JS;
 
                 $('#sfdt-{$tableId}-modal-modify').modal('show');
             } else {
+                console.log('Ajax 응답 (success=false):', response);
+                if (response.error && response.error.errMsg) {
+                    console.error('에러 메시지:', response.error.errMsg);
+                }
                 alert(response.data.message || '데이터를 불러오는데 실패했습니다.');
             }
         }).fail(function(jqXHR, textStatus, errorThrown) {
             alert('데이터 조회 중 오류가 발생했습니다.');
+            console.log('Ajax 전체 응답:', jqXHR.responseJSON || jqXHR.responseText);
             console.error('Ajax error:', textStatus, errorThrown);
         });
     });
@@ -1494,10 +1545,24 @@ JS;
         return <<<JS
     // 삭제 버튼 클릭
     $(document).on('click', '#{$tableId} .sfdt-btn-delete-{$tableId}', function() {
-        if (!confirm('정말 삭제하시겠습니까?')) return;
-
         const sfdtData = window.sfdtTables['{$tableId}'].row($(this).parents('tr')).data();
-        sfdtSendAjax('delete', {{$primaryKey}: sfdtData.{$primaryKey}}, '삭제되었습니다.', null, window.sfdtTables['{$tableId}']);
+
+        sfui.confirm({
+            title: '삭제 확인',
+            content: '정말 삭제하시겠습니까?',
+            buttons: {
+                confirm: {
+                    text: '삭제',
+                    btnClass: 'btn-danger',
+                    action: function() {
+                        sfdtSendAjax('delete', {{$primaryKey}: sfdtData.{$primaryKey}}, '삭제되었습니다.', null, window.sfdtTables['{$tableId}']);
+                    }
+                },
+                cancel: {
+                    text: '취소'
+                }
+            }
+        });
     });
 JS;
     }
@@ -1868,6 +1933,22 @@ LAYOUT;
      * 검색 조건 처리 코드 생성 (Module 파일용)
      */
     /**
+     * 컬럼명에 테이블 prefix 추가 (이미 포함된 경우 제외)
+     */
+    private function addTablePrefix(string $column): string
+    {
+        $dbTable = $this->config['basic']['db_table'];
+
+        // 이미 테이블명이나 alias가 포함되어 있는지 확인 (. 이 있으면 이미 포함)
+        if (strpos($column, '.') !== false) {
+            return $column;
+        }
+
+        // 테이블명.컬럼명 형태로 반환
+        return $dbTable . '.' . $column;
+    }
+
+    /**
      * 통합 검색 대상 컬럼 목록 가져오기
      * @return array [['column' => 'name', 'type' => 'like'], ...]
      */
@@ -1884,7 +1965,7 @@ LAYOUT;
                 $searchType = $col['search_type'] ?? 'like';
 
                 $columns[] = [
-                    'column' => $searchColumn,
+                    'column' => $this->addTablePrefix($searchColumn),
                     'type' => $searchType
                 ];
             }
@@ -1897,19 +1978,21 @@ LAYOUT;
             foreach ($this->config['global_search']['columns'] as $col) {
                 if (is_string($col)) {
                     // 문자열 형식: 'column_name' -> 기본 like 검색, 컬럼명은 그대로 사용
-                    if (!in_array($col, $existingColumns)) {
-                        $columns[] = ['column' => $col, 'type' => 'like'];
+                    $columnWithPrefix = $this->addTablePrefix($col);
+                    if (!in_array($columnWithPrefix, $existingColumns)) {
+                        $columns[] = ['column' => $columnWithPrefix, 'type' => 'like'];
                     }
                 } elseif (is_array($col) && isset($col['column'])) {
                     // 배열 형식: ['column' => 'name', 'type' => 'like|equal', 'search_column' => 'db_column']
                     $columnName = $col['column'];
                     $searchType = $col['type'] ?? 'like';
                     $searchColumn = $col['search_column'] ?? $columnName;
+                    $searchColumnWithPrefix = $this->addTablePrefix($searchColumn);
 
                     // 중복 체크 및 추가/업데이트
                     $found = false;
                     foreach ($columns as &$existing) {
-                        if ($existing['column'] === $searchColumn) {
+                        if ($existing['column'] === $searchColumnWithPrefix) {
                             $existing['type'] = $searchType; // 타입 업데이트
                             $found = true;
                             break;
@@ -1917,7 +2000,7 @@ LAYOUT;
                     }
 
                     if (!$found) {
-                        $columns[] = ['column' => $searchColumn, 'type' => $searchType];
+                        $columns[] = ['column' => $searchColumnWithPrefix, 'type' => $searchType];
                     }
                 }
             }
@@ -1971,7 +2054,7 @@ LAYOUT;
 
         foreach ($this->config['custom_search'] as $field) {
             $alias = $field['alias'];
-            $dbColumn = $field['db_column'];
+            $dbColumn = $this->addTablePrefix($field['db_column']);
             $type = $field['type'];
 
             $code .= "        // {$field['title']} 검색\n";
@@ -2049,5 +2132,15 @@ LAYOUT;
         }
 
         return 'id';
+    }
+
+    /**
+     * Primary Key 필드명 반환 (테이블 prefix 포함)
+     */
+    private function getPrimaryKeyFieldWithTable(): string
+    {
+        $dbTable = $this->config['basic']['db_table'];
+        $pkColumn = $this->getPrimaryKeyField();
+        return $dbTable . '.' . $pkColumn;
     }
 }

@@ -812,10 +812,15 @@ $(document).ready(function() {
 
                 $('#sfdt-memberslisttable-modal-view').modal('show');
             } else {
+                console.log('Ajax 응답 (success=false):', response);
+                if (response.error && response.error.errMsg) {
+                    console.error('에러 메시지:', response.error.errMsg);
+                }
                 alert(response.data.message || '데이터를 불러오는데 실패했습니다.');
             }
         }).fail(function(jqXHR, textStatus, errorThrown) {
             alert('데이터 조회 중 오류가 발생했습니다.');
+            console.log('Ajax 전체 응답:', jqXHR.responseJSON || jqXHR.responseText);
             console.error('Ajax error:', textStatus, errorThrown);
         });
     });
@@ -858,10 +863,15 @@ $(document).ready(function() {
 
                 $('#sfdt-memberslisttable-modal-modify').modal('show');
             } else {
+                console.log('Ajax 응답 (success=false):', response);
+                if (response.error && response.error.errMsg) {
+                    console.error('에러 메시지:', response.error.errMsg);
+                }
                 alert(response.data.message || '데이터를 불러오는데 실패했습니다.');
             }
         }).fail(function(jqXHR, textStatus, errorThrown) {
             alert('데이터 조회 중 오류가 발생했습니다.');
+            console.log('Ajax 전체 응답:', jqXHR.responseJSON || jqXHR.responseText);
             console.error('Ajax error:', textStatus, errorThrown);
         });
     });
@@ -880,10 +890,24 @@ $(document).ready(function() {
     
     // 삭제 버튼 클릭
     $(document).on('click', '#memberslisttable .sfdt-btn-delete-memberslisttable', function() {
-        if (!confirm('정말 삭제하시겠습니까?')) return;
-
         const sfdtData = window.sfdtTables['memberslisttable'].row($(this).parents('tr')).data();
-        sfdtSendAjax('delete', {member_id: sfdtData.member_id}, '삭제되었습니다.', null, window.sfdtTables['memberslisttable']);
+        
+        sfui.confirm({
+            title: '삭제 확인',
+            content: '정말 삭제하시겠습니까?',
+            buttons: {
+                confirm: {
+                    text: '삭제',
+                    btnClass: 'btn-danger',
+                    action: function() {
+                        sfdtSendAjax('delete', {member_id: sfdtData.member_id}, '삭제되었습니다.', null, window.sfdtTables['memberslisttable']);
+                    }
+                },
+                cancel: {
+                    text: '취소'
+                }
+            }
+        });
     });
     
     // Inputmask 초기화

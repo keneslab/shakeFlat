@@ -52,17 +52,17 @@ function handleListAction()
         $searchValue = trim($param->search['value']);
         if ($searchValue !== '') {
             $searchWhere = [];
-            $searchWhere[] = 'name LIKE :global_search_0';
+            $searchWhere[] = 'sf_sample_members.name LIKE :global_search_0';
             $bind['global_search_0'] = '%' . $searchValue . '%';
-            $searchWhere[] = 'email LIKE :global_search_1';
+            $searchWhere[] = 'sf_sample_members.email LIKE :global_search_1';
             $bind['global_search_1'] = '%' . $searchValue . '%';
-            $searchWhere[] = 'department_name LIKE :global_search_2';
+            $searchWhere[] = 'sf_sample_members.department_name LIKE :global_search_2';
             $bind['global_search_2'] = '%' . $searchValue . '%';
-            $searchWhere[] = 'department_code LIKE :global_search_3';
+            $searchWhere[] = 'sf_sample_members.department_code LIKE :global_search_3';
             $bind['global_search_3'] = '%' . $searchValue . '%';
-            $searchWhere[] = 'status = :global_search_4';
+            $searchWhere[] = 'sf_sample_members.status = :global_search_4';
             $bind['global_search_4'] = $searchValue;
-            $searchWhere[] = 'phone LIKE :global_search_5';
+            $searchWhere[] = 'sf_sample_members.phone LIKE :global_search_5';
             $bind['global_search_5'] = '%' . $searchValue . '%';
             $where[] = '(' . implode(' OR ', $searchWhere) . ')';
         }
@@ -73,19 +73,19 @@ function handleListAction()
     if ($param->custom_search) {
         // 이름 검색
         if (!empty($param->custom_search['search_name'])) {
-            $where[] = "name LIKE :search_name";
+            $where[] = "sf_sample_members.name LIKE :search_name";
             $bind['search_name'] = "%{$param->custom_search['search_name']}%";
         }
 
         // 이메일 검색
         if (!empty($param->custom_search['search_email'])) {
-            $where[] = "email LIKE :search_email";
+            $where[] = "sf_sample_members.email LIKE :search_email";
             $bind['search_email'] = "%{$param->custom_search['search_email']}%";
         }
 
         // 상태 검색
         if (isset($param->custom_search['search_status']) && $param->custom_search['search_status'] !== '' && $param->custom_search['search_status'] !== null) {
-            $where[] = "status = :search_status";
+            $where[] = "sf_sample_members.status = :search_status";
             $bind['search_status'] = $param->custom_search['search_status'];
         }
 
@@ -94,12 +94,12 @@ function handleListAction()
             if (strpos($param->custom_search['search_join_date'], ' to ') !== false) {
                 $dates = explode(' to ', $param->custom_search['search_join_date']);
                 if (count($dates) === 2 && preg_match('/^\d{4}-\d{2}-\d{2}$/', $dates[0]) && preg_match('/^\d{4}-\d{2}-\d{2}$/', $dates[1])) {
-                    $where[] = "join_date BETWEEN :search_join_date_start AND :search_join_date_end";
+                    $where[] = "sf_sample_members.join_date BETWEEN :search_join_date_start AND :search_join_date_end";
                     $bind['search_join_date_start'] = $dates[0];
                     $bind['search_join_date_end'] = $dates[1];
                 }
             } elseif (preg_match('/^\d{4}-\d{2}-\d{2}$/', $param->custom_search['search_join_date'])) {
-                $where[] = "join_date >= :search_join_date_start";
+                $where[] = "sf_sample_members.join_date >= :search_join_date_start";
                 $bind['search_join_date_start'] = $param->custom_search['search_join_date'];
             }
         }
@@ -109,12 +109,12 @@ function handleListAction()
             if (strpos($param->custom_search['search_last_login'], ' to ') !== false) {
                 $dates = explode(' to ', $param->custom_search['search_last_login']);
                 if (count($dates) === 2 && preg_match('/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}/', $dates[0]) && preg_match('/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}/', $dates[1])) {
-                    $where[] = "last_login BETWEEN :search_last_login_start AND :search_last_login_end";
+                    $where[] = "sf_sample_members.last_login BETWEEN :search_last_login_start AND :search_last_login_end";
                     $bind['search_last_login_start'] = $dates[0];
                     $bind['search_last_login_end'] = $dates[1];
                 }
             } elseif (preg_match('/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}/', $param->custom_search['search_last_login'])) {
-                $where[] = "last_login >= :search_last_login_start";
+                $where[] = "sf_sample_members.last_login >= :search_last_login_start";
                 $bind['search_last_login_start'] = $param->custom_search['search_last_login'];
             }
         }
@@ -125,7 +125,7 @@ function handleListAction()
             $search_salary_min = str_replace(',', '', $search_salary_min);
             $search_salary_max = str_replace(',', '', $search_salary_max);
             if (is_numeric($search_salary_min) && is_numeric($search_salary_max)) {
-                $where[] = "salary BETWEEN :search_salary_min AND :search_salary_max";
+                $where[] = "sf_sample_members.salary BETWEEN :search_salary_min AND :search_salary_max";
                 $bind['search_salary_min'] = $search_salary_min;
                 $bind['search_salary_max'] = $search_salary_max;
             }
@@ -136,7 +136,7 @@ function handleListAction()
     // 정렬 처리
     $orderClause = '';
     if ($param->order) {
-        $columns = ['member_id', 'name', 'email', 'phone', 'department_name', 'department_code', 'status', 'join_date', 'salary', 'last_login', null];
+        $columns = ['sf_sample_members.member_id', 'sf_sample_members.name', 'sf_sample_members.email', 'sf_sample_members.phone', 'd.department_name', 'd.department_code', 'sf_sample_members.status', 'sf_sample_members.join_date', 'sf_sample_members.salary', 'sf_sample_members.last_login', null];
         $orderParts = [];
         foreach ($param->order as $order) {
             $columnIndex = (int)$order['column'];
@@ -150,7 +150,7 @@ function handleListAction()
         }
     }
     if (empty($orderClause)) {
-        $orderClause = 'ORDER BY member_id DESC';
+        $orderClause = 'ORDER BY sf_sample_members.member_id DESC';
     }
 
     // 전체 레코드 수
@@ -167,16 +167,16 @@ function handleListAction()
     // 데이터 조회
     $dataQuery = "
         SELECT
-            member_id,
-            name,
-            email,
-            phone,
+            sf_sample_members.member_id,
+            sf_sample_members.name,
+            sf_sample_members.email,
+            sf_sample_members.phone,
             d.department_name AS department_name,
             d.department_code AS department_code,
-            status,
-            join_date,
-            salary,
-            last_login
+            sf_sample_members.status,
+            sf_sample_members.join_date,
+            sf_sample_members.salary,
+            sf_sample_members.last_login
         FROM sf_sample_members
         LEFT JOIN sf_sample_departments d ON d.department_id = sf_sample_members.department_id
         {$whereClause}
@@ -403,6 +403,7 @@ function handleDeleteAction()
     $param->checkKeyValue('member_id', Param::TYPE_INT);
     $id = $param->member_id;
 
+    /*
     // DELETE 쿼리 실행
     $sql = "DELETE FROM sf_sample_members WHERE member_id = :id";
     $bind = ['id' => $id];
@@ -410,6 +411,10 @@ function handleDeleteAction()
 
     $res->success = ($result !== false);
     $res->message = ($result !== false) ? '삭제되었습니다.' : '삭제 실패';
+    */
+
+    $res->success = false;
+    $res->message = 'TODO: DELETE 쿼리를 작성하세요';
 }
 
 /**
@@ -427,20 +432,26 @@ function handleGetAction()
     // 데이터 조회
     $sql = "
         SELECT
-            member_id,
-            name,
-            email,
-            phone,
-            d.department_name AS department_name,
-            d.department_code AS department_code,
-            status,
-            join_date,
-            salary,
-            last_login
+            sf_sample_members.name,
+            sf_sample_members.email,
+            sf_sample_members.phone,
+            sf_sample_members.status,
+            sf_sample_members.gender,
+            sf_sample_members.notification,
+            sf_sample_members.interests,
+            sf_sample_members.agree_privacy,
+            sf_sample_members.city,
+            sf_sample_members.postal_code,
+            sf_sample_members.country,
+            sf_sample_members.address,
+            sf_sample_members.birth_date,
+            sf_sample_members.join_date,
+            sf_sample_members.salary,
+            sf_sample_members.notes
         FROM sf_sample_members
 
         LEFT JOIN sf_sample_departments d ON d.department_id = sf_sample_members.department_id
-        WHERE member_id = :id
+        WHERE sf_sample_members.member_id = :id
     ";
     $bind = ['id' => $id];
     $rs = $db->query($sql, $bind);
