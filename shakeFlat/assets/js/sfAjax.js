@@ -6,7 +6,7 @@
 /**
  * sfAjax Class - Ajax request handler with configurable response modes
  */
-class sfAjax {
+class _sfAjax {
     /**
      * @typedef {Object} SfAjaxConfig
      * @property {'auto'|'shakeFlat'|'standard'} responseMode - Response handling mode
@@ -417,7 +417,7 @@ class sfAjax {
 }
 
 // Create default instance and export convenience methods
-const $sfAjax = new sfAjax();
+const $sfAjax = new _sfAjax();
 
 // Export convenience functions for backward compatibility
 function configureSfAjax(config) {
@@ -432,7 +432,7 @@ function unregisterErrorHandler(errCode) {
     $sfAjax.unregisterErrorHandler(errCode);
 }
 
-function sfAjaxRequest(url, frm, successCallback, errorCallback = null, context = null, options = {}) {
+function sfAjax(url, frm, successCallback, errorCallback = null, context = null, options = {}) {
     return $sfAjax.request(url, frm, successCallback, errorCallback, context, options);
 }
 
