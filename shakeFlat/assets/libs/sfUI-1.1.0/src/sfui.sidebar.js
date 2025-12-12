@@ -1,6 +1,6 @@
 /**
  * sfUI Sidebar Component
- * Version: 1.0.0
+ * Version: 1.1.0
  *
  * A responsive sidebar menu component with full, mini, and hide modes
  * Supports Bootstrap theme integration (light/dark)

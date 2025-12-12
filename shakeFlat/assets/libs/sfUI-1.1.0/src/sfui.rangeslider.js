@@ -1,7 +1,7 @@
 /**
  * sfUI RangeSlider Module
  * Interactive range slider for number inputs
- * @version 1.0.0
+ * @version 1.1.0
  */
 
 class SfUIRangeSlider {

@@ -489,6 +489,6 @@ function initializeApp() {
 
 // ==============================================
 //   NOTICE BOARD WEB COMPONENT
-//   Moved to sfUI library: /assets/libs/sfUI-1.0.0/src/sfui.notice.js
+//   Moved to sfUI library: /assets/libs/sfUI-1.1.0/src/sfui.notice.js
 //   This component is now part of the sfUI component library
 // ==============================================

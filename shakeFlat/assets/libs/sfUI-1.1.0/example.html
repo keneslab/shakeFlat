@@ -205,16 +205,22 @@
             <p>Beautiful alert, notification, confirm, and input dialogs</p>
 
             <div class="btn-group">
-                <button class="demo-btn primary" onclick="sfUI.alert.alert('This is a simple alert!')">
+                <button class="demo-btn primary" onclick="sfUI.alert.sfAlert('This is a simple alert!')">
                     Simple Alert
                 </button>
-                <button class="demo-btn info" onclick="sfUI.alert.noti('This is a notification message')">
+                <button class="demo-btn info" onclick="sfUI.alert.sfNoti('This is a notification message')">
                     Notification
                 </button>
-                <button class="demo-btn success" onclick="sfUI.alert.confirm('Are you sure?', () => sfUI.alert.noti('Yes clicked!'), () => sfUI.alert.noti('No clicked!'))">
-                    Confirm Dialog
+                <button class="demo-btn success" onclick="sfUI.alert.sfConfirm('Are you sure?', () => sfUI.alert.sfNoti('Yes clicked!'), () => sfUI.alert.sfNoti('No clicked!'))">
+                    Confirm (Callback)
                 </button>
-                <button class="demo-btn warning" onclick="sfUI.alert.inputConfirm('Enter your name:', (value) => sfUI.alert.noti('Hello, ' + value + '!'))">
+                <button class="demo-btn success" onclick="testConfirmPromise()">
+                    Confirm (Promise)
+                </button>
+                <button class="demo-btn primary" onclick="testInlineIf()">
+                    Inline If Statement
+                </button>
+                <button class="demo-btn warning" onclick="sfUI.alert.sfInputConfirm('Enter your name:', (value) => sfUI.alert.sfNoti('Hello, ' + value + '!'))">
                     Input Dialog
                 </button>
                 <button class="demo-btn danger" onclick="sfUI.alert.alertBack('This will go back!')">
@@ -223,9 +229,14 @@
             </div>
 
             <div class="code-block">
-                <code>sfUI.alert.alert('Hello World!');</code><br>
-                <code>sfUI.alert.confirm('Sure?', yesCallback, noCallback);</code><br>
-                <code>sfUI.alert.inputConfirm('Name?', callback);</code>
+                <code>sfUI.alert.sfAlert('Hello World!');</code><br>
+                <code>// Callback style</code><br>
+                <code>sfUI.alert.sfConfirm('Sure?', yesCallback, noCallback);</code><br>
+                <code>// Promise style (like native confirm)</code><br>
+                <code>if (await sfUI.alert.sfConfirm('Sure?')) { ... }</code><br>
+                <code>// Inline if statement - most intuitive!</code><br>
+                <code>if (await confirm('Delete?')) { deleteItem(); }</code><br>
+                <code>sfUI.alert.sfInputConfirm('Name?', callback);</code>
             </div>
         </div>
 
@@ -395,7 +406,7 @@
                 <button class="demo-btn info" onclick="demoTheme()">
                     Get Theme
                 </button>
-                <button class="demo-btn warning" onclick="sfUI.setLanguage(sfUI.getLanguage() === 'ko' ? 'en' : 'ko'); sfUI.alert.noti('Language changed to ' + sfUI.getLanguage())">
+                <button class="demo-btn warning" onclick="sfUI.setLanguage(sfUI.getLanguage() === 'ko' ? 'en' : 'ko'); sfUI.alert.sfNoti('Language changed to ' + sfUI.getLanguage())">
                     Toggle Language
                 </button>
                 <button class="demo-btn secondary" onclick="toggleTheme()">
@@ -457,6 +468,46 @@
             });
         });
 
+        // Alert Examples
+        async function testConfirmPromise() {
+            const result = await sfUI.alert.sfConfirm('Delete this item?');
+            if (result) {
+                sfUI.alert.sfNoti('✓ Item deleted!');
+            } else {
+                sfUI.alert.sfNoti('✗ Cancelled');
+            }
+        }
+
+        // Inline if statement examples - just like native confirm!
+        async function testInlineIf() {
+            // Simple inline if
+            if (await sfUI.alert.sfConfirm('Proceed with action?')) {
+                sfUI.alert.sfNoti('✓ Action confirmed!');
+            }
+        }
+
+        async function deleteWithInlineCheck() {
+            // Can use directly in if conditions
+            if (await confirm('Delete this file permanently?')) {
+                console.log('Deleting file...');
+                sfUI.alert.sfNoti('File deleted!');
+            } else {
+                console.log('Delete cancelled');
+            }
+        }
+
+        async function saveBeforeExit() {
+            // More complex example with inline check
+            if (await sfUI.alert.sfConfirm('Save changes before closing?')) {
+                // Save logic
+                console.log('Saving...');
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                sfUI.alert.sfNoti('Saved successfully!');
+                return true;
+            }
+            return false;
+        }
+
         // Modal Examples
         function showSimpleModal() {
             const modal = sfUI.modal.create('simpleModal', {
@@ -496,10 +547,10 @@
                         callback: function() {
                             const form = document.getElementById('contactForm');
                             if (form.checkValidity()) {
-                                sfUI.alert.noti('Form submitted successfully!');
+                                sfUI.alert.sfNoti('Form submitted successfully!');
                                 modal.hide();
                             } else {
-                                sfUI.alert.alert('Please fill in all fields');
+                                sfUI.alert.sfAlert('Please fill in all fields');
                             }
                         }
                     }
@@ -531,17 +582,17 @@
         // Utility Demos
         function demoFormatNumber() {
             const formatted = sfUI.formatNumber(1234567.89, 2, '.', ',');
-            sfUI.alert.noti(`Formatted: ${formatted}`);
+            sfUI.alert.sfNoti(`Formatted: ${formatted}`);
         }
 
         function demoShortNumber() {
             const short = sfUI.formatNumberShort(1500000);
-            sfUI.alert.noti(`Short form: ${short}`);
+            sfUI.alert.sfNoti(`Short form: ${short}`);
         }
 
         function demoTheme() {
             const theme = sfUI.getTheme();
-            sfUI.alert.noti(`Current theme: ${theme}`);
+            sfUI.alert.sfNoti(`Current theme: ${theme}`);
         }
 
         // Range slider event listener
@@ -627,7 +678,7 @@
 
         function demoSidebarModes() {
             if (!demoSidebar) {
-                sfUI.alert.alert('Please create a sidebar demo first!');
+                sfUI.alert.sfAlert('Please create a sidebar demo first!');
                 return;
             }
 
@@ -637,18 +688,18 @@
             const nextMode = modes[(currentIndex + 1) % modes.length];
 
             demoSidebar.setMode(nextMode);
-            sfUI.alert.noti(`Mode changed to: ${nextMode}`);
+            sfUI.alert.sfNoti(`Mode changed to: ${nextMode}`);
         }
 
         function demoSidebarLock() {
             if (!demoSidebar) {
-                sfUI.alert.alert('Please create a sidebar demo first!');
+                sfUI.alert.sfAlert('Please create a sidebar demo first!');
                 return;
             }
 
             demoSidebar.toggleLock();
             const isLocked = demoSidebar.isLocked();
-            sfUI.alert.noti(`Sidebar ${isLocked ? 'locked' : 'unlocked'}`);
+            sfUI.alert.sfNoti(`Sidebar ${isLocked ? 'locked' : 'unlocked'}`);
         }
     </script>
 </body>

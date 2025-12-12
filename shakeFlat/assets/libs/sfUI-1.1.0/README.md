@@ -36,20 +36,20 @@ Responsive sidebar menu component with full, mini, and hide modes.
 
 ```html
 <!-- CSS -->
-<link rel="stylesheet" href="/shakeFlat/assets/libs/sfUI-1.0.0/dist/sfui.css">
+<link rel="stylesheet" href="/shakeFlat/assets/libs/sfUI-1.1.0/dist/sfui.css">
 
 <!-- JavaScript -->
-<script src="/shakeFlat/assets/libs/sfUI-1.0.0/dist/sfui.js"></script>
+<script src="/shakeFlat/assets/libs/sfUI-1.1.0/dist/sfui.js"></script>
 ```
 
 ### Manual Installation
 
-1. Copy the `sfUI-1.0.0` folder to your project
+1. Copy the `sfUI-1.1.0` folder to your project
 2. Include the CSS and JS files in your HTML
 
 ```html
-<link rel="stylesheet" href="path/to/sfUI-1.0.0/dist/sfui.css">
-<script src="path/to/sfUI-1.0.0/dist/sfui.js"></script>
+<link rel="stylesheet" href="path/to/sfUI-1.1.0/dist/sfui.css">
+<script src="path/to/sfUI-1.1.0/dist/sfui.js"></script>
 ```
 
 ## Usage
@@ -68,11 +68,64 @@ sfUI.alert.alert('Message', function() {
 // Notification
 sfUI.alert.noti('Information message');
 
-// Confirm dialog
+// Confirm dialog - Callback style (backward compatible)
 sfUI.alert.confirm('Are you sure?',
     function() { console.log('Yes clicked'); },
     function() { console.log('No clicked'); }
 );
+
+// Confirm dialog - Promise style (like native JavaScript confirm)
+if (await sfUI.alert.confirm('Are you sure?')) {
+    console.log('Yes clicked');
+} else {
+    console.log('No clicked');
+}
+
+// Confirm dialog - Synchronous style (NO AWAIT NEEDED!)
+// Method 1: Use confirmSync() - works exactly like native confirm()
+if (sfUI.alert.confirmSync('Are you sure?')) {
+    console.log('Yes clicked');
+} else {
+    console.log('No clicked');
+}
+
+// Method 2: Enable native confirm globally
+sfUI.alert.useNativeConfirm = true;
+if (confirm('Delete this item?')) {  // No await needed!
+    deleteItem();
+}
+
+// Method 3: Use the global wrapper
+if (confirmSync('Are you sure?')) {  // No await needed!
+    console.log('Confirmed');
+}
+
+// Inline if statement - Just like native confirm!
+async function deleteItem() {
+    if (await confirm('Delete this item?')) {
+        // Delete logic here
+        console.log('Item deleted');
+    }
+}
+
+// More complex inline example
+async function saveChanges() {
+    // Can be used directly in conditions
+    const shouldSave = await sfUI.alert.confirm('Save changes before exit?');
+    if (shouldSave) {
+        await saveData();
+        sfUI.alert.noti('Changes saved!');
+    }
+}
+
+// Or with .then()
+sfUI.alert.confirm('Delete this item?').then(result => {
+    if (result) {
+        console.log('Confirmed - deleting...');
+    } else {
+        console.log('Cancelled');
+    }
+});
 
 // Input dialog
 sfUI.alert.inputConfirm('Enter your name:', function(value) {
@@ -81,7 +134,9 @@ sfUI.alert.inputConfirm('Enter your name:', function(value) {
 
 // Legacy compatibility
 alert('This still works!');
-confirm('Confirm?', yesCallback, noCallback);
+confirm('Confirm?', yesCallback, noCallback);  // Callback style
+// Or Promise style
+if (await confirm('Confirm?')) { /* ... */ }
 ```
 
 ### Modal
@@ -651,7 +706,7 @@ You can safely use sfUI alongside Bootstrap without conflicts:
 ## Building from Source
 
 ```bash
-cd /path/to/sfUI-1.0.0
+cd /path/to/sfUI-1.1.0
 chmod +x build.sh
 ./build.sh
 ```
@@ -685,7 +740,7 @@ Developed by the ShakeFlat Team
 
 ## Changelog
 
-### Version 1.0.0 (2025-10-27)
+### Version 1.1.0 (2025-10-27)
 - Initial release
 - Migrated from jQuery to vanilla JavaScript
 - Unified all components under sfUI namespace

@@ -1,6 +1,6 @@
 /**
  * ShakeFlat DataTables JavaScript Library
- * Version: 2.0.0
+ * Version: 2.0.1
  */
 
 // 오류 모드 설정: 예외 던지기
@@ -166,16 +166,29 @@ function sfdtNumberRenderer() {
  * @param {object} table - DataTable 인스턴스
  */
 function sfdtSendAjax(action, data, successMsg, onSuccess, table) {
-    $.ajax({
-        url: window.location.pathname,
-        type: 'POST',
-        data: Object.assign({sfdtAction: action}, data),
-        dataType: 'json',
-        success: function(response) {
-            // Response 구조: {common: {...}, error: {errCode, errMsg}, data: {...}}
+    // sfAjax 로딩 체크
+    if (typeof sfAjax !== 'function') {
+        console.error('sfAjax is not loaded. Please include sfAjax.js before sf-datatables.js');
+        alert('sfAjax 라이브러리가 로딩되지 않았습니다. 페이지를 새로고침하거나 관리자에게 문의하세요.');
+        return;
+    }
+
+    // 요청 데이터 구성
+    const requestData = Object.assign({sfdtAction: action}, data);
+
+    // sfAjax를 사용하여 요청
+    sfAjax(
+        window.location.pathname,
+        requestData,
+        function(response) {
+            // 성공 콜백
             const resData = response.data || {};
             if (resData.success) {
-                noti(successMsg);
+                if (typeof noti === 'function') {
+                    noti(successMsg);
+                } else {
+                    alert(successMsg);
+                }
                 if (onSuccess) onSuccess();
                 if (table) table.ajax.reload();
             } else {
@@ -183,12 +196,16 @@ function sfdtSendAjax(action, data, successMsg, onSuccess, table) {
                 alert(resData.message || action + ' 실패');
             }
         },
-        error: function(jqXHR, textStatus, errorThrown) {
+        function(error) {
+            // 에러 콜백
+            console.error("AJAX error:", error);
             alert('서버 오류가 발생했습니다.');
-            console.error("AJAX error:", textStatus, errorThrown);
-            console.log("jqXHR:", jqXHR);
+        },
+        null,
+        {
+            responseMode: 'shakeFlat'
         }
-    });
+    );
 }
 
 /**

@@ -1,6 +1,6 @@
 {
   "name": "sfui",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Unified UI Component Library - A collection of vanilla JavaScript UI components",
   "main": "dist/sfui.js",
   "style": "dist/sfui.css",

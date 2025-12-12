@@ -1,7 +1,7 @@
 /**
  * sfUI Main Module
  * Main sfUI object that aggregates all components
- * @version 1.0.0
+ * @version 1.1.0
  */
 
 // Create main sfUI object
@@ -27,7 +27,7 @@ const sfUI = {
     sidebar: sfUISidebar,
 
     // Version
-    version: '1.0.0'
+    version: '1.1.0'
 };
 
 // Auto-initialize on DOM ready

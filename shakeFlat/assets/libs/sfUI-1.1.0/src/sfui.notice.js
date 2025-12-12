@@ -1,7 +1,7 @@
 /**
  * sfUI Notice Board Component
  * Notice board web component for displaying messages with different styles
- * @version 1.0.0
+ * @version 1.1.0
  */
 
 class SFUINoticeBoard extends HTMLElement {

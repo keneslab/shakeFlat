@@ -39,7 +39,7 @@ body, html { width:100%; height:100%!important; font-family:'Pretendard GOV Vari
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('frm').addEventListener('submit', function(e) {
         e.preventDefault();
-        callAjax(
+        sfAjax(
             "/auth/login-ok",
             {
                 login: document.getElementById('login').value,

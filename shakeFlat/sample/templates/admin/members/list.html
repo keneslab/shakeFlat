@@ -29,8 +29,8 @@
 <script src="/assets/libs/datatables-2.3.4/i18n/pdf-ko.js"></script>
 
 <!-- ShakeFlat DataTables CSS/JS -->
-<link rel="stylesheet" href="/assets/libs/sf-datatables-2.0.0/sf-datatables.css">
-<script src="/assets/libs/sf-datatables-2.0.0/sf-datatables.js"></script>
+<link rel="stylesheet" href="/assets/libs/sf-datatables-2.0.1/sf-datatables.css">
+<script src="/assets/libs/sf-datatables-2.0.1/sf-datatables.js"></script>
 
 <!-- 페이지 컨텐츠 -->
 <div class="container-fluid">
@@ -731,7 +731,7 @@ $(document).ready(function() {
     sfdtInitTable('memberslisttable', sfdtOptions_memberslisttable);
 
 
-    
+
     // 추가 버튼 클릭
     $(document).on('click', '#sfdt-memberslisttable-btn-add', function() {
         $('#sfdt-memberslisttable-form-add')[0].reset();
@@ -772,7 +772,7 @@ $(document).ready(function() {
             field_password_confirm.setCustomValidity('');
         }
     });
-    
+
     // 상세보기 버튼 클릭
     $(document).on('click', '#memberslisttable .sfdt-btn-view-memberslisttable', function() {
         const pkValue = $(this).data('member_id');
@@ -824,7 +824,7 @@ $(document).ready(function() {
             console.error('Ajax error:', textStatus, errorThrown);
         });
     });
-    
+
     // 수정 버튼 클릭
     $(document).on('click', '#memberslisttable .sfdt-btn-modify-memberslisttable', function() {
         const pkValue = $(this).data('member_id');
@@ -887,7 +887,7 @@ $(document).ready(function() {
             $('#sfdt-memberslisttable-modal-modify').modal('hide');
         }, window.sfdtTables['memberslisttable']);
     });
-    
+
     // 삭제 버튼 클릭
     $(document).on('click', '#memberslisttable .sfdt-btn-delete-memberslisttable', function() {
         const sfdtData = window.sfdtTables['memberslisttable'].row($(this).parents('tr')).data();
@@ -909,7 +909,7 @@ $(document).ready(function() {
             }
         });
     });
-    
+
     // Inputmask 초기화
     Inputmask('999-9999-9999').mask('#sfdt-memberslisttable-add-phone');
     Inputmask('99999').mask('#sfdt-memberslisttable-add-postal_code');

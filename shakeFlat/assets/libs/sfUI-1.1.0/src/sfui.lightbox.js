@@ -1,7 +1,7 @@
 /**
  * sfUI LightBox Module
  * Image lightbox gallery with navigation
- * @version 1.0.0
+ * @version 1.1.0
  */
 
 class SfUILightBox {

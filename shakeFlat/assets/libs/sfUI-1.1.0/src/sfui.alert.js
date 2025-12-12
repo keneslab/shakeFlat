@@ -1,7 +1,7 @@
 /**
  * sfUI Alert Module
  * Alert, Notification, Confirm, and Input dialogs
- * @version 1.0.0
+ * @version 1.1.0
  */
 
 class SfUIAlert {
@@ -13,7 +13,7 @@ class SfUIAlert {
     /**
      * Show alert dialog
      */
-    alert(message, callback = null) {
+    sfAlert(message, callback = null) {
         return this.show({
             type: 'alert',
             messageText: message,
@@ -25,7 +25,7 @@ class SfUIAlert {
     /**
      * Show alert and go back
      */
-    alertBack(message) {
+    sfAlertBack(message) {
         return this.show({
             type: 'alert',
             messageText: message,
@@ -37,7 +37,7 @@ class SfUIAlert {
     /**
      * Show alert and redirect
      */
-    alertJump(message, url) {
+    sfAlertJump(message, url) {
         return this.show({
             type: 'alert',
             messageText: message,
@@ -49,7 +49,7 @@ class SfUIAlert {
     /**
      * Show notification
      */
-    noti(message, callback = null) {
+    sfNoti(message, callback = null) {
         return this.show({
             type: 'alert',
             messageText: message,
@@ -61,7 +61,7 @@ class SfUIAlert {
     /**
      * Show notification and go back
      */
-    notiBack(message) {
+    sfNotiBack(message) {
         return this.show({
             type: 'alert',
             messageText: message,
@@ -73,7 +73,7 @@ class SfUIAlert {
     /**
      * Show notification and redirect
      */
-    notiJump(message, url) {
+    sfNotiJump(message, url) {
         return this.show({
             type: 'alert',
             messageText: message,
@@ -84,8 +84,28 @@ class SfUIAlert {
 
     /**
      * Show confirmation dialog
+     *
+     * Usage 1 - Callback style:
+     *   sfConfirm('Are you sure?', () => { console.log('yes'); }, () => { console.log('no'); });
+     *
+     * Usage 2 - Promise style:
+     *   if (await sfConfirm('Are you sure?')) { console.log('yes'); } else { console.log('no'); }
+     *   // or
+     *   sfConfirm('Are you sure?').then(result => { if (result) { ... } });
      */
-    confirm(message, yesCallback = null, noCallback = null) {
+    sfConfirm(message, yesCallback = null, noCallback = null) {
+        // If no callbacks provided, return Promise for async/await usage
+        if (yesCallback === null && noCallback === null) {
+            return this.show({
+                type: 'confirm',
+                messageText: message,
+                alertType: 'success',
+                yesCallback: null,
+                noCallback: null
+            });
+        }
+
+        // Callback style - execute callbacks and return Promise
         return this.show({
             type: 'confirm',
             messageText: message,
@@ -98,7 +118,7 @@ class SfUIAlert {
     /**
      * Show input dialog
      */
-    inputConfirm(message, callback = null, options = {}) {
+    sfInputConfirm(message, callback = null, options = {}) {
         return this.show({
             type: 'input',
             messageText: message,
@@ -136,7 +156,7 @@ class SfUIAlert {
                 inputPlaceholder: '',
                 inputType: 'text',
                 inputDefault: '',
-                closeOnBackdropClick: true  // 배경 클릭 시 닫기 기능 옵션
+                closeOnBackdropClick: true
             };
 
             const settings = { ...defaults, ...options };
@@ -489,13 +509,13 @@ class SfUIAlert {
 // Export singleton instance
 const sfUIAlert = new SfUIAlert();
 
-// Legacy function wrappers for backward compatibility
-function alert(msg) { return sfUIAlert.alert(msg); }
-function alertJump(msg, url) { return sfUIAlert.alertJump(msg, url); }
-function alertBack(msg) { return sfUIAlert.alertBack(msg); }
-function alertCallback(msg, callback) { return sfUIAlert.alert(msg, callback); }
-function noti(msg) { return sfUIAlert.noti(msg); }
-function notiJump(msg, url) { return sfUIAlert.notiJump(msg, url); }
-function notiBack(msg) { return sfUIAlert.notiBack(msg); }
-function confirm(msg, callback, noCallback) { return sfUIAlert.confirm(msg, callback, noCallback); }
-function inputConfirm(msg, callback) { return sfUIAlert.inputConfirm(msg, callback); }
+// Global wrapper functions
+function sfAlert(msg, callback) { return sfUIAlert.sfAlert(msg, callback); }
+function sfAlertJump(msg, url) { return sfUIAlert.sfAlertJump(msg, url); }
+function sfAlertBack(msg) { return sfUIAlert.sfAlertBack(msg); }
+function sfNoti(msg, callback) { return sfUIAlert.sfNoti(msg, callback); }
+function sfNotiJump(msg, url) { return sfUIAlert.sfNotiJump(msg, url); }
+function sfNotiBack(msg) { return sfUIAlert.sfNotiBack(msg); }
+function sfConfirm(msg, yesCallback, noCallback) { return sfUIAlert.sfConfirm(msg, yesCallback, noCallback); }
+function sfInputConfirm(msg, callback, options) { return sfUIAlert.sfInputConfirm(msg, callback, options); }
+

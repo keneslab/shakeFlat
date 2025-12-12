@@ -13,8 +13,8 @@
 <script src="/assets/libs/datatables-2.3.4/i18n/pdf-ko.js"></script>
 
 <!-- ShakeFlat DataTables CSS/JS -->
-<link rel="stylesheet" href="/assets/libs/sf-datatables-2.0.0/sf-datatables.css">
-<script src="/assets/libs/sf-datatables-2.0.0/sf-datatables.js"></script>
+<link rel="stylesheet" href="/assets/libs/sf-datatables-2.0.1/sf-datatables.css">
+<script src="/assets/libs/sf-datatables-2.0.1/sf-datatables.js"></script>
 
 <!-- 페이지 컨텐츠 -->
 <div class="container-fluid">

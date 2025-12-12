@@ -83,7 +83,7 @@ shakeFlat은 다음과 같은 강력한 라이브러리를 포함하고 있습�
 - **Bootstrap 5.3.3**: 반응형 UI 프레임워크
 - **jQuery 3.7.1**: JavaScript 라이브러리
 - **DataTables 2.3.4**: 고급 테이블 기능
-- **sfUI 1.0.0**: 커스텀 UI 컴포넌트 (Alert, Modal, Sidebar, LightBox 등)
+- **sfUI 1.1.0**: 커스텀 UI 컴포넌트 (Alert, Modal, Sidebar, LightBox 등)
 - **Choices.js**: 향상된 Select 박스
 - **Flatpickr**: 날짜/시간 선택기
 - **Font Awesome**: 아이콘 라이브러리
