@@ -416,55 +416,26 @@ class sfAjax {
     }
 }
 
-// Create default instance
-const sfAjaxInstance = new sfAjax();
+// Create default instance and export convenience methods
+const $sfAjax = new sfAjax();
 
 // Export convenience functions for backward compatibility
-/**
- * Configure global sfAjax instance
- * @param {Partial<SfAjaxConfig>} config
- */
 function configureSfAjax(config) {
-    sfAjaxInstance.configure(config);
+    $sfAjax.configure(config);
 }
 
-/**
- * Register error handler on global instance
- * @param {number} errCode
- * @param {Function} handler
- */
 function registerErrorHandler(errCode, handler) {
-    sfAjaxInstance.registerErrorHandler(errCode, handler);
+    $sfAjax.registerErrorHandler(errCode, handler);
 }
 
-/**
- * Unregister error handler on global instance
- * @param {number} errCode
- */
 function unregisterErrorHandler(errCode) {
-    sfAjaxInstance.unregisterErrorHandler(errCode);
+    $sfAjax.unregisterErrorHandler(errCode);
 }
 
-/**
- * Ajax request using global instance
- * @param {string} url
- * @param {string|HTMLElement|FormData|Object} frm
- * @param {Function} successCallback
- * @param {Function|null} errorCallback
- * @param {any} context
- * @param {Object} options
- */
-async function sfAjax(url, frm, successCallback, errorCallback = null, context = null, options = {}) {
-    return sfAjaxInstance.request(url, frm, successCallback, errorCallback, context, options);
+function sfAjaxRequest(url, frm, successCallback, errorCallback = null, context = null, options = {}) {
+    return $sfAjax.request(url, frm, successCallback, errorCallback, context, options);
 }
 
-/**
- * Synchronous Ajax request using global instance
- * @param {string} url
- * @param {string|HTMLElement|FormData|Object} frm
- * @param {Object} options
- * @returns {Promise<Object|boolean>}
- */
-async function sfAjaxSync(url, frm, options = {}) {
-    return sfAjaxInstance.requestSync(url, frm, options);
+function sfAjaxSync(url, frm, options = {}) {
+    return $sfAjax.requestSync(url, frm, options);
 }
