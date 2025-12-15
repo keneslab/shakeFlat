@@ -7,6 +7,40 @@
 $.fn.dataTable.ext.errMode = 'throw';
 
 /**
+ * sfUI 함수 사용 가능 여부 체크
+ * @returns {boolean}
+ */
+function _sfdtIsSfUIAvailable() {
+    return typeof sfAlert === 'function' ||
+           typeof sfNoti === 'function' ||
+           typeof sfConfirm === 'function';
+}
+
+/**
+ * Alert 표시 (sfAlert 또는 기본 alert)
+ * @param {string} message
+ */
+function _sfdtShowAlert(message) {
+    if (_sfdtIsSfUIAvailable() && typeof sfAlert === 'function') {
+        sfAlert(message);
+    } else {
+        alert(message);
+    }
+}
+
+/**
+ * 알림 표시 (sfNoti 또는 기본 alert)
+ * @param {string} message
+ */
+function _sfdtShowNoti(message) {
+    if (_sfdtIsSfUIAvailable() && typeof sfNoti === 'function') {
+        sfNoti(message);
+    } else {
+        alert(message);
+    }
+}
+
+/**
  * 모달 aria-hidden 에러 방지
  * 모달이 닫힐 때 포커스된 요소의 포커스를 제거하여 aria-hidden 경고 방지
  */
@@ -64,10 +98,10 @@ function sfdtHandleAjaxResponse(json, textStatus, jqXHR, callback, data) {
         // 에러 코드 확인
         if (json.error.errCode !== 0) {
             if ('errUrl' in json.error && json.error.errUrl) {
-                alert(json.error.errMsg);
+                _sfdtShowAlert(json.error.errMsg);
                 window.location.href = json.error.errUrl;
             } else {
-                alert(json.error.errMsg);
+                _sfdtShowAlert(json.error.errMsg);
             }
             callback({ draw: data.draw, recordsTotal: 0, recordsFiltered: 0, data: [] });
             return;
@@ -81,7 +115,7 @@ function sfdtHandleAjaxResponse(json, textStatus, jqXHR, callback, data) {
 
         callback(json.data);
     } catch (e) {
-        alert("서버가 잘못된 응답을 하였습니다. 잠시 후 다시 시도해보세요.");
+        _sfdtShowAlert("서버가 잘못된 응답을 하였습니다. 잠시 후 다시 시도해보세요.");
         console.error("ajax page returns data in wrong:", e);
         console.log("json:", json);
         console.log("textStatus:", textStatus);
@@ -99,7 +133,7 @@ function sfdtHandleAjaxResponse(json, textStatus, jqXHR, callback, data) {
  * @param {object} data - 요청 데이터 (draw 값 포함)
  */
 function sfdtHandleAjaxError(jqXHR, textStatus, errorThrown, callback, data) {
-    alert("서버와의 통신이 원활하지 않습니다. 잠시 후 다시 시도해보세요.");
+    _sfdtShowAlert("서버와의 통신이 원활하지 않습니다. 잠시 후 다시 시도해보세요.");
     console.error("ajax fail");
     console.log("textStatus:", textStatus);
     console.log("jqXHR:", jqXHR);
@@ -167,39 +201,35 @@ function sfdtNumberRenderer() {
  */
 function sfdtSendAjax(action, data, successMsg, onSuccess, table) {
     // sfAjax 로딩 체크
-    if (typeof sfAjax !== 'function') {
+    if (typeof sfAjaxRequest !== 'function') {
         console.error('sfAjax is not loaded. Please include sfAjax.js before sf-datatables.js');
-        alert('sfAjax 라이브러리가 로딩되지 않았습니다. 페이지를 새로고침하거나 관리자에게 문의하세요.');
+        _sfdtShowAlert('sfAjax 라이브러리가 로딩되지 않았습니다. 페이지를 새로고침하거나 관리자에게 문의하세요.');
         return;
     }
 
     // 요청 데이터 구성
     const requestData = Object.assign({sfdtAction: action}, data);
 
-    // sfAjax를 사용하여 요청
-    sfAjax(
+    // sfAjaxRequest를 사용하여 요청
+    sfAjaxRequest(
         window.location.pathname,
         requestData,
         function(response) {
             // 성공 콜백
             const resData = response.data || {};
             if (resData.success) {
-                if (typeof noti === 'function') {
-                    noti(successMsg);
-                } else {
-                    alert(successMsg);
-                }
+                _sfdtShowNoti(successMsg);
                 if (onSuccess) onSuccess();
                 if (table) table.ajax.reload();
             } else {
                 console.log('AJAX error response:', response);
-                alert(resData.message || action + ' 실패');
+                _sfdtShowAlert(resData.message || action + ' 실패');
             }
         },
         function(error) {
             // 에러 콜백
             console.error("AJAX error:", error);
-            alert('서버 오류가 발생했습니다.');
+            _sfdtShowAlert('서버 오류가 발생했습니다.');
         },
         null,
         {
