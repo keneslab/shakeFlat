@@ -296,7 +296,6 @@ function handleAddAction()
     ];
     $db->query($sql, $bind);
     $res->success = true;
-    $res->message = '추가되었습니다.';
     */
 
     $res->success = false;
@@ -328,7 +327,7 @@ function handleModifyAction()
             if (!in_array($val, ['sports', 'music', 'movie', 'book'])) sfLogExit("[:The value of parameter interests is invalid:]");
         }
     }
-    $param->checkKey('agree_privacy', Param::TYPE_STRING);
+    $param->check('agree_privacy', Param::TYPE_STRING);
     $param->checkKey('city', Param::TYPE_STRING);
     $param->checkKey('postal_code', Param::TYPE_STRING);
     $param->checkKey('country', Param::TYPE_STRING);
@@ -384,7 +383,6 @@ function handleModifyAction()
     ];
     $db->query($sql, $bind);
     $res->success = true;
-    $res->message = '수정되었습니다.';
     */
 
     $res->success = false;

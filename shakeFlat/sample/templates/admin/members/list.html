@@ -618,7 +618,7 @@ $(document).ready(function() {
                     },
                     {
                         extend: 'pdf',
-                        filename: '샘플 회원 목록(2025-11-27)',
+                        filename: '샘플 회원 목록(2025-12-15)',
                         action: sfdtExportAction,
                         title: '샘플 회원 목록',
                         exportOptions: { columns: ':visible:not(.sfdt-no-export)' },
@@ -655,7 +655,7 @@ $(document).ready(function() {
                     },
                     {
                         extend: 'excel',
-                        filename: '샘플 회원 목록(2025-11-27)',
+                        filename: '샘플 회원 목록(2025-12-15)',
                         action: sfdtExportAction,
                         title: '',
                         exportOptions: { columns: ':visible:not(.sfdt-no-export)' }
@@ -731,7 +731,7 @@ $(document).ready(function() {
     sfdtInitTable('memberslisttable', sfdtOptions_memberslisttable);
 
 
-
+    
     // 추가 버튼 클릭
     $(document).on('click', '#sfdt-memberslisttable-btn-add', function() {
         $('#sfdt-memberslisttable-form-add')[0].reset();
@@ -772,7 +772,7 @@ $(document).ready(function() {
             field_password_confirm.setCustomValidity('');
         }
     });
-
+    
     // 상세보기 버튼 클릭
     $(document).on('click', '#memberslisttable .sfdt-btn-view-memberslisttable', function() {
         const pkValue = $(this).data('member_id');
@@ -824,7 +824,7 @@ $(document).ready(function() {
             console.error('Ajax error:', textStatus, errorThrown);
         });
     });
-
+    
     // 수정 버튼 클릭
     $(document).on('click', '#memberslisttable .sfdt-btn-modify-memberslisttable', function() {
         const pkValue = $(this).data('member_id');
@@ -887,29 +887,19 @@ $(document).ready(function() {
             $('#sfdt-memberslisttable-modal-modify').modal('hide');
         }, window.sfdtTables['memberslisttable']);
     });
-
+    
     // 삭제 버튼 클릭
     $(document).on('click', '#memberslisttable .sfdt-btn-delete-memberslisttable', function() {
         const sfdtData = window.sfdtTables['memberslisttable'].row($(this).parents('tr')).data();
 
-        sfui.confirm({
-            title: '삭제 확인',
-            content: '정말 삭제하시겠습니까?',
-            buttons: {
-                confirm: {
-                    text: '삭제',
-                    btnClass: 'btn-danger',
-                    action: function() {
-                        sfdtSendAjax('delete', {member_id: sfdtData.member_id}, '삭제되었습니다.', null, window.sfdtTables['memberslisttable']);
-                    }
-                },
-                cancel: {
-                    text: '취소'
-                }
+        confirm(
+            '정말 삭제하시겠습니까?',
+            function() {
+                sfdtSendAjax('delete', {member_id: sfdtData.member_id}, '삭제되었습니다.', null, window.sfdtTables['memberslisttable']);
             }
-        });
+        );
     });
-
+    
     // Inputmask 초기화
     Inputmask('999-9999-9999').mask('#sfdt-memberslisttable-add-phone');
     Inputmask('99999').mask('#sfdt-memberslisttable-add-postal_code');

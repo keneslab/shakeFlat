@@ -218,6 +218,7 @@ class CodeGenerator
 
             // checkbox 배열 타입 처리 (하나도 체크 안 되면 파라미터가 전달되지 않음)
             $isCheckboxArray = ($field['type'] === 'checkbox' && !empty($field['options']));
+            $isCheckboxSingle = ($field['type'] === 'checkbox' && empty($field['options']));
 
             if ($isCheckboxArray) {
                 // checkbox 배열: 파라미터가 없어도 통과 (아무것도 체크 안 한 경우)
@@ -233,6 +234,14 @@ class CodeGenerator
                 $validations[] = "            if (!in_array(\$val, [{$enumList}])) sfLogExit(\"[:The value of parameter {$alias} is invalid:]\");";
                 $validations[] = "        }";
                 $validations[] = "    }";
+            } else if ($isCheckboxSingle) {
+                // 단일 checkbox: required이면 checkKeyValue, 아니면 check만 사용
+                // 체크되지 않으면 파라미터가 전달되지 않음
+                if (!empty($field['required'])) {
+                    $validations[] = "    \$param->checkKeyValue('{$alias}', Param::{$paramType});";
+                } else {
+                    $validations[] = "    \$param->check('{$alias}', Param::{$paramType});";
+                }
             } else {
                 // 일반 필드: options가 있으면 enum으로 전달
                 $enumPart = '';
@@ -265,6 +274,7 @@ class CodeGenerator
 
             // checkbox 배열 타입 처리 (하나도 체크 안 되면 파라미터가 전달되지 않음)
             $isCheckboxArray = ($field['type'] === 'checkbox' && !empty($field['options']));
+            $isCheckboxSingle = ($field['type'] === 'checkbox' && empty($field['options']));
 
             if ($isCheckboxArray) {
                 // checkbox 배열: 파라미터가 없어도 통과 (아무것도 체크 안 한 경우)
@@ -280,6 +290,14 @@ class CodeGenerator
                 $validations[] = "            if (!in_array(\$val, [{$enumList}])) sfLogExit(\"[:The value of parameter {$alias} is invalid:]\");";
                 $validations[] = "        }";
                 $validations[] = "    }";
+            } else if ($isCheckboxSingle) {
+                // 단일 checkbox: required이면 checkKeyValue, 아니면 check만 사용
+                // 체크되지 않으면 파라미터가 전달되지 않음
+                if (!empty($field['required'])) {
+                    $validations[] = "    \$param->checkKeyValue('{$alias}', Param::{$paramType});";
+                } else {
+                    $validations[] = "    \$param->check('{$alias}', Param::{$paramType});";
+                }
             } else {
                 // 일반 필드: options가 있으면 enum으로 전달
                 $enumPart = '';
@@ -405,7 +423,6 @@ class CodeGenerator
     ];
     \$db->query(\$sql, \$bind);
     \$res->success = true;
-    \$res->message = '추가되었습니다.';
     */
 PHP;
     }
@@ -461,7 +478,6 @@ PHP;
     ];
     \$db->query(\$sql, \$bind);
     \$res->success = true;
-    \$res->message = '수정되었습니다.';
     */
 PHP;
     }
