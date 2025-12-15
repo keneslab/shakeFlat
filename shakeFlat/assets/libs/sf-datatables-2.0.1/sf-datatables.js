@@ -201,7 +201,7 @@ function sfdtNumberRenderer() {
  */
 function sfdtSendAjax(action, data, successMsg, onSuccess, table) {
     // sfAjax 로딩 체크
-    if (typeof sfAjaxRequest !== 'function') {
+    if (typeof sfAjax !== 'function') {
         console.error('sfAjax is not loaded. Please include sfAjax.js before sf-datatables.js');
         _sfdtShowAlert('sfAjax 라이브러리가 로딩되지 않았습니다. 페이지를 새로고침하거나 관리자에게 문의하세요.');
         return;
@@ -211,7 +211,7 @@ function sfdtSendAjax(action, data, successMsg, onSuccess, table) {
     const requestData = Object.assign({sfdtAction: action}, data);
 
     // sfAjaxRequest를 사용하여 요청
-    sfAjaxRequest(
+    sfAjax(
         window.location.pathname,
         requestData,
         function(response) {
