@@ -223,7 +223,7 @@ function sfdtSendAjax(action, data, successMsg, onSuccess, table) {
                 if (table) table.ajax.reload();
             } else {
                 console.log('AJAX error response:', response);
-                _sfdtShowAlert(resData.message || action + ' 실패');
+                _sfdtShowAlert(resData.message || action + ' 작업에 실패 하였습니다. 관리자에게 문의 바랍니다.');
             }
         },
         function(error) {
