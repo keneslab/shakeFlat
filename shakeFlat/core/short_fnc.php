@@ -140,10 +140,10 @@ function sfLang($default = null)
 
 // Process accumulated logs with translation and display error, then terminate
 // Moved from L::_terminate() to make log.php independent from Template and Translation
-function sfLogTerminate($logMsg, $errCode = -1, $errUrl = null)
+function sfLogTerminate($logMsg, $errCode = -1, $errUrl = null, $isSystemError = false)
 {
     // Apply translation to the message
-    $message = sfLogTranslate($logMsg["message"]);
+    $message = sfLogTranslate($logMsg["message"], array("is_system_error" => $isSystemError));
     $context = $logMsg["context"] ?? array();
 
     if (SHAKEFLAT_ENV["config"]["display_error"] ?? false) {
@@ -163,7 +163,7 @@ function sfLogTerminate($logMsg, $errCode = -1, $errUrl = null)
             $context = null;
         }
     } else {
-        $message = sfLogTranslate(shakeFlat\L::defaultErrorMessage());
+        $message = sfLogTranslate(shakeFlat\L::defaultErrorMessage(), array("is_system_error" => $isSystemError));
         $context = null;
     }
 
@@ -182,9 +182,20 @@ function sfLogTerminate($logMsg, $errCode = -1, $errUrl = null)
 
 // Translate log messages using Translation class
 // Returns array or string with translations applied
-function sfLogTranslate($output)
+function sfLogTranslate($output, $options = array())
 {
     $translation = shakeFlat\Translation::getInstance();
+    $isSystemError = $options["is_system_error"] ?? false;
+
+    // System error messages: use independent system translation settings (no cache)
+    if ($isSystemError) {
+        if (is_array($output)) {
+            return json_decode($translation->convertSystemError(json_encode($output, JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE)), true);
+        }
+        return $translation->convertSystemError($output);
+    }
+
+    // User-defined translation: use existing translation settings with cache
     $lang = $translation->getTranslationLang();
 
     if ($lang) {
@@ -220,7 +231,7 @@ function sfProcessPendingLogs()
                 'context' => $log['context']
             );
 
-            sfLogTerminate($logMsg, $log['code'], $log['errUrl']);      // This function will exit the process
+            sfLogTerminate($logMsg, $log['code'], $log['errUrl'], $log['type'] === 'system');      // This function will exit the process
         }
     }
 

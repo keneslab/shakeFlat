@@ -19,6 +19,9 @@ class Translation
     private $needUpdate;
     private $allTable;
     private $translationLang;
+    private $systemTranslationFilePath;
+    private $systemTranslationEnabled;
+    private $systemTranslationLang;
 
     public static function getInstance()
     {
@@ -35,8 +38,11 @@ class Translation
         $this->cacheTable = [];
         $this->allTable = [];
         $this->translationLang = null;
+        $this->systemTranslationFilePath = __DIR__ . "/system_translation.json";
+        $this->systemTranslationEnabled = false;
+        $this->systemTranslationLang = null;
 
-        $this->setFilePathTranslation(__DIR__ . "/system_translation.json");
+        $this->setFilePathTranslation($this->systemTranslationFilePath);
         if (SHAKEFLAT_ENV["path"]["translation_file"] ?? false) $this->setFilePathTranslation(SHAKEFLAT_PATH . trim(SHAKEFLAT_ENV["path"]["translation_file"]));
         if (SHAKEFLAT_ENV["config"]["default_language"] ?? false) $this->setTranslationLang(SHAKEFLAT_ENV["config"]["default_language"]);
     }
@@ -79,6 +85,36 @@ class Translation
         return $this->translationLang;
     }
 
+    // --- System Translation (independent from user translation) ---
+
+    public function enableSystemTranslation()
+    {
+        $this->systemTranslationEnabled = true;
+        return $this;
+    }
+
+    public function disableSystemTranslation()
+    {
+        $this->systemTranslationEnabled = false;
+        return $this;
+    }
+
+    public function isSystemTranslationEnabled()
+    {
+        return $this->systemTranslationEnabled;
+    }
+
+    public function setSystemTranslationLang($lang = null)
+    {
+        $this->systemTranslationLang = $lang;
+        return $this;
+    }
+
+    public function getSystemTranslationLang()
+    {
+        return $this->systemTranslationLang;
+    }
+
     public function convert($output, $lang)
     {
         if (!$this->status) return $this->passing($output); // If translation is disabled, return the original output.
@@ -109,6 +145,29 @@ class Translation
                 $output = str_replace($match[0], $this->_L($match[2], $code, $lang), $output);
             }
         }
+        return $output;
+    }
+
+    public function convertSystemError($output, $lang = null)
+    {
+        if (!$this->systemTranslationEnabled) return $this->passing($output);
+        $lang = $lang ?: $this->systemTranslationLang;
+        if (!$lang) return $this->passing($output);
+        if (!$output) return "";
+
+        $systemTable = $this->loadTranslationTable($this->systemTranslationFilePath);
+
+        $pattern = '/\[:([a-z0-9]+:)?(.*?)\:\]/';
+        preg_match_all($pattern, $output, $matches, PREG_SET_ORDER);
+        if ($matches) {
+            foreach ($matches as $match) {
+                $code = "0";
+                if (isset($match[1]) && $match[1]) $code = rtrim($match[1], ":");
+                $translated = $this->translateFromTable($match[2], $code, $lang, $systemTable, false);
+                $output = str_replace($match[0], $translated, $output);
+            }
+        }
+
         return $output;
     }
 
@@ -143,32 +202,52 @@ class Translation
 
     private function _L($k, $code, $lang)
     {
-        if (!isset($this->cacheTable[$k][$code][$lang]) || IS_DEBUG) {
-            $re = $k;
-            if (!IS_DEBUG && isset($this->allTable[$k][$code][$lang])) {
-                $re = $this->allTable[$k][$code][$lang];
-            } else {
-                foreach($this->allTable as $str => $arr) {
-                    $str = str_replace(array("/", ")", "(", ","), array("\/", "\)", "\(", "\,"), $str);
-                    $str = str_replace(array("$1", "$2", "$3", "$4", "$5", "$6", "$7", "$8", "$9"), "([a-zA-Z0-9,\/ \(\)-_]*)", $str);
-                    $reg = preg_match_all("/^{$str}$/", $k, $match);
-                    if (isset($match[0]) && $match[0] && isset($arr[$code][$lang])) {
-                        $re = $arr[$code][$lang];
-                        for($i=1;$i<=9;$i++) {
-                            if (isset($match[$i][0])) {
-                                $re = str_replace("$".$i, $match[$i][0], $re);
-                            }
+        return $this->translateFromTable($k, $code, $lang, $this->allTable, true);
+    }
+
+    private function translateFromTable($k, $code, $lang, $table, $useCache)
+    {
+        if ($useCache && !IS_DEBUG && isset($this->cacheTable[$k][$code][$lang])) {
+            return $this->cacheTable[$k][$code][$lang];
+        }
+
+        $re = $k;
+        if (!IS_DEBUG && isset($table[$k][$code][$lang])) {
+            $re = $table[$k][$code][$lang];
+        } else {
+            foreach($table as $str => $arr) {
+                $str = str_replace(array("/", ")", "(", ","), array("\/", "\)", "\(", "\,"), $str);
+                $str = str_replace(array("$1", "$2", "$3", "$4", "$5", "$6", "$7", "$8", "$9"), "([a-zA-Z0-9,\/ \(\)-_]*)", $str);
+                $reg = preg_match_all("/^{$str}$/", $k, $match);
+                if (isset($match[0]) && $match[0] && isset($arr[$code][$lang])) {
+                    $re = $arr[$code][$lang];
+                    for($i=1;$i<=9;$i++) {
+                        if (isset($match[$i][0])) {
+                            $re = str_replace("$".$i, $match[$i][0], $re);
                         }
-                        break;
                     }
+                    break;
                 }
             }
+        }
 
+        if ($useCache) {
             $this->cacheTable[$k][$code][$lang] = $re;
             $this->needUpdate = true;
-            return $re;
         }
-        return $this->cacheTable[$k][$code][$lang];
+
+        return $re;
+    }
+
+    private function loadTranslationTable($filePath)
+    {
+        $json = @file_get_contents($filePath);
+        if ($json === false) return [];
+
+        $arr = json_decode($json, true);
+        if (!is_array($arr)) return [];
+
+        return $arr;
     }
 
     private function cacheFilepath($lang)

@@ -104,6 +104,29 @@ class App
         return $this;
     }
 
+    // --- System Translation (independent from user translation) ---
+
+    public function systemTranslationEnable()
+    {
+        $translation = Translation::getInstance();
+        $translation->enableSystemTranslation();
+        return $this;
+    }
+
+    public function systemTranslationDisable()
+    {
+        $translation = Translation::getInstance();
+        $translation->disableSystemTranslation();
+        return $this;
+    }
+
+    public function setSystemTranslationLang($lang = null)
+    {
+        $translation = Translation::getInstance();
+        $translation->setSystemTranslationLang($lang);
+        return $this;
+    }
+
     // Select the language to use when outputting results.
     // You need a translation file defined in translation session in config.ini.
     public function setTranslationLang($lang = null)

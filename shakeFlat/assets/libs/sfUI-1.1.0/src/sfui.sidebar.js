@@ -1055,7 +1055,7 @@ class SFSidebar extends HTMLElement {
                 /* Link styles */
                 a.menu-item,
                 a.submenu-item {
-                    color: inherit;
+                    color: var(--menu-text-color);
                     text-decoration: none;
                 }
             </style>

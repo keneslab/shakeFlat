@@ -1,6 +1,6 @@
 /*!
  * sfUI - Unified UI Component Library
- * Version 1.0.0
+ * Version 1.1.0
  * Copyright (c) 2025
  * Licensed under MIT
  */
@@ -4572,7 +4572,7 @@ class SFSidebar extends HTMLElement {
                 /* Link styles */
                 a.menu-item,
                 a.submenu-item {
-                    color: inherit;
+                    color: var(--menu-text-color);
                     text-decoration: none;
                 }
             </style>

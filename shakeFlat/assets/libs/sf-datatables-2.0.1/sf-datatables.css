@@ -241,7 +241,7 @@ textarea.sfdt-form-control {
     font-size: 0.875rem;
 }
 
-.sfdt-search-item input,
+.sfdt-search-item input:not([type="checkbox"]):not([type="radio"]):not(.btn-check),
 .sfdt-search-item select,
 .sfdt-search-item textarea {
     border: 1px solid var(--sfdt-input-border) !important;
@@ -249,6 +249,29 @@ textarea.sfdt-form-control {
     padding-top: 0.32rem !important;
     padding-bottom: 0.28rem !important;
     height: auto !important;
+}
+
+/* Custom search 안에서 Bootstrap form-check(checkbox)가 input/select와 세로 정렬이 어긋나는 문제 보정 */
+.sfdt-custom-search .sfdt-search-item .form-check {
+    display: flex;
+    align-items: center;
+    min-height: calc(1.5em + 0.6rem + calc(var(--bs-border-width, 1px) * 2));
+    margin-top: -1px !important; /* 다른 컨트롤 대비 미세 정렬 */
+    margin-bottom: 0;
+}
+
+.sfdt-custom-search .sfdt-search-item .form-check .form-check-input {
+    width: 1.1em;
+    height: 1.1em;
+    padding: 0;
+    margin-top: 0 !important;
+    flex: 0 0 auto;
+    border-color: var(--sfdt-input-border) !important;
+}
+
+.sfdt-custom-search .sfdt-search-item .form-check .form-check-label {
+    line-height: 1.5;
+    margin-bottom: -1px;
 }
 
 .sfdt-search-item .sfdt-btn-radio-group {
@@ -700,4 +723,285 @@ table.dataTable tfoot > tr > td.text-center:not(.dt-orderable-none) div.dt-colum
 .flatpickr-monthDropdown-months {
     position: relative;
     z-index: 1;
+}
+
+/* ==========================
+   Choices.js - SFDT Custom Search Alignment
+   ========================== */
+
+/* Choices 기본 margin-bottom(24px) 제거: custom search 그리드 정렬 맞춤 */
+.sfdt-custom-search .choices {
+    margin-bottom: 0;
+    font-size: 0.9375rem; /* sfdt-form-control와 동일 */
+}
+
+/* select-one 내부 박스 스타일을 sfdt-form-select에 맞춤 */
+.sfdt-custom-search .choices[data-type*='select-one'] .choices__inner {
+    display: flex !important;
+    align-items: center;
+    padding: 0.3rem 2.25rem 0.3rem 0.625rem !important;
+    font-size: 0.9375rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--bs-body-color);
+    background-color: var(--bs-body-bg);
+    border: 1px solid var(--sfdt-input-border) !important;
+    border-radius: var(--bs-border-radius-sm);
+    min-height: calc(1.5em + 0.6rem + calc(var(--bs-border-width, 1px) * 2)) !important;
+    box-shadow: none;
+}
+
+/* Choices 기본 화살표(::after)를 숨기고, sfdt-form-select과 동일한 배경 화살표 사용 */
+.sfdt-custom-search .choices[data-type*='select-one']::after {
+    display: none;
+}
+
+.sfdt-custom-search .choices[data-type*='select-one'] .choices__inner {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.625rem center;
+    background-size: 16px 12px;
+}
+
+[data-bs-theme="dark"] .sfdt-custom-search .choices[data-type*='select-one'] .choices__inner {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23dee2e6' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+}
+
+/* 단일 선택 텍스트 영역 padding/정렬 보정 */
+.sfdt-custom-search .choices__list--single {
+    padding: 0 !important;
+    display: flex;
+    align-items: center;
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.sfdt-custom-search .choices__list--single .choices__item {
+    padding: 0 !important;
+    flex: 1 1 auto;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* 검색 입력(드롭다운 내부)도 sfdt와 동일한 배경/텍스트 */
+.sfdt-custom-search .choices__input,
+.sfdt-custom-search .choices__input--cloned {
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
+}
+
+/* 포커스/오픈 상태를 sfdt-form-select focus와 동일하게 */
+.sfdt-custom-search .choices.is-focused .choices__inner,
+.sfdt-custom-search .choices.is-open .choices__inner {
+    border-color: var(--sfdt-focus-border) !important;
+    box-shadow: var(--sfdt-focus-shadow);
+}
+
+/* 드롭다운 테두리도 sfdt 입력 보더 톤에 맞춤 */
+.sfdt-custom-search .choices__list--dropdown,
+.sfdt-custom-search .choices__list[aria-expanded] {
+    border-color: var(--sfdt-input-border);
+}
+
+/* Hover/Highlight는 Bootstrap 토큰 사용 */
+.sfdt-custom-search .choices__list--dropdown .choices__item--selectable.is-highlighted {
+    background-color: var(--bs-tertiary-bg);
+    color: var(--bs-body-color);
+}
+
+/* SFDT search-item(상세검색) 컨트롤 규격과 동일한 높이로 보정 */
+.sfdt-custom-search .sfdt-search-item .choices[data-type*='select-one'] .choices__inner {
+    font-size: 0.875rem !important;
+    padding: 0.32rem 2.25rem 0.28rem 0.625rem !important;
+    min-height: calc(1.5em + 0.6rem + calc(var(--bs-border-width, 1px) * 2));
+    height: auto !important;
+}
+
+/* ==========================
+   Choices.js - SFDT Form Select (Modal/Form)
+   ========================== */
+
+/* Choices가 적용된 select를 sfdt-form-select과 동일한 외형으로 맞춤 */
+select.sfdt-form-select + .choices,
+select.sfdt-form-select ~ .choices,
+select.sfdt-form-control.sfdt-form-select + .choices,
+select.sfdt-form-control.sfdt-form-select ~ .choices {
+    margin-bottom: 0;
+    font-size: 0.9375rem; /* sfdt-form-control와 동일 */
+}
+
+.sfdt-form-select + .choices[data-type*='select-one'] .choices__inner,
+.sfdt-form-select ~ .choices[data-type*='select-one'] .choices__inner,
+.sfdt-form-control.sfdt-form-select + .choices[data-type*='select-one'] .choices__inner,
+.sfdt-form-control.sfdt-form-select ~ .choices[data-type*='select-one'] .choices__inner {
+    box-sizing: border-box !important;
+    min-height: 0 !important; /* choices.min.css 기본 min-height(44px) 제거 */
+    display: flex !important;
+    align-items: center;
+    padding: 0.3rem 2.25rem 0.3rem 0.625rem !important;
+    font-size: 0.9375rem !important;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--bs-body-color);
+    background-color: var(--bs-body-bg);
+    border: 1px solid var(--sfdt-input-border) !important;
+    border-radius: var(--bs-border-radius-sm);
+    height: auto !important;
+    box-shadow: none;
+}
+
+.sfdt-form-select + .choices[data-type*='select-one']::after,
+.sfdt-form-select ~ .choices[data-type*='select-one']::after,
+.sfdt-form-control.sfdt-form-select + .choices[data-type*='select-one']::after,
+.sfdt-form-control.sfdt-form-select ~ .choices[data-type*='select-one']::after {
+    display: none;
+}
+
+.sfdt-form-select + .choices[data-type*='select-one'] .choices__inner,
+.sfdt-form-select ~ .choices[data-type*='select-one'] .choices__inner,
+.sfdt-form-control.sfdt-form-select + .choices[data-type*='select-one'] .choices__inner,
+.sfdt-form-control.sfdt-form-select ~ .choices[data-type*='select-one'] .choices__inner {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.625rem center;
+    background-size: 16px 12px;
+}
+
+[data-bs-theme="dark"] .sfdt-form-select + .choices[data-type*='select-one'] .choices__inner,
+[data-bs-theme="dark"] .sfdt-form-select ~ .choices[data-type*='select-one'] .choices__inner,
+[data-bs-theme="dark"] .sfdt-form-control.sfdt-form-select + .choices[data-type*='select-one'] .choices__inner,
+[data-bs-theme="dark"] .sfdt-form-control.sfdt-form-select ~ .choices[data-type*='select-one'] .choices__inner {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23dee2e6' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+}
+
+.sfdt-form-select + .choices .choices__list--single,
+.sfdt-form-select ~ .choices .choices__list--single,
+.sfdt-form-control.sfdt-form-select + .choices .choices__list--single,
+.sfdt-form-control.sfdt-form-select ~ .choices .choices__list--single {
+    padding: 0 !important;
+    display: flex;
+    align-items: center;
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.sfdt-form-select + .choices .choices__list--single .choices__item,
+.sfdt-form-select ~ .choices .choices__list--single .choices__item,
+.sfdt-form-control.sfdt-form-select + .choices .choices__list--single .choices__item,
+.sfdt-form-control.sfdt-form-select ~ .choices .choices__list--single .choices__item {
+    padding: 0 !important;
+    flex: 1 1 auto;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sfdt-form-select + .choices .choices__input,
+.sfdt-form-select + .choices .choices__input--cloned,
+.sfdt-form-control.sfdt-form-select + .choices .choices__input,
+.sfdt-form-control.sfdt-form-select + .choices .choices__input--cloned {
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
+}
+
+.sfdt-form-select + .choices.is-focused .choices__inner,
+.sfdt-form-select + .choices.is-open .choices__inner,
+.sfdt-form-select ~ .choices.is-focused .choices__inner,
+.sfdt-form-select ~ .choices.is-open .choices__inner,
+.sfdt-form-control.sfdt-form-select + .choices.is-focused .choices__inner,
+.sfdt-form-control.sfdt-form-select + .choices.is-open .choices__inner,
+.sfdt-form-control.sfdt-form-select ~ .choices.is-focused .choices__inner,
+.sfdt-form-control.sfdt-form-select ~ .choices.is-open .choices__inner {
+    border-color: var(--sfdt-focus-border) !important;
+    box-shadow: var(--sfdt-focus-shadow);
+}
+
+.sfdt-form-select + .choices .choices__list--dropdown,
+.sfdt-form-select + .choices .choices__list[aria-expanded],
+.sfdt-form-control.sfdt-form-select + .choices .choices__list--dropdown,
+.sfdt-form-control.sfdt-form-select + .choices .choices__list[aria-expanded] {
+    border-color: var(--sfdt-input-border);
+}
+
+.sfdt-form-select + .choices .choices__list--dropdown .choices__item--selectable.is-highlighted,
+.sfdt-form-control.sfdt-form-select + .choices .choices__list--dropdown .choices__item--selectable.is-highlighted {
+    background-color: var(--bs-tertiary-bg);
+    color: var(--bs-body-color);
+}
+
+/* Choices는 원본 select를 .choices 내부로 옮겨 래핑하므로, 모달에서는 .choices 자체를 직접 타겟팅 */
+.modal .choices[data-type*='select-one'] {
+    margin-bottom: 0;
+    font-size: 0.9375rem;
+}
+
+.modal .choices[data-type*='select-one'] .choices__inner {
+    box-sizing: border-box !important;
+    min-height: 0 !important; /* choices.min.css 기본 min-height(44px) 제거 */
+    display: flex !important;
+    align-items: center;
+    padding: 0.3rem 2.25rem 0.3rem 0.625rem !important;
+    font-size: 0.9375rem !important;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--bs-body-color);
+    background-color: var(--bs-body-bg);
+    border: 1px solid var(--sfdt-input-border) !important;
+    border-radius: var(--bs-border-radius-sm);
+    height: auto !important;
+    box-shadow: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.625rem center;
+    background-size: 16px 12px;
+}
+
+[data-bs-theme="dark"] .modal .choices[data-type*='select-one'] .choices__inner {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23dee2e6' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+}
+
+.modal .choices[data-type*='select-one']::after {
+    display: none;
+}
+
+.modal .choices .choices__list--single {
+    padding: 0 !important;
+    display: flex;
+    align-items: center;
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.modal .choices .choices__list--single .choices__item {
+    padding: 0 !important;
+    flex: 1 1 auto;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.modal .choices .choices__input,
+.modal .choices .choices__input--cloned {
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
+}
+
+.modal .choices.is-focused .choices__inner,
+.modal .choices.is-open .choices__inner {
+    border-color: var(--sfdt-focus-border) !important;
+    box-shadow: var(--sfdt-focus-shadow);
+}
+
+.modal .choices .choices__list--dropdown,
+.modal .choices .choices__list[aria-expanded] {
+    border-color: var(--sfdt-input-border);
+}
+
+.modal .choices__list--dropdown .choices__item--selectable.is-highlighted {
+    background-color: var(--bs-tertiary-bg);
+    color: var(--bs-body-color);
 }
