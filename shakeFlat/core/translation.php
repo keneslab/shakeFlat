@@ -150,9 +150,9 @@ class Translation
 
     public function convertSystemError($output, $lang = null)
     {
-        if (!$this->systemTranslationEnabled) return $this->passing($output);
+        if (!$this->systemTranslationEnabled) return $output;
         $lang = $lang ?: $this->systemTranslationLang;
-        if (!$lang) return $this->passing($output);
+        if (!$lang) return $output;
         if (!$output) return "";
 
         $systemTable = $this->loadTranslationTable($this->systemTranslationFilePath);

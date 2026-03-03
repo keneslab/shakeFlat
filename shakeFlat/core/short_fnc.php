@@ -140,10 +140,10 @@ function sfLang($default = null)
 
 // Process accumulated logs with translation and display error, then terminate
 // Moved from L::_terminate() to make log.php independent from Template and Translation
-function sfLogTerminate($logMsg, $errCode = -1, $errUrl = null, $isSystemError = false)
+function sfLogTerminate($logMsg, $errCode = -1, $errUrl = null)
 {
     // Apply translation to the message
-    $message = sfLogTranslate($logMsg["message"], array("is_system_error" => $isSystemError));
+    $message = sfLogTranslate($logMsg["message"]);
     $context = $logMsg["context"] ?? array();
 
     if (SHAKEFLAT_ENV["config"]["display_error"] ?? false) {
@@ -163,7 +163,7 @@ function sfLogTerminate($logMsg, $errCode = -1, $errUrl = null, $isSystemError =
             $context = null;
         }
     } else {
-        $message = sfLogTranslate(shakeFlat\L::defaultErrorMessage(), array("is_system_error" => $isSystemError));
+        $message = sfLogTranslate(shakeFlat\L::defaultErrorMessage());
         $context = null;
     }
 
@@ -182,17 +182,16 @@ function sfLogTerminate($logMsg, $errCode = -1, $errUrl = null, $isSystemError =
 
 // Translate log messages using Translation class
 // Returns array or string with translations applied
-function sfLogTranslate($output, $options = array())
+function sfLogTranslate($output)
 {
     $translation = shakeFlat\Translation::getInstance();
-    $isSystemError = $options["is_system_error"] ?? false;
 
-    // System error messages: use independent system translation settings (no cache)
-    if ($isSystemError) {
-        if (is_array($output)) {
-            return json_decode($translation->convertSystemError(json_encode($output, JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE)), true);
-        }
-        return $translation->convertSystemError($output);
+    // System translation is an independent axis — always apply first (no cache).
+    // This handles framework error messages (Param, DB, etc.) regardless of log type.
+    if (is_array($output)) {
+        $output = json_decode($translation->convertSystemError(json_encode($output, JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE)), true);
+    } else {
+        $output = $translation->convertSystemError($output);
     }
 
     // User-defined translation: use existing translation settings with cache
@@ -231,7 +230,7 @@ function sfProcessPendingLogs()
                 'context' => $log['context']
             );
 
-            sfLogTerminate($logMsg, $log['code'], $log['errUrl'], $log['type'] === 'system');      // This function will exit the process
+            sfLogTerminate($logMsg, $log['code'], $log['errUrl']);      // This function will exit the process
         }
     }
 
