@@ -419,3 +419,66 @@ function copyToClipboard(text) {
     document.execCommand("copy");
     document.body.removeChild(tempInput);
 }
+
+// 이메일 도메인 TLD 검증 강화
+// 브라우저 기본 checkValidity 는 abc@domain 형태를 통과시키므로,
+// 도메인에 반드시 '.' 이 포함되어야 하도록 (예: user@domain.com) 보강한다.
+(function () {
+    var _inputCheckValidity = HTMLInputElement.prototype.checkValidity;
+    var _inputReportValidity = HTMLInputElement.prototype.reportValidity;
+    var _formCheckValidity = HTMLFormElement.prototype.checkValidity;
+    var _formReportValidity = HTMLFormElement.prototype.reportValidity;
+    var EMAIL_DOMAIN_MSG = "이메일 주소의 도메인이 올바르지 않습니다. (예: user@domain.com)";
+    var SF_EMAIL_FLAG = "_sfEmailInvalid";
+
+    function validateEmailDomain(el) {
+        if (el[SF_EMAIL_FLAG]) {
+            el.setCustomValidity("");
+            el[SF_EMAIL_FLAG] = false;
+        }
+        if (el.type !== "email" || !el.value) return true;
+        var at = el.value.indexOf("@");
+        if (at === -1) return true;
+        var domain = el.value.substring(at + 1);
+        if (domain.indexOf(".") === -1) {
+            el.setCustomValidity(EMAIL_DOMAIN_MSG);
+            el[SF_EMAIL_FLAG] = true;
+            return false;
+        }
+        return true;
+    }
+
+    function validateFormEmails(formEl) {
+        var emails = formEl.querySelectorAll('input[type="email"]');
+        for (var i = 0; i < emails.length; i++) {
+            validateEmailDomain(emails[i]);
+        }
+    }
+
+    HTMLInputElement.prototype.checkValidity = function () {
+        validateEmailDomain(this);
+        return _inputCheckValidity.call(this);
+    };
+
+    HTMLInputElement.prototype.reportValidity = function () {
+        validateEmailDomain(this);
+        return _inputReportValidity.call(this);
+    };
+
+    HTMLFormElement.prototype.checkValidity = function () {
+        validateFormEmails(this);
+        return _formCheckValidity.call(this);
+    };
+
+    HTMLFormElement.prototype.reportValidity = function () {
+        validateFormEmails(this);
+        return _formReportValidity.call(this);
+    };
+
+    document.addEventListener("input", function (e) {
+        if (e.target && e.target.tagName === "INPUT" && e.target[SF_EMAIL_FLAG]) {
+            e.target.setCustomValidity("");
+            e.target[SF_EMAIL_FLAG] = false;
+        }
+    }, true);
+})();
